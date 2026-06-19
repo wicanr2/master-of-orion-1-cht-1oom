@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uiobj.c b/src/ui/classic/uiobj.c
-index 1792d2c..67f7b1a 100644
+index 1792d2c..2756943 100644
 --- a/src/ui/classic/uiobj.c
 +++ b/src/ui/classic/uiobj.c
 @@ -3,6 +3,7 @@
@@ -21,12 +21,15 @@ index 1792d2c..67f7b1a 100644
  
      while (!flag_done) {
          if (*s == 0) {
-@@ -2040,6 +2045,8 @@ int16_t uiobj_select_from_list2(int x, int y, int w, const char *title, char con
+@@ -2040,6 +2045,11 @@ int16_t uiobj_select_from_list2(int x, int y, int w, const char *title, char con
      uiobj_table_clear();
      h = lbxfont_get_height();
      dy = lbxfont_get_gap_h() + h;
-+    /* TODO 繁中:多頁清單(list2)強制 dy=14 會觸發 heap 損毀(待查),暫不加大列距。
-+       單頁清單(list1,如種族選擇)已加大;多頁清單沿用原列距(中文可能略擠)。 */
++    /* 繁中:多頁清單(如艦船設計武器/裝置選單)列距加大,避免 24px CJK 重疊。
++       (項數由 linenum 上限決定,dy 只改間距、不影響項數。) */
++    if (cjkfont_available() && (dy < 14)) {
++        dy = 14;
++    }
      ty = y + dy;
  
      while (!flag_done) {
