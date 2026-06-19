@@ -25,3 +25,4 @@
 # 測試用 atlas(throwaway)
 /assets/fonts/*_test.bin
 /build/
+/build-asan/
