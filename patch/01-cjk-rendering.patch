@@ -1,13 +1,15 @@
 diff --git a/src/Makefile.am b/src/Makefile.am
-index d30d017..a2c909e 100644
+index d30d017..571bd56 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -63,6 +63,8 @@ gui_sources = \
+@@ -63,6 +63,10 @@ gui_sources = \
      gfxaux.h \
      kbd.c \
      kbd.h \
 +    cjkfont.c \
 +    cjkfont.h \
++    strtr.c \
++    strtr.h \
      lbxfont.c \
      lbxfont.h \
      lbxgfx.c \
@@ -416,18 +418,19 @@ index eb679c7..c7c60bd 100644
  
  static void video_setpal(const uint8_t *pal, int first, int num)
 diff --git a/src/lbxfont.c b/src/lbxfont.c
-index 8ae1b61..4caca5d 100644
+index 8ae1b61..bc69ca2 100644
 --- a/src/lbxfont.c
 +++ b/src/lbxfont.c
-@@ -5,6 +5,7 @@
+@@ -5,6 +5,8 @@
  
  #include "lbxfont.h"
  #include "bits.h"
 +#include "cjkfont.h"
++#include "strtr.h"
  #include "lib.h"
  #include "lbx.h"
  #include "lbxpal.h"
-@@ -46,6 +47,56 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
+@@ -46,6 +48,56 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
  
  /* -------------------------------------------------------------------------- */
  
@@ -484,7 +487,7 @@ index 8ae1b61..4caca5d 100644
  static int lbxfont_print_char_ret_x(int x, int y, char c)
  {
      return x + lbxfont_plotchar(c, vgabuf_get_xy(x, y));
-@@ -203,7 +254,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -203,7 +255,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                  break;
              case 0x15:
                  return lbxfont_temp_x;
@@ -501,7 +504,7 @@ index 8ae1b61..4caca5d 100644
                  lbxfont_temp_x = lbxfont_print_char_ret_x(lbxfont_temp_x, lbxfont_temp_y, c);
                  if ((w != 0) && (c == ' ')) {
                      lbxfont_temp_x += vc;
-@@ -213,6 +272,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -213,6 +273,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                      ++v8;
                  }
                  break;
@@ -509,21 +512,23 @@ index 8ae1b61..4caca5d 100644
          }
          ++i;
      }
-@@ -416,11 +476,13 @@ int lbxfont_init(void)
+@@ -416,11 +477,15 @@ int lbxfont_init(void)
  {
      uint8_t *fontdata = lbxfile_item_get(LBXFILE_FONTS, 0, 0);
      lbxfontdata = fontdata;
 +    cjkfont_init(NULL); /* 讀 MOO_CJK_FONT;best-effort,失敗則維持英文 */
++    strtr_init(NULL);   /* 讀 MOO_STR_TR;LBX 字串(科技名等)繁中覆蓋 */
      return 0;
  }
  
  void lbxfont_shutdown(void)
  {
 +    cjkfont_shutdown();
++    strtr_shutdown();
      if (lbxfontdata) {
          lbxfile_item_release(LBXFILE_FONTS, lbxfontdata);
          lbxfontdata = 0;
-@@ -609,6 +671,12 @@ int lbxfont_calc_str_width(const char *str)
+@@ -609,6 +674,12 @@ int lbxfont_calc_str_width(const char *str)
      uint16_t w = 0;
      int16_t c;
      while (1) {

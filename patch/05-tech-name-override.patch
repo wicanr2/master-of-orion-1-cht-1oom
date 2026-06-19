@@ -1,0 +1,145 @@
+diff --git a/src/game/game_tech.c b/src/game/game_tech.c
+index 7d401fa..200698b 100644
+--- a/src/game/game_tech.c
++++ b/src/game/game_tech.c
+@@ -3,6 +3,7 @@
+ #include <stdio.h>
+ 
+ #include "game_tech.h"
++#include "strtr.h"
+ #include "bits.h"
+ #include "boolvec.h"
+ #include "comp.h"
+@@ -497,7 +498,7 @@ const char *game_tech_get_name(const struct game_aux_s *gaux, tech_field_t field
+         const uint8_t *p = RESEARCH_D0_PTR(gaux, field, tech);
+         if (p[0] != TECH_GROUP_UNUSED) {
+             int offs = GET_LE_16(&p[4]);
+-            strcpy(buf, &(gaux->research.names[offs]));
++            strcpy(buf, strtr(&(gaux->research.names[offs]))); /* 繁中:LBX 科技名覆蓋 */
+         } else {
+             buf[0] = '\0';
+         }
+diff --git a/src/strtr.c b/src/strtr.c
+new file mode 100644
+index 0000000..b1b2816
+--- /dev/null
++++ b/src/strtr.c
+@@ -0,0 +1,98 @@
++#include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "strtr.h"
++#include "lib.h"
++#include "log.h"
++
++/* 通用英->繁中字串覆蓋:載入 TSV(每行 "english<TAB>中文"),
++   供 LBX 載入的字串(如 research.lbx 科技名)在顯示時翻譯。
++   無 PBX,故以此 override 取代「改散布版權 LBX」。見 docs/adr/0001。 */
++
++struct entry_s {
++    char *en;
++    char *zh;
++};
++
++static struct entry_s *tr = NULL;
++static int tr_num = 0;
++
++static int cmp_entry(const void *a, const void *b)
++{
++    return strcmp(((const struct entry_s *)a)->en, ((const struct entry_s *)b)->en);
++}
++
++bool strtr_init(const char *path)
++{
++    strtr_shutdown();
++    if (!path) {
++        path = getenv("MOO_STR_TR");
++    }
++    if (!path || !path[0]) {
++        return false;
++    }
++    FILE *f = fopen(path, "rb");
++    if (!f) {
++        log_warning("strtr: cannot open '%s'\n", path);
++        return false;
++    }
++    char line[1024];
++    int cap = 256;
++    tr = lib_malloc(sizeof(struct entry_s) * cap);
++    tr_num = 0;
++    while (fgets(line, sizeof(line), f)) {
++        char *tab = strchr(line, '\t');
++        if (!tab) {
++            continue;
++        }
++        *tab = '\0';
++        char *en = line;
++        char *zh = tab + 1;
++        /* 去尾端換行 */
++        size_t zl = strlen(zh);
++        while (zl && (zh[zl - 1] == '\n' || zh[zl - 1] == '\r')) {
++            zh[--zl] = '\0';
++        }
++        if (!en[0] || !zh[0]) {
++            continue;
++        }
++        if (tr_num >= cap) {
++            cap *= 2;
++            tr = lib_realloc(tr, sizeof(struct entry_s) * cap);
++        }
++        tr[tr_num].en = lib_stralloc(en);
++        tr[tr_num].zh = lib_stralloc(zh);
++        ++tr_num;
++    }
++    fclose(f);
++    qsort(tr, tr_num, sizeof(struct entry_s), cmp_entry);
++    log_message("strtr: loaded %d translations from '%s'\n", tr_num, path);
++    return tr_num > 0;
++}
++
++void strtr_shutdown(void)
++{
++    if (tr) {
++        for (int i = 0; i < tr_num; ++i) {
++            lib_free(tr[i].en);
++            lib_free(tr[i].zh);
++        }
++        lib_free(tr);
++        tr = NULL;
++    }
++    tr_num = 0;
++}
++
++const char *strtr(const char *en)
++{
++    if (!tr || !en) {
++        return en;
++    }
++    struct entry_s key;
++    key.en = (char *)en;
++    const struct entry_s *r = bsearch(&key, tr, tr_num, sizeof(struct entry_s), cmp_entry);
++    return r ? r->zh : en;
++}
+diff --git a/src/strtr.h b/src/strtr.h
+new file mode 100644
+index 0000000..fdf9128
+--- /dev/null
++++ b/src/strtr.h
+@@ -0,0 +1,14 @@
++#ifndef INC_1OOM_STRTR_H
++#define INC_1OOM_STRTR_H
++
++#include "types.h"
++
++/* 通用英->繁中字串覆蓋(LBX 載入字串的翻譯層)。見 docs/adr/0001。
++   path 為 NULL 時讀環境變數 MOO_STR_TR。 */
++extern bool strtr_init(const char *path);
++extern void strtr_shutdown(void);
++
++/* 回傳 en 的繁中譯;無對應或未載入則原樣回傳 en。 */
++extern const char *strtr(const char *en);
++
++#endif

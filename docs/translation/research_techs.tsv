@@ -1,0 +1,187 @@
+0	Computers	0	Battle Scanner
+0	Computers	1	Ecm Jammer Mark I
+0	Computers	3	Deep Space Scanner
+0	Computers	4	Battle Computer Mark II
+0	Computers	6	Ecm Jammer Mark II
+0	Computers	7	Improved Robotic Controls III
+0	Computers	9	Battle Computer Mark III
+0	Computers	11	Ecm Jammer Mark III
+0	Computers	12	Improved Space Scanner
+0	Computers	14	Battle Computer Mark IV
+0	Computers	16	Ecm Jammer Mark IV
+0	Computers	17	Improved Robotic Controls IV
+0	Computers	19	Battle Computer Mark V
+0	Computers	21	Ecm Jammer Mark V
+0	Computers	22	Advanced Space Scanner
+0	Computers	24	Battle Computer Mark VI
+0	Computers	26	Ecm Jammer Mark VI
+0	Computers	27	Improved Robotic Controls V
+0	Computers	29	Battle Computer Mark VII
+0	Computers	31	Ecm Jammer Mark VII
+0	Computers	33	Hyperspace Communications
+0	Computers	34	Battle Computer Mark VIII
+0	Computers	36	Ecm Jammer Mark VIII
+0	Computers	37	Improved Robotic Controls VI
+0	Computers	39	Battle Computer Mark IX
+0	Computers	41	Ecm Jammer Mark IX
+0	Computers	44	Battle Computer Mark X
+0	Computers	45	Oracle Interface
+0	Computers	46	Ecm Jammer Mark X
+0	Computers	47	Improved Robotic Controls VII
+0	Computers	48	Technology Nullifier
+0	Computers	49	Battle Computer Mark XI
+1	Construction	0	Reserve Fuel Tanks
+1	Construction	2	Improved Industrial Tech 9
+1	Construction	4	Reduced Industrial Waste 80%
+1	Construction	7	Improved Industrial Tech 8
+1	Construction	9	Duralloy Armor
+1	Construction	10	Battle Suits
+1	Construction	12	Improved Industrial Tech 7
+1	Construction	13	Automated Repair System
+1	Construction	14	Reduced Industrial Waste 60%
+1	Construction	16	Zortium Armor
+1	Construction	17	Improved Industrial Tech 6
+1	Construction	22	Improved Industrial Tech 5
+1	Construction	23	Armored Exoskeleton
+1	Construction	24	Reduced Industrial Waste 40%
+1	Construction	25	Andrium Armor
+1	Construction	27	Improved Industrial Tech 4
+1	Construction	32	Improved Industrial Tech 3
+1	Construction	33	Tritanium Armor
+1	Construction	34	Reduced Industrial Waste 20%
+1	Construction	35	Advanced Damage Control
+1	Construction	37	Improved Industrial Tech 2
+1	Construction	39	Powered Armor
+1	Construction	41	Adamantium Armor
+1	Construction	44	Industrial Waste Elimination
+1	Construction	49	Neutronium Armor
+2	Force Fields	0	Class I Deflector Shields
+2	Force Fields	3	Class II Deflector Shields
+2	Force Fields	7	Personal Deflector Shield
+2	Force Fields	9	Class III Deflector Shields
+2	Force Fields	11	Class V Planetary Shield
+2	Force Fields	13	Class IV Deflector Shields
+2	Force Fields	15	Repulsor Beam
+2	Force Fields	19	Class V Deflector Shields
+2	Force Fields	20	Personal Absorption Shield
+2	Force Fields	21	Class X Planetary Shield
+2	Force Fields	23	Class VI Deflector Shields
+2	Force Fields	26	Cloaking Device
+2	Force Fields	29	Class VII Deflector Shields
+2	Force Fields	30	Zyro Shield
+2	Force Fields	31	Class XV Planetary Shield
+2	Force Fields	33	Class IX Deflector Shields
+2	Force Fields	36	Stasis Field
+2	Force Fields	37	Personal Barrier Shield
+2	Force Fields	39	Class XI Deflector Shields
+2	Force Fields	41	Class XX Planetary Shield
+2	Force Fields	42	Black Hole Generator
+2	Force Fields	43	Class XIII Deflector Shields
+2	Force Fields	45	Lightning Shield
+2	Force Fields	49	Class XV Deflector Shields
+3	Planetology	0	Ecological Restoration
+3	Planetology	1	Improved Terraforming +10
+3	Planetology	2	Controlled Barren Environment
+3	Planetology	4	Improved Eco Restoration
+3	Planetology	5	Controlled Tundra Environment
+3	Planetology	7	Improved Terraforming +20
+3	Planetology	8	Controlled Dead Environment
+3	Planetology	9	Death Spores
+3	Planetology	11	Controlled Inferno Environment
+3	Planetology	12	Enhanced Eco Restoration
+3	Planetology	13	Improved Terraforming +30
+3	Planetology	14	Controlled Toxic Environment
+3	Planetology	15	Soil Enrichment
+3	Planetology	16	Bio Toxin Antidote
+3	Planetology	17	Controlled Radiated Environment
+3	Planetology	19	Improved Terraforming +40
+3	Planetology	20	Cloning
+3	Planetology	21	Atmospheric Terraforming
+3	Planetology	23	Advanced Eco Restoration
+3	Planetology	25	Improved Terraforming +50
+3	Planetology	26	Doom Virus
+3	Planetology	29	Advanced Soil Enrichment
+3	Planetology	31	Improved Terraforming +60
+3	Planetology	33	Complete Eco Restoration
+3	Planetology	35	Universal Antidote
+3	Planetology	37	Improved Terraforming +80
+3	Planetology	39	Bio Terminator
+3	Planetology	41	Advanced Cloning
+3	Planetology	43	Improved Terraforming +100
+3	Planetology	49	Complete Terraforming
+4	Propulsion	0	Retro Engines
+4	Propulsion	2	Hydrogen Fuel Cells (Range 4)
+4	Propulsion	4	Deuterium Fuel Cells (Range 5)
+4	Propulsion	5	Nuclear Engines
+4	Propulsion	8	Irridium Fuel Cells (Range 6)
+4	Propulsion	9	Inertial Stabilizer
+4	Propulsion	11	Sub-Light Drives
+4	Propulsion	13	Dotomite Crystals (Range 7)
+4	Propulsion	15	Energy Pulsar
+4	Propulsion	17	Fusion Drives
+4	Propulsion	18	Uridium Fuel Cells (Range 8)
+4	Propulsion	19	Warp Dissipator
+4	Propulsion	22	Reajax II Fuel Cells (Range 9)
+4	Propulsion	23	Impulse Drives
+4	Propulsion	26	Intergalactic Star Gates
+4	Propulsion	28	Trilithium Crystals (Range 10)
+4	Propulsion	29	Ion Drives
+4	Propulsion	33	High Energy Focus
+4	Propulsion	35	Anti-Matter Drives
+4	Propulsion	37	Sub Space Teleporter
+4	Propulsion	39	Ionic Pulsar
+4	Propulsion	40	Thorium Cells (Unlimited Range)
+4	Propulsion	41	Inter-Phased Drives
+4	Propulsion	42	Sub Space Interdictor
+4	Propulsion	44	Combat Transporters
+4	Propulsion	45	Inertial Nullifier
+4	Propulsion	47	Hyper Drives
+4	Propulsion	49	Displacement Device
+5	Weapons	0	Lasers
+5	Weapons	1	Hand Lasers
+5	Weapons	3	Hyper-V Rockets
+5	Weapons	4	Gatling Laser
+5	Weapons	5	Anti-Missile Rockets
+5	Weapons	6	Neutron Pellet Gun
+5	Weapons	7	Hyper-X Rockets
+5	Weapons	8	Fusion Bomb
+5	Weapons	9	Ion Cannon
+5	Weapons	10	Scatter Pack V Rockets
+5	Weapons	11	Ion Rifle
+5	Weapons	12	Mass Driver
+5	Weapons	13	Merculite Missiles
+5	Weapons	14	Neutron Blaster
+5	Weapons	15	Anti-Matter Bomb
+5	Weapons	16	Graviton Beam
+5	Weapons	17	Stinger Missiles
+5	Weapons	18	Hard Beam
+5	Weapons	19	Fusion Beam
+5	Weapons	20	Ion Stream Projector
+5	Weapons	21	Omega-V Bomb
+5	Weapons	22	Anti-Matter Torpedoes
+5	Weapons	23	Fusion Rifle
+5	Weapons	24	Megabolt Cannon
+5	Weapons	25	Phasor
+5	Weapons	26	Scatter Pack VII Missiles
+5	Weapons	27	Auto Blaster
+5	Weapons	28	Pulson Missiles
+5	Weapons	29	Tachyon Beam
+5	Weapons	30	Hand Phasor
+5	Weapons	31	Gauss Autocannon
+5	Weapons	32	Particle Beam
+5	Weapons	33	Hercular Missiles
+5	Weapons	34	Plasma Cannon
+5	Weapons	35	Death Ray
+5	Weapons	36	Disruptor
+5	Weapons	37	Pulse Phasor
+5	Weapons	38	Neutronium Bomb
+5	Weapons	39	Hellfire Torpedoes
+5	Weapons	40	Zeon Missiles
+5	Weapons	41	Plasma Rifle
+5	Weapons	42	Proton Torpedoes
+5	Weapons	43	Scatter Pack X Missiles
+5	Weapons	44	Tri-Focus Plasma Cannon
+5	Weapons	45	Stellar Converter
+5	Weapons	46	Neutron Stream Projector
+5	Weapons	47	Mauler Device
+5	Weapons	49	Plasma Torpedoes

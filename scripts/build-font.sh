@@ -10,7 +10,10 @@ SIZE="${MOO_FONT_SIZE:-24}"
 
 # 收集碼點來源:所有含 CJK 的引擎 source(game_str.c + 各 ui 疊字標籤)+ docs 譯文。
 mapfile -t SRCS < <(cd "$ROOT" && grep -rlP --include='*.c' --include='*.h' '[^\x00-\x7f]' 1oom/src 2>/dev/null)
-[ -d "$ROOT/docs/translation" ] && SRCS+=("docs/translation"/*.txt)
+# docs/translation 的譯文表(科技名等 LBX 覆蓋譯文)也要進 atlas
+for ext in txt tsv; do
+  for f in "$ROOT"/docs/translation/*."$ext"; do [ -e "$f" ] && SRCS+=("docs/translation/$(basename "$f")"); done
+done
 echo "[build-font] 碼點來源檔: ${#SRCS[@]} 個"
 
 docker run --rm \

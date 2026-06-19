@@ -54,8 +54,9 @@ scripts/apply-patch.sh      # 套上 patch/ 內的繁中化 patch
 scripts/build-font.sh       # 烘 CJK 24×24 atlas -> assets/fonts/cjk24.bin
 scripts/build.sh            # docker 內 build -> build/src/1oom_classic_sdl2
 
-# 放入你自備的原版 MOO 1.3 資料檔(assets/game/),設字型路徑後執行:
+# 放入你自備的原版 MOO 1.3 資料檔(assets/game/),設字型與譯文路徑後執行:
 MOO_CJK_FONT=assets/fonts/cjk24.bin \
+MOO_STR_TR=docs/translation/research_techs_zh.tsv \
   build/src/1oom_classic_sdl2 -data assets/game -winw 960 -winh 600
 ```
 
