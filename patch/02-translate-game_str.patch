@@ -1,5 +1,5 @@
 diff --git a/src/game/game_str.c b/src/game/game_str.c
-index 013856e..ef848ed 100644
+index 013856e..4eceb69 100644
 --- a/src/game/game_str.c
 +++ b/src/game/game_str.c
 @@ -9,43 +9,43 @@
@@ -73,3 +73,25 @@ index 013856e..ef848ed 100644
  
  const char *game_str_tbl_planet_names[PLANET_NAMES_MAX] = {
      "Paranar", "Denubius", "Antares", "Draconis", "Zoctan", "Rigel", "Talas", "Moro", "Quayal", "Neptunus",
+@@ -631,8 +631,8 @@ const char *game_str_el_chose2 = ", the Council has chosen";
+ const char *game_str_el_chose3 = "to be the High Master of the New Republic.";
+ const char *game_str_el_neither = "Neither leader has a two thirds majority...";
+ const char *game_str_el_accept = "Do you accept the ruling?";
+-const char *game_str_el_yes = "Yes";
+-const char *game_str_el_no2 = "No";
++const char *game_str_el_yes = "是";
++const char *game_str_el_no2 = "否";
+ const char *game_str_el_sobeit = "So be it. You defy the ruling of the council. Now you will feel the wrath of the New Republic!";
+ const char *game_str_el_isnow = "is now High Master.";
+ 
+@@ -646,8 +646,8 @@ const char *game_str_au_amreca = "(ambassador recalled)";
+ const char *game_str_au_tech = "tech";
+ const char *game_str_au_framed = "(you were framed)";
+ const char *game_str_au_bull = "[";
+-const char *game_str_au_accept = "Accept";
+-const char *game_str_au_reject = "Reject";
++const char *game_str_au_accept = "接受";
++const char *game_str_au_reject = "拒絕";
+ const char *game_str_au_agree = "Agree";
+ const char *game_str_au_forget = "Forget It";
+ const char *game_str_au_forget2 = "Forget_it";
