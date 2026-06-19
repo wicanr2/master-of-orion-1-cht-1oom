@@ -46,6 +46,17 @@
 | P1 次要 | `diplomat.lbx` 外交對話、`eventmsg.lbx` 新聞 |
 | P2 後置 | `help.lbx` 求助、intro/winlose 影格內嵌文字 |
 
+## 四之二、重要修正:固定標籤烘在 LBX 美術裡(Phase 4 發現)
+
+實作翻譯時發現:MOO 很多畫面的**固定標籤是烘進 LBX 背景圖的影像文字,不是字串**。例:
+- 新遊戲設定畫面 `gfx_custom`(`uinewgame.c:195`):面板上的 `Galaxy Size` / `Difficulty` / `Opponents` / `Cancel` / `Ok` 都畫在背景圖裡。
+- 對應的**數值**(`game_str_tbl_gsize/diffic/oppon`)才是字串,經 `uiobj_add_t0` / `lbxfont` 繪製 → 可翻(已翻:小型/簡單/一…)。
+- 種族特性(`game_str_tbl_traits`,`uinewgame.c:114` 經 lbxfont)是字串 → 可翻。
+
+規律:**動態/變數文字 = 字串(可 source patch 翻譯);固定面板標籤 = LBX 背景美術(需改圖,屬 P2 影像文字)**。
+
+影響:純字串翻譯只能中文化「值」與動態內容;畫面固定標籤要完整中文化,需編輯 LBX 背景圖(影像文字,工作量與 intro/winlose 同級,列 P2)。
+
 ## 五、待定
 
 - LBX 覆蓋層的譯文檔格式(自訂 JSON/CSV vs 仿 LBX entry)— Phase 3 設計。

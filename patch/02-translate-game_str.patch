@@ -1,8 +1,8 @@
 diff --git a/src/game/game_str.c b/src/game/game_str.c
-index 013856e..043bda8 100644
+index 013856e..ef848ed 100644
 --- a/src/game/game_str.c
 +++ b/src/game/game_str.c
-@@ -9,10 +9,10 @@
+@@ -9,43 +9,43 @@
  
  /* -------------------------------------------------------------------------- */
  
@@ -10,10 +10,66 @@ index 013856e..043bda8 100644
 -const char *game_str_mm_load = "Load Game";
 -const char *game_str_mm_new = "New Game";
 -const char *game_str_mm_quit = "Quit to OS";
+-
+-const char *game_str_tbl_race[RACE_NUM + 1] = { "Human", "Mrrshan", "Silicoid", "Sakkra", "Psilon", "Alkari", "Klackon", "Bulrathi", "Meklar", "Darlok", "Random" };
+-const char *game_str_tbl_races[RACE_NUM] = { "Humans", "Mrrshans", "Silicoids", "Sakkras", "Psilons", "Alkaris", "Klackons", "Bulrathis", "Meklars", "Darloks" };
+-const char *game_str_tbl_banner[BANNER_NUM + 1] = { "Blue", "Green", "Purple", "Red", "White", "Yellow", "Random" };
+-const char *game_str_tbl_gsize[GALAXY_SIZE_NUM] = { "Small", "Medium", "Large", "Huge" };
+-const char *game_str_tbl_diffic[DIFFICULTY_NUM] = { "Simple", "Easy", "Average", "Hard", "Impossible" };
+-const char *game_str_tbl_oppon[5] = { "One", "Two", "Three", "Four", "Five" };
 +const char *game_str_mm_continue = "繼續";
 +const char *game_str_mm_load = "讀取進度";
 +const char *game_str_mm_new = "新遊戲";
 +const char *game_str_mm_quit = "離開";
++
++const char *game_str_tbl_race[RACE_NUM + 1] = { "人類", "莫善", "矽基", "薩克拉", "賽隆", "阿卡里", "克拉肯", "布拉西", "梅克拉", "達洛克", "隨機" };
++const char *game_str_tbl_races[RACE_NUM] = { "人類", "莫善", "矽基", "薩克拉", "賽隆", "阿卡里", "克拉肯", "布拉西", "梅克拉", "達洛克" };
++const char *game_str_tbl_banner[BANNER_NUM + 1] = { "藍", "綠", "紫", "紅", "白", "黃", "隨機" };
++const char *game_str_tbl_gsize[GALAXY_SIZE_NUM] = { "小型", "中型", "大型", "巨型" };
++const char *game_str_tbl_diffic[DIFFICULTY_NUM] = { "簡單", "容易", "普通", "困難", "不可能" };
++const char *game_str_tbl_oppon[5] = { "一", "二", "三", "四", "五" };
  
- const char *game_str_tbl_race[RACE_NUM + 1] = { "Human", "Mrrshan", "Silicoid", "Sakkra", "Psilon", "Alkari", "Klackon", "Bulrathi", "Meklar", "Darlok", "Random" };
- const char *game_str_tbl_races[RACE_NUM] = { "Humans", "Mrrshans", "Silicoids", "Sakkras", "Psilons", "Alkaris", "Klackons", "Bulrathis", "Meklars", "Darloks" };
+ const char *game_str_tbl_traits[RACE_NUM * 3] = {
+-    "EXPERT TRADERS", "AND MAGNIFICENT", "DIPLOMATS",
+-    "SUPERIOR GUNNERS", "", "",
+-    "IMMUNE TO", "HOSTILE PLANET", "ENVIRONMENTS",
+-    "INCREASED", "POPULATION", "GROWTH",
+-    "SUPERIOR", "RESEARCH", "TECHNIQUES",
+-    "SUPERIOR PILOTS", "", "",
+-    "INCREASED", "WORKER", "PRODUCTION",
+-    "TERRIFIC GROUND", "FIGHTERS", "",
+-    "ENHANCED", "FACTORY", "CONTROLS",
+-    "SUPREME SPIES", "", ""
++    "精明商人", "兼卓越的", "外交家",
++    "頂尖砲手", "", "",
++    "免疫於", "惡劣行星", "環境",
++    "人口", "成長", "加快",
++    "卓越的", "研究", "技術",
++    "頂尖飛行員", "", "",
++    "工人", "生產力", "提升",
++    "可怕的", "地面部隊", "",
++    "強化的", "工廠", "控制",
++    "頂尖間諜", "", ""
+ };
+ 
+ const char *game_str_tbl_trait1[TRAIT1_NUM] = {
+-    "Xenophobic", "Ruthless", "Aggressive", "Erratic", "Honorable", "Pacifistic"
++    "排外", "無情", "好戰", "善變", "重榮譽", "愛和平"
+ };
+ 
+ const char *game_str_tbl_trait2[TRAIT2_NUM] = {
+-    "Diplomat", "Militarist", "Expansionist", "Technologist", "Industrialist", "Ecologist"
++    "外交家", "軍國", "擴張", "科技", "工業", "生態"
+ };
+ 
+-const char *game_str_ng_choose_race = "Choose Race";
+-const char *game_str_ng_choose_banner = "Choose Banner";
+-const char *game_str_ng_your_name = "Your Name...";
+-const char *game_str_ng_home_name = "Home World...";
++const char *game_str_ng_choose_race = "選擇種族";
++const char *game_str_ng_choose_banner = "選擇旗幟";
++const char *game_str_ng_your_name = "你的名字…";
++const char *game_str_ng_home_name = "母星名稱…";
+ 
+ const char *game_str_tbl_planet_names[PLANET_NAMES_MAX] = {
+     "Paranar", "Denubius", "Antares", "Draconis", "Zoctan", "Rigel", "Talas", "Moro", "Quayal", "Neptunus",
