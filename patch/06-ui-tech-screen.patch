@@ -1,0 +1,104 @@
+diff --git a/src/ui/classic/uitech.c b/src/ui/classic/uitech.c
+index baa7153..b8198a1 100644
+--- a/src/ui/classic/uitech.c
++++ b/src/ui/classic/uitech.c
+@@ -3,6 +3,7 @@
+ #include <stdio.h>
+ 
+ #include "uitech.h"
++#include "cjkfont.h"
+ #include "comp.h"
+ #include "game.h"
+ #include "game_aux.h"
+@@ -29,6 +30,9 @@
+ /* -------------------------------------------------------------------------- */
+ 
+ #define TECH_ON_SCREEN  16
++/* 繁中:24px CJK 行距加大 -> 可見列數減少。陣列仍用 TECH_ON_SCREEN(16)為上限。 */
++static int tech_row_h(void) { return cjkfont_available() ? 14 : 7; }
++static int tech_vis(void) { return cjkfont_available() ? 8 : TECH_ON_SCREEN; }
+ #define TECH_SCROLL_NUM 12
+ 
+ struct tech_data_s {
+@@ -158,7 +162,7 @@ static void tech_draw_cb(void *vptr)
+     lbxfont_select(2, 6, 0, 0);
+     lbxfont_print_str_right(309, 169, buf);
+ 
+-    for (int i = 0; i < TECH_ON_SCREEN; ++i) {
++    for (int i = 0; i < tech_vis(); ++i) {
+         if ((i + d->pos) < d->num) {
+             uint8_t a2;
+             if (i == d->selected) {
+@@ -170,7 +174,7 @@ static void tech_draw_cb(void *vptr)
+             }
+             lbxfont_select(2, a2, 0, 0);
+             game_tech_get_name(g->gaux, d->field, d->completed[i + d->pos], buf);
+-            lbxfont_print_str_normal(9, 37 + i * 7, buf);
++            lbxfont_print_str_normal(9, 37 + i * tech_row_h(), buf);
+         }
+     }
+     game_tech_get_descr(g->gaux, d->field, d->completed[d->selected + d->pos], buf);
+@@ -320,7 +324,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+ 
+     d.field = TECH_FIELD_COMPUTER;
+     ui_tech_build_completed(&d);
+-    d.pos = d.num - TECH_ON_SCREEN;
++    d.pos = d.num - tech_vis();
+     SETMAX(d.pos, 0);
+     d.selected = d.num - 1 - d.pos;
+ 
+@@ -348,7 +352,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+                 ui_sound_play_sfx_24();
+                 d.field = i;
+                 ui_tech_build_completed(&d);
+-                d.pos = d.num - TECH_ON_SCREEN;
++                d.pos = d.num - tech_vis();
+                 SETMAX(d.pos, 0);
+                 d.selected = d.num - 1 - d.pos;
+             } else if (oi == oi_tbl_lock[i]) {
+@@ -376,7 +380,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+                 d.hmm = !d.hmm;
+             }
+         }
+-        for (int i = 0; i < TECH_ON_SCREEN; ++i) {
++        for (int i = 0; i < tech_vis(); ++i) {
+             if (oi == oi_tbl_techname[i]) {
+                 ui_sound_play_sfx_24();
+                 d.selected = i;
+@@ -391,8 +395,8 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+             t->slider[4] = 17;
+             t->slider[5] = 17;
+         }
+-        if ((d.pos + TECH_ON_SCREEN) >= d.num) {
+-            d.pos = d.num - TECH_ON_SCREEN;
++        if ((d.pos + tech_vis()) >= d.num) {
++            d.pos = d.num - tech_vis();
+         }
+         SETMAX(d.pos, 0);
+         if ((d.selected + d.pos) >= d.num) {
+@@ -403,11 +407,11 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+             tech_draw_cb(&d);
+             uiobj_table_clear();
+             UIOBJ_CLEAR_LOCAL();
+-            if (d.num >= TECH_ON_SCREEN) {
++            if (d.num >= tech_vis()) {
+                 if (d.pos > 0) {
+                     oi_up = uiobj_add_t0(157, 35, "", ui_data.gfx.screens.tech_but_up, MOO_KEY_COMMA, -1);
+                 }
+-                if ((d.pos + TECH_ON_SCREEN) < d.num) {
++                if ((d.pos + tech_vis()) < d.num) {
+                     oi_down = uiobj_add_t0(157, 141, "", ui_data.gfx.screens.tech_but_down, MOO_KEY_PERIOD, -1);
+                 }
+             }
+@@ -430,9 +434,9 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+                     d.oi_tbl_slider[i] = uiobj_add_slider(227, y, 0, 100, 0, 100, 50, 9, &t->slider[i], MOO_KEY_UNKNOWN, -1);
+                 }
+             }
+-            for (int i = 0; i < TECH_ON_SCREEN; ++i) {
++            for (int i = 0; i < tech_vis(); ++i) {
+                 if ((i + d.pos) < d.num) {
+-                    oi_tbl_techname[i] = uiobj_add_mousearea(9, i * 7 + 37, 160, i * 7 + 43, MOO_KEY_UNKNOWN, -1);
++                    oi_tbl_techname[i] = uiobj_add_mousearea(9, i * tech_row_h() + 37, 160, i * tech_row_h() + 37 + tech_row_h() - 2, MOO_KEY_UNKNOWN, -1);
+                 }
+             }
+             ui_draw_finish();

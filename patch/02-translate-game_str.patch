@@ -1,5 +1,5 @@
 diff --git a/src/game/game_str.c b/src/game/game_str.c
-index 013856e..4eceb69 100644
+index 013856e..47d4e81 100644
 --- a/src/game/game_str.c
 +++ b/src/game/game_str.c
 @@ -9,43 +9,43 @@
@@ -73,6 +73,26 @@ index 013856e..4eceb69 100644
  
  const char *game_str_tbl_planet_names[PLANET_NAMES_MAX] = {
      "Paranar", "Denubius", "Antares", "Draconis", "Zoctan", "Rigel", "Talas", "Moro", "Quayal", "Neptunus",
+@@ -442,13 +442,13 @@ const char *game_str_bs_line2 = "bases to eliminate?";
+ const char *game_str_bs_bases = "Bases";
+ 
+ const char *game_str_tbl_te_field[TECH_FIELD_NUM] = {
+-    "Computer", "Construction", "Force Field", "Planetology", "Propulsion", "Weapon"
++    "電腦", "建造", "力場", "行星學", "推進", "武器"
+ };
+-const char *game_str_te_adv = "Advanced";
+-const char *game_str_te_tech = "Tech";
+-const char *game_str_te_techno = "Technology";
+-const char *game_str_te_techno2 = "technology";
+-const char *game_str_te_genimp = "General improvements of existing ";
++const char *game_str_te_adv = "先進";
++const char *game_str_te_tech = "科技";
++const char *game_str_te_techno = "科技";
++const char *game_str_te_techno2 = "科技";
++const char *game_str_te_genimp = "改良現有";
+ const char *game_str_te_nmis = "Missles tipped with nuclear warheads that explode for 4 points of damage and move at a speed of 2.";
+ const char *game_str_te_nbomb = "Bombs that explode for 3-12 points of damage on ground targets only.";
+ const char *game_str_te_scrange = "SCANNER RANGE";
 @@ -631,8 +631,8 @@ const char *game_str_el_chose2 = ", the Council has chosen";
  const char *game_str_el_chose3 = "to be the High Master of the New Republic.";
  const char *game_str_el_neither = "Neither leader has a two thirds majority...";
