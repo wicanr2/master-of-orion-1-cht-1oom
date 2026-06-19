@@ -13,10 +13,10 @@ index d30d017..a2c909e 100644
      lbxgfx.c \
 diff --git a/src/cjkfont.c b/src/cjkfont.c
 new file mode 100644
-index 0000000..322b378
+index 0000000..e042608
 --- /dev/null
 +++ b/src/cjkfont.c
-@@ -0,0 +1,124 @@
+@@ -0,0 +1,178 @@
 +#include "config.h"
 +
 +#include <stdio.h>
@@ -141,12 +141,66 @@ index 0000000..322b378
 +{
 +    return cjkfont_get(cp, NULL, NULL) != NULL;
 +}
++
++int cjkfont_glyph_w(void)
++{
++    return cjk.w;
++}
++
++int cjkfont_glyph_h(void)
++{
++    return cjk.h;
++}
++
++/* ---- CJK draw-list ---- */
++
++#define CJK_DRAWLIST_MAX 4096
++static cjk_draw_t cjk_lists[2][CJK_DRAWLIST_MAX];
++static int cjk_n[2] = { 0, 0 };
++static int cjk_front = 0;    /* present 讀此頁;append 寫 pending = 1 - front */
++
++void cjk_drawlist_add(int x, int y, uint32_t cp, uint8_t color, uint8_t fonth)
++{
++    int b = 1 - cjk_front;
++    if (cjk_n[b] >= CJK_DRAWLIST_MAX) {
++        return;
++    }
++    cjk_draw_t *d = &cjk_lists[b][cjk_n[b]++];
++    d->x = (int16_t)x;
++    d->y = (int16_t)y;
++    d->cp = cp;
++    d->color = color;
++    d->fonth = fonth;
++}
++
++void cjk_drawlist_flip(void)
++{
++    /* pending(剛畫好)成為 front;新的 pending 清空待下一 frame。 */
++    cjk_front = 1 - cjk_front;
++    cjk_n[1 - cjk_front] = 0;
++}
++
++void cjk_drawlist_clear(void)
++{
++    cjk_n[0] = 0;
++    cjk_n[1] = 0;
++}
++
++int cjk_drawlist_count(void)
++{
++    return cjk_n[cjk_front];
++}
++
++const cjk_draw_t *cjk_drawlist_get(int i)
++{
++    return ((i >= 0) && (i < cjk_n[cjk_front])) ? &cjk_lists[cjk_front][i] : NULL;
++}
 diff --git a/src/cjkfont.h b/src/cjkfont.h
 new file mode 100644
-index 0000000..deed64a
+index 0000000..b599b98
 --- /dev/null
 +++ b/src/cjkfont.h
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,51 @@
 +#ifndef INC_1OOM_CJKFONT_H
 +#define INC_1OOM_CJKFONT_H
 +
@@ -171,28 +225,198 @@ index 0000000..deed64a
 +/* 便利:cp 是否在 atlas 內。 */
 +extern bool cjkfont_has(uint32_t cp);
 +
++/* glyph 尺寸(atlas cell 邊長);未載入回 0。 */
++extern int cjkfont_glyph_w(void);
++extern int cjkfont_glyph_h(void);
++
++/* ---- CJK draw-list ----
++   lbxfont 在 320×200 邏輯座標遇到 CJK 時不直接畫進 vgabuf,而是把
++   (x, y, codepoint, 調色盤色號) 記進此 list;影像層在 present 時於
++   高解析合成層(640×400)以 24×24 + 外框畫出。每個 present frame 清空。
++   見 docs/adr/0001 與 rules/81-retro-cjk-hires-canvas。 */
++typedef struct cjk_draw_s {
++    int16_t x, y;       /* 320×200 邏輯座標(glyph 左、文字行頂) */
++    uint8_t color;      /* 調色盤索引(由 lbxfont 目前字色決定) */
++    uint8_t fonth;      /* 當下原版字高,供垂直對齊 */
++    uint32_t cp;        /* Unicode 碼點 */
++} cjk_draw_t;
++
++/* draw-list 與 vgabuf 一樣 double-buffer 並綁 page flip:
++   lbxfont append 到 pending;vgabuf_flip 時呼叫 cjk_drawlist_flip 把 pending
++   換成 front 並清空新的 pending。present(含 delay 重複 present)讀 front。
++   如此 delay 期間重複 present 不會讓 CJK 消失。 */
++extern void cjk_drawlist_add(int x, int y, uint32_t cp, uint8_t color, uint8_t fonth);
++extern void cjk_drawlist_flip(void);   /* 由 vgabuf_flip 呼叫 */
++extern void cjk_drawlist_clear(void);  /* 全清(reset/shutdown) */
++extern int cjk_drawlist_count(void);   /* front 數量(供 present) */
++extern const cjk_draw_t *cjk_drawlist_get(int i); /* front 第 i 筆 */
++
 +#endif
-diff --git a/src/game/game_str.c b/src/game/game_str.c
-index 013856e..043bda8 100644
---- a/src/game/game_str.c
-+++ b/src/game/game_str.c
-@@ -9,10 +9,10 @@
+diff --git a/src/hw/sdl/2/hwsdl2_video.c b/src/hw/sdl/2/hwsdl2_video.c
+index eb679c7..c7c60bd 100644
+--- a/src/hw/sdl/2/hwsdl2_video.c
++++ b/src/hw/sdl/2/hwsdl2_video.c
+@@ -7,6 +7,7 @@
  
- /* -------------------------------------------------------------------------- */
+ #include "hw.h"
+ #include "hw_internal.h"
++#include "cjkfont.h"
+ #include "comp.h"
+ #include "hwsdl_video.h"
+ #include "hwsdl_opt.h"
+@@ -251,6 +252,120 @@ static void video_adjust_window_size(int *wptr, int *hptr)
+     *hptr = h;
+ }
  
--const char *game_str_mm_continue = "Continue";
--const char *game_str_mm_load = "Load Game";
--const char *game_str_mm_new = "New Game";
--const char *game_str_mm_quit = "Quit to OS";
-+const char *game_str_mm_continue = "繼續";
-+const char *game_str_mm_load = "讀取進度";
-+const char *game_str_mm_new = "新遊戲";
-+const char *game_str_mm_quit = "離開";
++/* ---- CJK 高解析合成層 ----
++   把 320×200 遊戲 2× nearest 放大到 640×400 合成層,CJK 以原尺寸(如 24×24)
++   + 黑外框畫上去,再整層縮放到視窗。底圖 = pixel scaling;CJK = 真 24×24。
++   見 docs/adr/0001 與 rules/81-retro-cjk-hires-canvas。 */
++#define CJK_SCALE 2
++#define CJK_CACHE_N 2048
++
++static struct {
++    SDL_Texture *composite;
++    int cw, ch;
++    struct { uint32_t cp; SDL_Texture *tex; } cache[CJK_CACHE_N];
++    int gw, gh;
++} cjkv = { 0 };
++
++static SDL_Texture *cjk_glyph_tex(uint32_t cp)
++{
++    int gw = cjkfont_glyph_w(), gh = cjkfont_glyph_h();
++    if (gw <= 0 || gh <= 0) {
++        return NULL;
++    }
++    if (cjkv.gw != gw || cjkv.gh != gh) {
++        for (int i = 0; i < CJK_CACHE_N; ++i) {
++            if (cjkv.cache[i].tex) { SDL_DestroyTexture(cjkv.cache[i].tex); }
++        }
++        memset(cjkv.cache, 0, sizeof(cjkv.cache));
++        cjkv.gw = gw;
++        cjkv.gh = gh;
++    }
++    unsigned h0 = (cp * 2654435761u) & (CJK_CACHE_N - 1);
++    for (unsigned i = 0; i < CJK_CACHE_N; ++i) {
++        unsigned idx = (h0 + i) & (CJK_CACHE_N - 1);
++        if (cjkv.cache[idx].tex) {
++            if (cjkv.cache[idx].cp == cp) {
++                return cjkv.cache[idx].tex;
++            }
++            continue;
++        }
++        const uint8_t *a = cjkfont_get(cp, NULL, NULL);
++        if (!a) {
++            return NULL;
++        }
++        SDL_Texture *t = SDL_CreateTexture(video.renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, gw, gh);
++        if (!t) {
++            return NULL;
++        }
++        uint32_t *px = lib_malloc(gw * gh * 4);
++        for (int p = 0; p < gw * gh; ++p) {
++            px[p] = ((uint32_t)a[p] << 24) | 0x00ffffffu; /* ARGB: 白色 + atlas alpha */
++        }
++        SDL_UpdateTexture(t, NULL, px, gw * 4);
++        lib_free(px);
++        SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
++        cjkv.cache[idx].cp = cp;
++        cjkv.cache[idx].tex = t;
++        return t;
++    }
++    return NULL;
++}
++
++static bool cjk_ensure_composite(void)
++{
++    int cw = video.screen.buffer->w * CJK_SCALE;
++    int ch = video.screen.buffer->h * CJK_SCALE;
++    if (cjkv.composite && (cjkv.cw != cw || cjkv.ch != ch)) {
++        SDL_DestroyTexture(cjkv.composite);
++        cjkv.composite = NULL;
++    }
++    if (!cjkv.composite) {
++        cjkv.composite = SDL_CreateTexture(video.renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, cw, ch);
++        if (!cjkv.composite) {
++            return false;
++        }
++        cjkv.cw = cw;
++        cjkv.ch = ch;
++    }
++    return true;
++}
++
++/* render target 須已是 composite。把 drawlist 的 CJK 畫上去(黑外框 + 字色)。 */
++static void cjk_draw_overlay(void)
++{
++    static const int ox[8] = { -1, 1, 0, 0, -1, 1, -1, 1 };
++    static const int oy[8] = { 0, 0, -1, 1, -1, -1, 1, 1 };
++    int n = cjk_drawlist_count();
++    int gw = cjkfont_glyph_w(), gh = cjkfont_glyph_h();
++    for (int i = 0; i < n; ++i) {
++        const cjk_draw_t *d = cjk_drawlist_get(i);
++        SDL_Texture *t = cjk_glyph_tex(d->cp);
++        if (!t) {
++            continue;
++        }
++        SDL_Rect dst;
++        dst.w = gw;
++        dst.h = gh;
++        dst.x = d->x * CJK_SCALE;
++        dst.y = (d->y + d->fonth) * CJK_SCALE - gh; /* 貼齊文字行底 */
++        SDL_SetTextureColorMod(t, 0, 0, 0);
++        for (int k = 0; k < 8; ++k) {
++            SDL_Rect o = dst;
++            o.x += ox[k];
++            o.y += oy[k];
++            SDL_RenderCopy(video.renderer, t, NULL, &o);
++        }
++        SDL_Color c = video.color[d->color];
++        /* 對比保底:字色太暗時提亮到近白,確保在任何背景上可讀。 */
++        int lum = (c.r * 30 + c.g * 59 + c.b * 11) / 100;
++        if (lum < 110) {
++            c.r = c.g = c.b = 235;
++        }
++        SDL_SetTextureColorMod(t, c.r, c.g, c.b);
++        SDL_RenderCopy(video.renderer, t, NULL, &dst);
++    }
++}
++
+ static void video_update(void)
+ {
+     if (!video.screen_visible) {
+@@ -295,7 +410,19 @@ static void video_update(void)
+     /* Make sure the pillarboxes are kept clear each frame. */
+     SDL_RenderClear(video.renderer);
  
- const char *game_str_tbl_race[RACE_NUM + 1] = { "Human", "Mrrshan", "Silicoid", "Sakkra", "Psilon", "Alkari", "Klackon", "Bulrathi", "Meklar", "Darlok", "Random" };
- const char *game_str_tbl_races[RACE_NUM] = { "Humans", "Mrrshans", "Silicoids", "Sakkras", "Psilons", "Alkaris", "Klackons", "Bulrathis", "Meklars", "Darloks" };
+-    if (hw_opt_smooth_pixel_scaling && (video.screen.texture_upscaled != NULL)) {
++    if ((cjk_drawlist_count() > 0) && cjk_ensure_composite()) {
++        /* 有 CJK:走 640×400 合成層。logical size 暫關以對 target 全幅繪製,事後還原。 */
++        int lw = 0, lh = 0;
++        SDL_RenderGetLogicalSize(video.renderer, &lw, &lh);
++        SDL_RenderSetLogicalSize(video.renderer, 0, 0);
++        SDL_SetRenderTarget(video.renderer, cjkv.composite);
++        SDL_RenderCopy(video.renderer, video.screen.texture, NULL, NULL); /* 320×200 -> 640×400 nearest */
++        cjk_draw_overlay();
++        SDL_SetRenderTarget(video.renderer, NULL);
++        SDL_RenderSetLogicalSize(video.renderer, lw, lh);
++        SDL_RenderClear(video.renderer);
++        SDL_RenderCopy(video.renderer, cjkv.composite, NULL, NULL); /* 640×400 -> 視窗(維持比例) */
++    } else if (hw_opt_smooth_pixel_scaling && (video.screen.texture_upscaled != NULL)) {
+         /* Render this intermediate texture into the upscaled texture
+            using "nearest" integer scaling.
+         */
+@@ -325,6 +452,8 @@ static void video_update(void)
+ 
+     /* Draw! */
+     SDL_RenderPresent(video.renderer);
++    /* 注意:draw-list 不在此清空;它隨 vgabuf_flip 換頁(cjk_drawlist_flip),
++       使 delay 期間的重複 present 仍讀得到 front list。 */
+ }
+ 
+ static void video_setpal(const uint8_t *pal, int first, int num)
 diff --git a/src/lbxfont.c b/src/lbxfont.c
-index 8ae1b61..2a1e020 100644
+index 8ae1b61..4caca5d 100644
 --- a/src/lbxfont.c
 +++ b/src/lbxfont.c
 @@ -5,6 +5,7 @@
@@ -203,7 +427,7 @@ index 8ae1b61..2a1e020 100644
  #include "lib.h"
  #include "lbx.h"
  #include "lbxpal.h"
-@@ -46,6 +47,67 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
+@@ -46,6 +47,56 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
  
  /* -------------------------------------------------------------------------- */
  
@@ -234,44 +458,33 @@ index 8ae1b61..2a1e020 100644
 +    return (cp && cjkfont_has(cp)) ? cp : 0;
 +}
 +
-+/* 把 CJK glyph 畫進 vgabuf,(x,y) 為該字左上對齊到文字行的位置;
-+   用目前字色漸層 lbxfontdata[0..0x0f] 以 alpha 混色(自帶抗鋸齒)。
-+   回傳前進寬度(glyph 寬 + gap)。 */
-+static int lbxfont_plot_cjk(int x, int y, uint32_t cp)
++/* CJK 在 320×200 邏輯下的前進寬度。
++   影像層在 2× 合成層(640×400)以 glyph 原尺寸(如 24)畫出,
++   故邏輯前進 = glyph_w / 2,使相鄰字在合成層恰好相接、不重疊不留縫。 */
++#define CJK_LOGICAL_SCALE 2
++static int lbxfont_cjk_advance(void)
 +{
-+    int gw = 0, gh = 0;
-+    const uint8_t *g = cjkfont_get(cp, &gw, &gh);
-+    if (!g) {
-+        return 0;
++    int gw = cjkfont_glyph_w();
++    return (gw > 0) ? (gw / CJK_LOGICAL_SCALE) : 0;
++}
++
++/* 處理字串第 i 位的 CJK:推進 *xp,主畫面 pass(record=true)時記進 draw-list
++   供影像層在高解析合成層畫出。回傳 true 表示已吃掉一個 CJK(3 bytes)。 */
++static bool lbxfont_handle_cjk(const char *str, int *xp, int y, uint32_t cp, bool record)
++{
++    if (record) {
++        /* 字色取目前字型漸層最高亮端(0x0f);影像層另加黑外框 + 太暗自動提亮確保對比。 */
++        cjk_drawlist_add(*xp, y, cp, lbxfontdata[0x0f], lbxfontdata[0x10]);
 +    }
-+    /* 垂直對齊:讓 glyph 底部貼近原版字行底,glyph 比原字高時往上長。 */
-+    int fh = lbxfontdata[0x10];
-+    int oy = y - (gh - fh);
-+    for (int j = 0; j < gh; ++j) {
-+        int py = oy + j;
-+        if (py < 0 || py >= VGABUF_H) {
-+            continue;
-+        }
-+        for (int k = 0; k < gw; ++k) {
-+            int px = x + k;
-+            if (px < 0 || px >= VGABUF_W) {
-+                continue;
-+            }
-+            uint8_t a = g[j * gw + k];
-+            if (a < 0x20) {
-+                continue;
-+            }
-+            int idx = (a * 0x0f) / 0xff;
-+            *vgabuf_get_xy(px, py) = lbxfontdata[idx];
-+        }
-+    }
-+    return gw + lbxfontdata[0x48];
++    *xp += lbxfont_cjk_advance();
++    (void)str;
++    return true;
 +}
 +
  static int lbxfont_print_char_ret_x(int x, int y, char c)
  {
      return x + lbxfont_plotchar(c, vgabuf_get_xy(x, y));
-@@ -203,7 +265,13 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -203,7 +254,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                  break;
              case 0x15:
                  return lbxfont_temp_x;
@@ -279,14 +492,16 @@ index 8ae1b61..2a1e020 100644
 +            default: {
 +                uint32_t cp = lbxfont_cjk_at(&str[i]);
 +                if (cp) {
-+                    lbxfont_temp_x += lbxfont_plot_cjk(lbxfont_temp_x, lbxfont_temp_y, cp);
++                    int tx = lbxfont_temp_x;
++                    lbxfont_handle_cjk(str, &tx, lbxfont_temp_y, cp, change_color);
++                    lbxfont_temp_x = tx;
 +                    i += 2; /* 吃掉 2 個延續位元組(迴圈尾 ++i 吃前導) */
 +                    break;
 +                }
                  lbxfont_temp_x = lbxfont_print_char_ret_x(lbxfont_temp_x, lbxfont_temp_y, c);
                  if ((w != 0) && (c == ' ')) {
                      lbxfont_temp_x += vc;
-@@ -213,6 +281,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -213,6 +272,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                      ++v8;
                  }
                  break;
@@ -294,7 +509,7 @@ index 8ae1b61..2a1e020 100644
          }
          ++i;
      }
-@@ -416,11 +485,13 @@ int lbxfont_init(void)
+@@ -416,11 +476,13 @@ int lbxfont_init(void)
  {
      uint8_t *fontdata = lbxfile_item_get(LBXFILE_FONTS, 0, 0);
      lbxfontdata = fontdata;
@@ -308,18 +523,36 @@ index 8ae1b61..2a1e020 100644
      if (lbxfontdata) {
          lbxfile_item_release(LBXFILE_FONTS, lbxfontdata);
          lbxfontdata = 0;
-@@ -609,6 +680,14 @@ int lbxfont_calc_str_width(const char *str)
+@@ -609,6 +671,12 @@ int lbxfont_calc_str_width(const char *str)
      uint16_t w = 0;
      int16_t c;
      while (1) {
 +        uint32_t cp = lbxfont_cjk_at(str);
 +        if (cp) {
-+            int gw = 0;
-+            cjkfont_get(cp, &gw, NULL);
-+            w += gw + gap_w;
++            w += lbxfont_cjk_advance();
 +            str += 3;
 +            continue;
 +        }
          c = *str++;
          c -= 0x20;
          if (c < 0) {
+diff --git a/src/vgabuf.c b/src/vgabuf.c
+index 72e7130..e0c91bd 100644
+--- a/src/vgabuf.c
++++ b/src/vgabuf.c
+@@ -2,6 +2,7 @@
+ 
+ #include <string.h>
+ 
++#include "cjkfont.h"
+ #include "hw.h"
+ #include "vgabuf.h"
+ #include "types.h"
+@@ -78,6 +79,7 @@ void vgabuf_seg_restore(void)
+ void vgabuf_flip(void)
+ {
+     vga_page = 1 - vga_page;
++    cjk_drawlist_flip();    /* CJK draw-list 隨 page 一起 flip(pending -> front) */
+     hw_video_redraw_front();
+     vgabuf_select_back();
+ }

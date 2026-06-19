@@ -32,8 +32,8 @@ scripts/fetch-engine.sh     # 取得 1oom 引擎到本機 1oom/(gitignore,不入
 - [x] Phase 0 — 環境與素材落地
 - [x] Phase 1 — Docker 建置、英文 baseline 可玩（`1oom_classic_sdl2` 已 build,原版資料 35 LBX 全數 md5 驗證通過,開場動畫正常 render）
 - [x] Phase 2 — LBX 文字盤點（見 `docs/TEXT-INVENTORY.md`；核心 UI 集中於 `game_str.c`，本 fork 無 PBX）
-- [ ] Phase 3 — CJK 24×24 渲染管線
-- [ ] Phase 4 — 抽取 / 翻譯 / 注入
+- [x] Phase 3 — CJK 24×24 渲染管線（640×480 hi-res 合成層 + 底圖 pixel scaling + 24×24 白字黑外框;主選單實機驗證,見 `docs/img/milestone-menu-cjk.png`）
+- [ ] Phase 4 — 抽取 / 翻譯 / 注入（全量 game_str.c + LBX 覆蓋層）
 - [ ] Phase 5 — 打包與雜誌風 README
 
 ## 授權
