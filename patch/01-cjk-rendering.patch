@@ -1,0 +1,325 @@
+diff --git a/src/Makefile.am b/src/Makefile.am
+index d30d017..a2c909e 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -63,6 +63,8 @@ gui_sources = \
+     gfxaux.h \
+     kbd.c \
+     kbd.h \
++    cjkfont.c \
++    cjkfont.h \
+     lbxfont.c \
+     lbxfont.h \
+     lbxgfx.c \
+diff --git a/src/cjkfont.c b/src/cjkfont.c
+new file mode 100644
+index 0000000..322b378
+--- /dev/null
++++ b/src/cjkfont.c
+@@ -0,0 +1,124 @@
++#include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "cjkfont.h"
++#include "lib.h"
++#include "log.h"
++
++/* atlas 檔格式(little endian):
++     magic[8] "MOOCJK\0\1"
++     u16 glyphW, u16 glyphH, u32 count
++     count * { u32 codepoint ; glyphW*glyphH bytes alpha }
++   codepoint 升序排列 -> 二分查找。 */
++
++static const char CJK_MAGIC[8] = { 'M','O','O','C','J','K','\0','\1' };
++
++static struct {
++    uint8_t *raw;        /* 整檔 buffer */
++    int w, h;            /* glyph 尺寸 */
++    uint32_t count;
++    int recsz;           /* 4 + w*h */
++    const uint8_t *recs; /* 指向第一筆 record */
++} cjk = { 0 };
++
++static uint32_t rec_cp(int i)
++{
++    const uint8_t *p = cjk.recs + (size_t)i * cjk.recsz;
++    return (uint32_t)p[0] | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16) | ((uint32_t)p[3] << 24);
++}
++
++bool cjkfont_init(const char *path)
++{
++    cjkfont_shutdown();
++    if (!path) {
++        path = getenv("MOO_CJK_FONT");
++    }
++    if (!path || !path[0]) {
++        return false;
++    }
++    FILE *f = fopen(path, "rb");
++    if (!f) {
++        log_warning("CJK: cannot open font '%s'\n", path);
++        return false;
++    }
++    fseek(f, 0, SEEK_END);
++    long len = ftell(f);
++    fseek(f, 0, SEEK_SET);
++    if (len < 16) {
++        fclose(f);
++        return false;
++    }
++    uint8_t *raw = lib_malloc(len);
++    if (fread(raw, 1, len, f) != (size_t)len) {
++        fclose(f);
++        lib_free(raw);
++        return false;
++    }
++    fclose(f);
++
++    if (memcmp(raw, CJK_MAGIC, 8) != 0) {
++        log_warning("CJK: bad magic in '%s'\n", path);
++        lib_free(raw);
++        return false;
++    }
++    int w = raw[8] | (raw[9] << 8);
++    int h = raw[10] | (raw[11] << 8);
++    uint32_t count = (uint32_t)raw[12] | ((uint32_t)raw[13] << 8) | ((uint32_t)raw[14] << 16) | ((uint32_t)raw[15] << 24);
++    int recsz = 4 + w * h;
++    if (w <= 0 || h <= 0 || (long)(16 + (long)count * recsz) > len) {
++        log_warning("CJK: corrupt header in '%s'\n", path);
++        lib_free(raw);
++        return false;
++    }
++    cjk.raw = raw;
++    cjk.w = w;
++    cjk.h = h;
++    cjk.count = count;
++    cjk.recsz = recsz;
++    cjk.recs = raw + 16;
++    log_message("CJK: loaded %u glyphs %dx%d from '%s'\n", count, w, h, path);
++    return true;
++}
++
++void cjkfont_shutdown(void)
++{
++    if (cjk.raw) {
++        lib_free(cjk.raw);
++    }
++    memset(&cjk, 0, sizeof(cjk));
++}
++
++bool cjkfont_available(void)
++{
++    return cjk.raw && cjk.count;
++}
++
++const uint8_t *cjkfont_get(uint32_t cp, int *w, int *h)
++{
++    if (!cjk.raw || cjk.count == 0) {
++        return NULL;
++    }
++    int lo = 0, hi = (int)cjk.count - 1;
++    while (lo <= hi) {
++        int mid = (lo + hi) >> 1;
++        uint32_t c = rec_cp(mid);
++        if (c == cp) {
++            if (w) { *w = cjk.w; }
++            if (h) { *h = cjk.h; }
++            return cjk.recs + (size_t)mid * cjk.recsz + 4;
++        } else if (c < cp) {
++            lo = mid + 1;
++        } else {
++            hi = mid - 1;
++        }
++    }
++    return NULL;
++}
++
++bool cjkfont_has(uint32_t cp)
++{
++    return cjkfont_get(cp, NULL, NULL) != NULL;
++}
+diff --git a/src/cjkfont.h b/src/cjkfont.h
+new file mode 100644
+index 0000000..deed64a
+--- /dev/null
++++ b/src/cjkfont.h
+@@ -0,0 +1,25 @@
++#ifndef INC_1OOM_CJKFONT_H
++#define INC_1OOM_CJKFONT_H
++
++#include "types.h"
++
++/* CJK 點陣 atlas(由 tools/build_cjk_font.py 產生,magic "MOOCJK\0\1")。
++   繁中化用:lbxfont 在字串迴圈遇到 UTF-8 CJK 碼點時,改用本模組的 glyph 渲染。
++   詳見 docs/adr/0001 與 rules/81-retro-cjk-hires-canvas。 */
++
++/* 從 path 載入 atlas;path 為 NULL 時讀環境變數 MOO_CJK_FONT。
++   成功回傳 true。重複呼叫安全(先釋放舊的)。 */
++extern bool cjkfont_init(const char *path);
++extern void cjkfont_shutdown(void);
++
++/* atlas 是否已載入且有任一字。 */
++extern bool cjkfont_available(void);
++
++/* 取得 cp 的 glyph alpha(gw*gh bytes,0..255);找不到回 NULL。
++   *w / *h 回填 glyph 尺寸(可為 NULL)。 */
++extern const uint8_t *cjkfont_get(uint32_t cp, int *w, int *h);
++
++/* 便利:cp 是否在 atlas 內。 */
++extern bool cjkfont_has(uint32_t cp);
++
++#endif
+diff --git a/src/game/game_str.c b/src/game/game_str.c
+index 013856e..043bda8 100644
+--- a/src/game/game_str.c
++++ b/src/game/game_str.c
+@@ -9,10 +9,10 @@
+ 
+ /* -------------------------------------------------------------------------- */
+ 
+-const char *game_str_mm_continue = "Continue";
+-const char *game_str_mm_load = "Load Game";
+-const char *game_str_mm_new = "New Game";
+-const char *game_str_mm_quit = "Quit to OS";
++const char *game_str_mm_continue = "繼續";
++const char *game_str_mm_load = "讀取進度";
++const char *game_str_mm_new = "新遊戲";
++const char *game_str_mm_quit = "離開";
+ 
+ const char *game_str_tbl_race[RACE_NUM + 1] = { "Human", "Mrrshan", "Silicoid", "Sakkra", "Psilon", "Alkari", "Klackon", "Bulrathi", "Meklar", "Darlok", "Random" };
+ const char *game_str_tbl_races[RACE_NUM] = { "Humans", "Mrrshans", "Silicoids", "Sakkras", "Psilons", "Alkaris", "Klackons", "Bulrathis", "Meklars", "Darloks" };
+diff --git a/src/lbxfont.c b/src/lbxfont.c
+index 8ae1b61..2a1e020 100644
+--- a/src/lbxfont.c
++++ b/src/lbxfont.c
+@@ -5,6 +5,7 @@
+ 
+ #include "lbxfont.h"
+ #include "bits.h"
++#include "cjkfont.h"
+ #include "lib.h"
+ #include "lbx.h"
+ #include "lbxpal.h"
+@@ -46,6 +47,67 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
+ 
+ /* -------------------------------------------------------------------------- */
+ 
++/* CJK(繁中)支援:字串以 UTF-8 編碼,CJK 走 cjkfont atlas。
++   MOO 控制碼都 < 0x20,UTF-8 前導位元組 >= 0xC0,不衝突。
++   見 docs/adr/0001 與 rules/81-retro-cjk-hires-canvas。 */
++
++/* 解 str 起點的 3-byte UTF-8(涵蓋 U+0800..U+FFFF,含 CJK/全形)。
++   非 3-byte 序列回 0;成功回碼點。 */
++static uint32_t lbxfont_utf8_decode3(const char *str)
++{
++    uint8_t b0 = (uint8_t)str[0];
++    if (b0 < 0xe0 || b0 > 0xef) {
++        return 0;
++    }
++    uint8_t b1 = (uint8_t)str[1];
++    uint8_t b2 = (uint8_t)str[2];
++    if ((b1 & 0xc0) != 0x80 || (b2 & 0xc0) != 0x80) {
++        return 0;
++    }
++    return ((uint32_t)(b0 & 0x0f) << 12) | ((uint32_t)(b1 & 0x3f) << 6) | (uint32_t)(b2 & 0x3f);
++}
++
++/* 若 str 起點是已收錄的 CJK 碼點,回該碼點,否則 0。 */
++static uint32_t lbxfont_cjk_at(const char *str)
++{
++    uint32_t cp = lbxfont_utf8_decode3(str);
++    return (cp && cjkfont_has(cp)) ? cp : 0;
++}
++
++/* 把 CJK glyph 畫進 vgabuf,(x,y) 為該字左上對齊到文字行的位置;
++   用目前字色漸層 lbxfontdata[0..0x0f] 以 alpha 混色(自帶抗鋸齒)。
++   回傳前進寬度(glyph 寬 + gap)。 */
++static int lbxfont_plot_cjk(int x, int y, uint32_t cp)
++{
++    int gw = 0, gh = 0;
++    const uint8_t *g = cjkfont_get(cp, &gw, &gh);
++    if (!g) {
++        return 0;
++    }
++    /* 垂直對齊:讓 glyph 底部貼近原版字行底,glyph 比原字高時往上長。 */
++    int fh = lbxfontdata[0x10];
++    int oy = y - (gh - fh);
++    for (int j = 0; j < gh; ++j) {
++        int py = oy + j;
++        if (py < 0 || py >= VGABUF_H) {
++            continue;
++        }
++        for (int k = 0; k < gw; ++k) {
++            int px = x + k;
++            if (px < 0 || px >= VGABUF_W) {
++                continue;
++            }
++            uint8_t a = g[j * gw + k];
++            if (a < 0x20) {
++                continue;
++            }
++            int idx = (a * 0x0f) / 0xff;
++            *vgabuf_get_xy(px, py) = lbxfontdata[idx];
++        }
++    }
++    return gw + lbxfontdata[0x48];
++}
++
+ static int lbxfont_print_char_ret_x(int x, int y, char c)
+ {
+     return x + lbxfont_plotchar(c, vgabuf_get_xy(x, y));
+@@ -203,7 +265,13 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+                 break;
+             case 0x15:
+                 return lbxfont_temp_x;
+-            default:
++            default: {
++                uint32_t cp = lbxfont_cjk_at(&str[i]);
++                if (cp) {
++                    lbxfont_temp_x += lbxfont_plot_cjk(lbxfont_temp_x, lbxfont_temp_y, cp);
++                    i += 2; /* 吃掉 2 個延續位元組(迴圈尾 ++i 吃前導) */
++                    break;
++                }
+                 lbxfont_temp_x = lbxfont_print_char_ret_x(lbxfont_temp_x, lbxfont_temp_y, c);
+                 if ((w != 0) && (c == ' ')) {
+                     lbxfont_temp_x += vc;
+@@ -213,6 +281,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+                     ++v8;
+                 }
+                 break;
++            }
+         }
+         ++i;
+     }
+@@ -416,11 +485,13 @@ int lbxfont_init(void)
+ {
+     uint8_t *fontdata = lbxfile_item_get(LBXFILE_FONTS, 0, 0);
+     lbxfontdata = fontdata;
++    cjkfont_init(NULL); /* 讀 MOO_CJK_FONT;best-effort,失敗則維持英文 */
+     return 0;
+ }
+ 
+ void lbxfont_shutdown(void)
+ {
++    cjkfont_shutdown();
+     if (lbxfontdata) {
+         lbxfile_item_release(LBXFILE_FONTS, lbxfontdata);
+         lbxfontdata = 0;
+@@ -609,6 +680,14 @@ int lbxfont_calc_str_width(const char *str)
+     uint16_t w = 0;
+     int16_t c;
+     while (1) {
++        uint32_t cp = lbxfont_cjk_at(str);
++        if (cp) {
++            int gw = 0;
++            cjkfont_get(cp, &gw, NULL);
++            w += gw + gap_w;
++            str += 3;
++            continue;
++        }
+         c = *str++;
+         c -= 0x20;
+         if (c < 0) {

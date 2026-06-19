@@ -1,2 +1,0 @@
-# 此目錄存放對 1oom 引擎(fork1oom / master-vanilla-testing)的繁中化 patch。
-# 引擎本體不入庫;patch 套在 fetch-engine.sh 取得的 1oom/ 上。
