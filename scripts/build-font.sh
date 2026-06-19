@@ -8,9 +8,10 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 FONT="${MOO_FONT:-/usr/share/fonts/truetype/arphic/uming.ttc}"
 SIZE="${MOO_FONT_SIZE:-24}"
 
-# 收集碼點來源:目前為已 patch 的 game_str.c(及未來 docs/ 譯文)。
-SRCS=("1oom/src/game/game_str.c")
+# 收集碼點來源:所有含 CJK 的引擎 source(game_str.c + 各 ui 疊字標籤)+ docs 譯文。
+mapfile -t SRCS < <(cd "$ROOT" && grep -rlP --include='*.c' --include='*.h' '[^\x00-\x7f]' 1oom/src 2>/dev/null)
 [ -d "$ROOT/docs/translation" ] && SRCS+=("docs/translation"/*.txt)
+echo "[build-font] 碼點來源檔: ${#SRCS[@]} 個"
 
 docker run --rm \
   -v "$ROOT:/work" -w /work \
