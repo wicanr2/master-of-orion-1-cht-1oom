@@ -23,8 +23,9 @@
 - **覆蓋層 (override layer)** — 因無 PBX,需在引擎於 LBX 載入後用本專案譯文檔取代字串的自建機制(Phase 3),避免散布改過的版權 LBX。
 - **token(MSb 字元)** — diplomat/eventmsg 訊息中 MSb=1 的字元為動態代入記號(種族名、BC 數量),翻譯須保留。
 
-- **CJK 點陣字** — 24×24 點陣中文字型(本專案選定尺寸),供引擎渲染中文。
-- **破版 (layout overflow)** — 中文(24×24)比原版英文字寬高,塞進固定點陣 UI 框時溢出/截斷的現象。Phase 3–4 主要工作量。
+- **CJK 點陣字** — 24×24 點陣中文字型,畫在放大後的 640×480 畫布(非原 320×200)。來源 AR PL UMing/UKai TW。
+- **hi-res canvas / pixel scaling** — 不縮小中文塞低解析,而是把內部畫布 320×200 拉到 640×480、原始底圖 nearest-neighbor 放大,CJK 24×24 畫在放大畫布。見 ADR 0001 與全域規則 `81-retro-cjk-hires-canvas`。
+- **破版 (layout overflow)** — UI widget 座標需從原版面以 `mapY()` 比例映射到 640×480,否則溢出/錯位。
 - **文字對照表 (string table)** — 原文 → 譯文對照,放 `docs/`,為翻譯與注入的單一真實來源。
 
 ## 引擎子系統(1oom/src)
