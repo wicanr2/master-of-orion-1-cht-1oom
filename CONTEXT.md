@@ -18,6 +18,11 @@
 
 ## 中文化技術
 
+- **game_str** — `src/game/game_str.c/.h`,1oom 中央 UI 字串表(~1256 條),涵蓋幾乎所有遊戲畫面。C source 翻譯主戰場。
+- **PBX** — 1oom-fork(GitHub)的外掛式文字/圖像覆蓋機制。**本專案 `fork1oom` / `master-vanilla-testing` 分支無 PBX**。 _Avoid_: 假設可用 PBX 做翻譯覆蓋。
+- **覆蓋層 (override layer)** — 因無 PBX,需在引擎於 LBX 載入後用本專案譯文檔取代字串的自建機制(Phase 3),避免散布改過的版權 LBX。
+- **token(MSb 字元)** — diplomat/eventmsg 訊息中 MSb=1 的字元為動態代入記號(種族名、BC 數量),翻譯須保留。
+
 - **CJK 點陣字** — 24×24 點陣中文字型(本專案選定尺寸),供引擎渲染中文。
 - **破版 (layout overflow)** — 中文(24×24)比原版英文字寬高,塞進固定點陣 UI 框時溢出/截斷的現象。Phase 3–4 主要工作量。
 - **文字對照表 (string table)** — 原文 → 譯文對照,放 `docs/`,為翻譯與注入的單一真實來源。
