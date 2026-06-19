@@ -1,0 +1,23 @@
+# === 引擎本體:不入庫,只放 patch ===
+# 1oom 為本機參考 clone(保留自身 .git 以便 diff 上游產 patch)
+/1oom/
+
+# === 版權原始素材:絕不入庫 ===
+*.rar
+*.zip
+/assets/game/
+# CJK 字型若為授權字型,確認授權後再決定是否放行
+/assets/fonts/*.ttf
+/assets/fonts/*.otf
+
+# === 暫存與建置產物 ===
+/tmp_*/
+*.tmp
+/build/
+*.o
+*.a
+*.AppImage
+
+# 編輯器 / 系統
+.DS_Store
+*.swp

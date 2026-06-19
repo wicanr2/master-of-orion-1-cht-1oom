@@ -1,0 +1,34 @@
+# CONTEXT — 銀河霸主 (Master of Orion 1) 繁中化 Ubiquitous Language
+
+本檔為專案 domain glossary。命名變數、寫文件、討論時優先使用以下術語;遇新概念先登錄再用。
+格式:`Term — definition. _Avoid_: forbidden synonyms`。
+
+## 專案
+
+- **MOO1 / 銀河霸主** — Master of Orion (MicroProse, 1993),本專案中文化標的,版本 1.3。
+- **1oom** — 重製 MOO1 的開源 C 引擎(GPLv2),直接讀原版資料檔執行。本專案採 sourcecraft **`fork1oom`**(分支 `master-vanilla-testing`)。 _Avoid_: 「模擬器」(它是引擎重製,非 emulator);亦勿與 GitHub `1oom-fork/1oom`(不同源)混用。
+- **patch-only repo** — `master-of-orion-1-cht-1oom` 只放繁中化 patch + 字型 + 文件 + 腳本,**不 vendor 引擎本體**;以 `scripts/fetch-engine.sh` 取得 `fork1oom` 後套 patch 建置。
+- **CHT / 繁中化** — 繁體中文化。範圍見 README;第一輪聚焦核心 UI/玩法。
+
+## 資料格式
+
+- **LBX** — MOO 的資源封裝格式(`.lbx`),內含文字、點陣圖、字型、音樂。中文化主戰場之一。
+- **字型槽 (font slot)** — `fonts.lbx` 內的點陣字型;引擎 `lbxfont.c` 負責繪製。CJK 渲染改此路徑。
+- **字串來源 (string source)** — 遊戲文字分兩處:(a) LBX 內字串、(b) hardcode 在 1oom C source。翻譯需同時覆蓋。 _Avoid_: 假設「文字全在 LBX」。
+
+## 中文化技術
+
+- **CJK 點陣字** — 24×24 點陣中文字型(本專案選定尺寸),供引擎渲染中文。
+- **破版 (layout overflow)** — 中文(24×24)比原版英文字寬高,塞進固定點陣 UI 框時溢出/截斷的現象。Phase 3–4 主要工作量。
+- **文字對照表 (string table)** — 原文 → 譯文對照,放 `docs/`,為翻譯與注入的單一真實來源。
+
+## 引擎子系統(1oom/src)
+
+- **lbxfont** — 字型載入與繪製(`lbxfont.c/.h`),CJK 渲染入口。
+- **lbxgfx** — LBX 圖像繪製。
+- **game/** — 遊戲邏輯與多數 hardcode UI 文字所在。
+
+## Flagged ambiguities(待釐清)
+
+- 24×24 與原版字高的整合方式(放大 UI 框 vs 縮放渲染)— Phase 3 實測後定案。
+- patch 形式:單一大 patch vs 依子系統(lbxfont / game 文字)分檔 — Phase 3 開始改 source 時定。
