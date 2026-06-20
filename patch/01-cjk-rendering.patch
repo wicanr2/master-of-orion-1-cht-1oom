@@ -15,10 +15,10 @@ index d30d017..571bd56 100644
      lbxgfx.c \
 diff --git a/src/cjkfont.c b/src/cjkfont.c
 new file mode 100644
-index 0000000..058278b
+index 0000000..8f8696b
 --- /dev/null
 +++ b/src/cjkfont.c
-@@ -0,0 +1,189 @@
+@@ -0,0 +1,199 @@
 +#include "config.h"
 +
 +#include <stdio.h>
@@ -28,6 +28,7 @@ index 0000000..058278b
 +#include "cjkfont.h"
 +#include "lib.h"
 +#include "log.h"
++#include "os.h"
 +
 +/* atlas 檔格式(little endian):
 +     magic[8] "MOOCJK\0\1"
@@ -54,8 +55,17 @@ index 0000000..058278b
 +bool cjkfont_init(const char *path)
 +{
 +    cjkfont_shutdown();
++    char defbuf[1024];
 +    if (!path) {
 +        path = getenv("MOO_CJK_FONT");
++    }
++    if (!path || !path[0]) {
++        /* 預設:資料夾旁的 cjk24.bin(打包免設環境變數)。 */
++        const char *d = os_get_path_data();
++        if (d && d[0]) {
++            snprintf(defbuf, sizeof(defbuf), "%s/cjk24.bin", d);
++            path = defbuf;
++        }
 +    }
 +    if (!path || !path[0]) {
 +        return false;

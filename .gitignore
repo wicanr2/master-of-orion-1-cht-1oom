@@ -29,3 +29,7 @@
 
 # 萃取工具 stderr
 *.err
+
+# 打包產物(含版權資料,不入庫)
+/release/
+/build/bundle_data/

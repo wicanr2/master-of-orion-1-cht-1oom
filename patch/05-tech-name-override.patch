@@ -121,10 +121,10 @@ index 7d401fa..d94f2ea 100644
  }
 diff --git a/src/strtr.c b/src/strtr.c
 new file mode 100644
-index 0000000..b5edb85
+index 0000000..576a6cd
 --- /dev/null
 +++ b/src/strtr.c
-@@ -0,0 +1,151 @@
+@@ -0,0 +1,161 @@
 +#include "config.h"
 +
 +#include <stdio.h>
@@ -137,6 +137,7 @@ index 0000000..b5edb85
 +#include "strtr.h"
 +#include "lib.h"
 +#include "log.h"
++#include "os.h"
 +
 +/* 通用英->繁中字串覆蓋:載入 TSV(每行 "english<TAB>中文"),
 +   供 LBX 載入的字串(如 research.lbx 科技名)在顯示時翻譯。
@@ -220,8 +221,17 @@ index 0000000..b5edb85
 +bool strtr_init(const char *path)
 +{
 +    strtr_shutdown();
++    char defbuf[1024];
 +    if (!path) {
 +        path = getenv("MOO_STR_TR");
++    }
++    if (!path || !path[0]) {
++        /* 預設:資料夾旁的 translation/ 目錄(打包免設環境變數)。 */
++        const char *d = os_get_path_data();
++        if (d && d[0]) {
++            snprintf(defbuf, sizeof(defbuf), "%s/translation", d);
++            path = defbuf;
++        }
 +    }
 +    if (!path || !path[0]) {
 +        return false;
