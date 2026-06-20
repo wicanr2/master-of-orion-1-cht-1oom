@@ -226,10 +226,39 @@ index 7fd61c5..0ddee81 100644
      }
  }
 diff --git a/src/ui/classic/uistarmap_common.c b/src/ui/classic/uistarmap_common.c
-index ab778cf..72fdb89 100644
+index ab778cf..3ead833 100644
 --- a/src/ui/classic/uistarmap_common.c
 +++ b/src/ui/classic/uistarmap_common.c
-@@ -512,8 +512,11 @@ void ui_starmap_draw_basic(struct starmap_data_s *d)
+@@ -149,6 +149,28 @@ static void ui_starmap_draw_sliders_and_prod(struct starmap_data_s *d)
+         }
+     }
+ 
++    /* 繁中:面板烘字標籤疊中文。CJK 在高解析合成層繪製,14px CJK 僅 7px game 高、
++       貼齊原字格底線,不會溢出密集列。POP/BASES/PRODUCTION 與五個生產滑桿標籤。 */
++    {
++        static const char *const sl[PLANET_SLIDER_NUM] = { "造艦", "防禦", "工業", "生態", "研究" };
++        uint8_t fb;
++        lbxfont_select(0, 0xd, 0, 0);
++        for (planet_slider_i_t i = PLANET_SLIDER_SHIP; i < PLANET_SLIDER_NUM; ++i) {
++            int y0 = 81 + 11 * i;
++            fb = *vgabuf_get_xy(242, y0 + 7);
++            vgabuf_draw_filled_rect(228, y0 + 1, 244, y0 + 8, fb);
++            lbxfont_print_str_normal(228, y0 + 1, sl[i]);
++        }
++        fb = *vgabuf_get_xy(255, 60);
++        vgabuf_draw_filled_rect(226, 57, 258, 64, fb);
++        lbxfont_print_str_normal(228, 57, "人口");
++        vgabuf_draw_filled_rect(276, 57, 309, 64, fb);
++        lbxfont_print_str_normal(285, 57, "基地");
++        fb = *vgabuf_get_xy(255, 71);
++        vgabuf_draw_filled_rect(226, 68, 283, 75, fb);
++        lbxfont_print_str_normal(228, 68, "生產");
++    }
++
+     lbxfont_select(2, 0xa, 0, 0);
+     if (p->buildship == BUILDSHIP_STARGATE) {
+         vgabuf_draw_filled_rect(229, 141, 274, 166, 0);
+@@ -512,8 +534,11 @@ void ui_starmap_draw_basic(struct starmap_data_s *d)
                  lbxgfx_set_frame(ui_data.gfx.starmap.col_butt_trans, 1);
              }
              lbxgfx_draw_frame(282, 140, ui_data.gfx.starmap.col_butt_ship);
