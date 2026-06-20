@@ -55,6 +55,24 @@ MOO1 主要有兩種結束方式:
 
 原版 MOO1 歷經數次更新,**1.3 版**是廣為流傳、修正多數平衡與錯誤的穩定版本,也是本中文化專案的基準版本。本專案採用開源引擎 **1oom**(GPLv2)重現原版,直接讀取原版資料檔執行,玩法與數值與原版 1.3 一致,差別僅在跨平台支援與本專案附加的繁體中文化。
 
+## 中英對照表
+
+本篇出現的歷史與玩法名詞中英對照。
+
+| 中文 | English |
+|---|---|
+| 銀河霸主 | Master of Orion |
+| 4X(探索/擴張/開發/殲滅) | 4X (eXplore / eXpand / eXploit / eXterminate) |
+| 回合制策略 | Turn-Based Strategy |
+| 銀河議會 | Galactic Council |
+| 軍事征服 | Military Conquest |
+| 母星 | Home Planet |
+| 史提夫·巴西亞(設計者) | Steve Barcia |
+| 心靈科技(開發商) | Simtex |
+| 微軟普羅斯(發行商) | MicroProse |
+
+> 完整玩法術語中英對照,見 [06 術語表](06-glossary.md)。
+
 ## 參考來源
 
 - Wikipedia — Master of Orion: <https://en.wikipedia.org/wiki/Master_of_Orion>

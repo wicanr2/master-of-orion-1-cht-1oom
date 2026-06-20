@@ -26,6 +26,8 @@
 /assets/fonts/*_test.bin
 /build/
 /build-asan/
+# 跨平台交叉編譯產物(build-win / build-mac / build-lin …)
+/build-*/
 
 # 萃取工具 stderr
 *.err

@@ -77,6 +77,27 @@
 - **光束不配電腦**:命中低到打不痛人。
 - **輕信 AI 協定**:互不侵犯不等於安全,隨時備戰。
 
+## 中英對照表
+
+本篇策略相關名詞的中英對照。
+
+| 中文 | English |
+|---|---|
+| 偵察艦 | Scout |
+| 殖民船 | Colony Ship |
+| 互不侵犯協定 | Non-Aggression Pact |
+| 同盟 | Alliance |
+| 貿易協定 | Trade Agreement |
+| 和平條約 | Peace Treaty |
+| 銀河議會 | Galactic Council |
+| 飛彈基地 | Missile Base |
+| 行星護盾 | Planetary Shield |
+| 戰鬥電腦 | Battle Computer |
+| 高能聚焦 | High Energy Focus |
+| 地面登陸 | Ground Invasion |
+
+> 完整玩法術語中英對照,見 [06 術語表](06-glossary.md)。
+
 ## 參考來源
 
 - StrategyWiki — Master of Orion / How to begin: <https://strategywiki.org/wiki/Master_of_Orion/How_to_begin>

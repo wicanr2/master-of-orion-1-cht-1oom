@@ -54,7 +54,7 @@
 
 ### 炸彈 (Bombs)
 
-專門對行星轟炸(削減人口與設施)。要打穿高階**行星防護罩 (Planetary Shield)**,需要夠強的炸彈——例如 **Omega-V 炸彈**、重型融合光束、巨炮級武器才能突破 Class V 護盾。
+專門對行星轟炸(削減人口與設施)。要打穿高階**行星護盾 (Planetary Shield)**,需要夠強的炸彈——例如 **Omega-V 炸彈**、重型融合光束、巨炮級武器才能突破 Class V 護盾。
 
 ### 頂級武器
 
@@ -98,6 +98,38 @@
 - **電腦配光束**:用光束就一定要堆戰鬥電腦,否則命中慘不忍睹。
 - **後期上高能聚焦**:確立光束遠距離輸出。
 - **行星防禦**:飛彈基地 (Missile Base) + 行星護盾,搭配斥力光束封鎖,可讓殖民地極難被攻陷。
+
+## 中英對照表
+
+本篇出現的艦船與戰鬥名詞中英對照,方便對上遊戲原文與英文攻略。各式武器、護盾、裝置的逐項中英對照與效果,見 [03 科技](03-technology.md) 的武器、力場、推進三領域表。
+
+| 中文 | English |
+|---|---|
+| 艦體(小/中/大/巨型) | Hull (Small / Medium / Large / Huge) |
+| 光束武器 | Beam Weapon |
+| 飛彈 | Missile |
+| 火箭 | Rocket |
+| 魚雷 | Torpedo |
+| 炸彈 | Bomb |
+| 戰鬥電腦 | Battle Computer |
+| 導引電腦 | Targeting Computer |
+| 偏導護盾 | Deflector Shield |
+| 行星護盾 | Planetary Shield |
+| 裝甲 / 雙層艦體 | Armor / Double Hull |
+| 生命值 | Hit Points |
+| ECM 干擾器 | ECM Jammer |
+| 機動力 | Maneuverability |
+| 攻擊判定 | Attack Roll |
+| 高能聚焦 | High Energy Focus |
+| 斥力光束 | Repulsor Beam |
+| 靜滯場 | Stasis Field |
+| 隱形裝置 | Cloaking Device |
+| 飛彈基地 | Missile Base |
+| 運兵船 | Troop Transport |
+| 恆星轉換器 | Stellar Converter |
+| 死光 | Death Ray |
+
+> 更完整的玩法術語中英對照,見 [06 術語表](06-glossary.md)。
 
 ## 參考來源
 

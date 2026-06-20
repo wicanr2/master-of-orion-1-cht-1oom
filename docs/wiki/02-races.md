@@ -133,6 +133,31 @@
 
 > 說明:排名反映「平均勝率與容錯」,不代表低階種族不能贏。達洛克、莫善在高手手上仍可極具威脅;布拉西的地面戰、薩克拉的爆人口在對的地圖上都能翻盤。新手建議從賽隆、克拉肯、人類入門。
 
+## 中英對照表
+
+十大種族與本篇常用加成術語的中英對照,方便對上遊戲原文與英文攻略。
+
+| 中文 | English |
+|---|---|
+| 人類 | Human |
+| 莫善 | Mrrshan |
+| 矽基 | Silicoid |
+| 薩克拉 | Sakkra |
+| 賽隆 | Psilon |
+| 阿卡里 | Alkari |
+| 克拉肯 | Klackon |
+| 布拉西 | Bulrathi |
+| 梅克拉 | Meklar |
+| 達洛克 | Darlok |
+| 地面戰 | Ground Combat |
+| 間諜 / 諜報 | Espionage / Spying |
+| 貿易協定 | Trade Agreement |
+| 人口成長 | Population Growth |
+| 工廠 / 工業 | Factory / Industrial |
+| 母星 | Home Planet |
+
+> 完整玩法術語中英對照,見 [06 術語表](06-glossary.md)。
+
 ## 參考來源
 
 - Steam Community Guide — Comprehensive guide to all the races in MOO1: <https://steamcommunity.com/sharedfiles/filedetails/?id=3438223263>
