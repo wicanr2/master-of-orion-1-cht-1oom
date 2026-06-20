@@ -1,13 +1,25 @@
-diff --git a/src/ui/classic/uiraces.c b/src/ui/classic/uiraces.c
-index ff8ed70..e0175cb 100644
---- a/src/ui/classic/uiraces.c
-+++ b/src/ui/classic/uiraces.c
-@@ -49,6 +49,17 @@ static void races_data_free(struct races_data_s *d)
-     lbxfile_item_release(LBXFILE_BACKGRND, d->gfx);
+diff --git a/src/ui/classic/uidraw.c b/src/ui/classic/uidraw.c
+index 8a7a2fd..3325574 100644
+--- a/src/ui/classic/uidraw.c
++++ b/src/ui/classic/uidraw.c
+@@ -6,6 +6,8 @@
+ #include "comp.h"
+ #include "hw.h"
+ #include "lbxfont.h"
++#include "lbxgfx.h"
++#include "vgabuf.h"
+ #include "mouse.h"
+ #include "rnd.h"
+ #include "uicursor.h"
+@@ -677,3 +679,16 @@ void ui_draw_textbox_2str(const char *str1, const char *str2, int y0)
+     }
+     lbxfont_print_str_split(x0 + 4, y0 + 4, w - 8, str2, 2);
  }
- 
-+/* 繁中:在烘字按鈕上蓋鈕面色後置中印中文(小字型 -> 14px CJK)。 */
-+static void races_btn_cjk(uint8_t *gfx, int x, int y, const char *s)
++
++/* 繁中:在已畫好的烘字按鈕圖上,取樣鈕面色蓋掉原本英文,再置中疊上中文。
++   呼叫端須先 lbxgfx_draw_frame 把按鈕底圖畫進 vgabuf,並把該 t0 物件改成 mousearea
++   (t0 的 gfx 會在 callback 之後重畫,覆蓋掉中文)。 */
++void ui_draw_btn_cjk(const uint8_t *gfx, int x, int y, const char *s)
 +{
 +    int w = lbxgfx_get_w(gfx);
 +    int h = lbxgfx_get_h(gfx);
@@ -16,23 +28,34 @@ index ff8ed70..e0175cb 100644
 +    lbxfont_select(0, 0xf, 0, 0);
 +    lbxfont_print_str_center(x + w / 2, y + h / 2 - 5, s);
 +}
-+
- static void races_draw_cb(void *vptr)
- {
-     struct races_data_s *d = vptr;
-@@ -224,6 +235,11 @@ static void races_draw_cb(void *vptr)
+diff --git a/src/ui/classic/uidraw.h b/src/ui/classic/uidraw.h
+index aaec8f4..f80ce74 100644
+--- a/src/ui/classic/uidraw.h
++++ b/src/ui/classic/uidraw.h
+@@ -25,5 +25,6 @@ extern void ui_draw_finish(void);
+ extern void ui_draw_stars(int x, int y, int xoff1, int xoff2);
+ extern void ui_draw_set_stars_xoffs(bool flag_right);
+ extern void ui_draw_textbox_2str(const char *str1, const char *str2, int y0);
++extern void ui_draw_btn_cjk(const uint8_t *gfx, int x, int y, const char *s);
+ 
+ #endif
+diff --git a/src/ui/classic/uiraces.c b/src/ui/classic/uiraces.c
+index ff8ed70..cef11a3 100644
+--- a/src/ui/classic/uiraces.c
++++ b/src/ui/classic/uiraces.c
+@@ -224,6 +224,11 @@ static void races_draw_cb(void *vptr)
      lbxgfx_draw_frame(245, 180, ui_data.gfx.screens.races_bu.audience);
      lbxgfx_set_new_frame(ui_data.gfx.screens.races_bu.ok, 1);
      lbxgfx_draw_frame(290, 180, ui_data.gfx.screens.races_bu.ok);
 +    /* 繁中:底部按鈕烘字疊中文。 */
-+    races_btn_cjk(ui_data.gfx.screens.races_bu.status, 165, 180, "狀態");
-+    races_btn_cjk(ui_data.gfx.screens.races_bu.report, 205, 180, "報告");
-+    races_btn_cjk(ui_data.gfx.screens.races_bu.audience, 245, 180, "會談");
-+    races_btn_cjk(ui_data.gfx.screens.races_bu.ok, 290, 180, "確定");
++    ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.status, 165, 180, "狀態");
++    ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.report, 205, 180, "報告");
++    ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.audience, 245, 180, "會談");
++    ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.ok, 290, 180, "確定");
      for (int i = 0; i < d->num; ++i) {
          int x, y;
          x = (i / 3) * 157;
-@@ -388,9 +404,9 @@ int ui_races(struct game_s *g, player_id_t api)
+@@ -388,9 +393,9 @@ int ui_races(struct game_s *g, player_id_t api)
              uiobj_table_clear();
              if (d.num > 0) {
                  if (d.cursor_mode == 0) {
@@ -44,7 +67,7 @@ index ff8ed70..e0175cb 100644
                      }
                      for (int i = 0; i < d.num; ++i) {
                          int x, y;
-@@ -412,8 +428,8 @@ int ui_races(struct game_s *g, player_id_t api)
+@@ -412,8 +417,8 @@ int ui_races(struct game_s *g, player_id_t api)
                  }
              }
              if (d.cursor_mode == 0) {

@@ -1,0 +1,291 @@
+diff --git a/src/ui/classic/uibasescrap.c b/src/ui/classic/uibasescrap.c
+index 6b06d48..890b6b2 100644
+--- a/src/ui/classic/uibasescrap.c
++++ b/src/ui/classic/uibasescrap.c
+@@ -59,6 +59,12 @@ static void basescrap_draw_cb1(void *vptr)
+     lbxfont_select(2, 6, 0, 0);
+     lbxfont_print_str_right(x + 104, y + 35, game_str_bs_bases);
+     lbxfont_print_num_right(x + 83, y + 35, (p->missile_bases * d->slider_var) / 100);
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_cancel, 1);
++    lbxgfx_draw_frame(x + 10, y + 47, ui_data.gfx.starmap.reloc_bu_cancel);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_cancel, x + 10, y + 47, "取消");
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_accept, 1);
++    lbxgfx_draw_frame(x + 66, y + 47, ui_data.gfx.starmap.reloc_bu_accept);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_accept, x + 66, y + 47, "確定");
+ }
+ 
+ /* -------------------------------------------------------------------------- */
+@@ -80,8 +86,8 @@ void ui_basescrap(struct game_s *g, player_id_t active_player)
+     ui_cursor_setup_area(1, &ui_cursor_area_tbl[0]);
+ 
+     uiobj_table_clear();
+-    oi_cancel = uiobj_add_t0(x + 10, y + 47, "", ui_data.gfx.starmap.reloc_bu_cancel, MOO_KEY_ESCAPE, -1);
+-    oi_accept = uiobj_add_t0(x + 66, y + 47, "", ui_data.gfx.starmap.reloc_bu_accept, MOO_KEY_SPACE, -1);
++    oi_cancel = uiobj_add_mousearea(x + 10, y + 47, x + 10 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_cancel) - 1, y + 47 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_cancel) - 1, MOO_KEY_ESCAPE, -1);
++    oi_accept = uiobj_add_mousearea(x + 66, y + 47, x + 66 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_accept) - 1, y + 47 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_accept) - 1, MOO_KEY_SPACE, -1);
+     /*oi_slider =*/ uiobj_add_slider(x + 14, y + 35, 0, 100, 0, 100, 50, 9, &d.slider_var, MOO_KEY_UNKNOWN, -1);
+     oi_minus = uiobj_add_mousearea(x + 10, y + 33, x + 12, y + 41, MOO_KEY_UNKNOWN, -1);
+     oi_plus = uiobj_add_mousearea(x + 66, y + 33, x + 70, y + 41, MOO_KEY_UNKNOWN, -1);
+diff --git a/src/ui/classic/uifleet.c b/src/ui/classic/uifleet.c
+index 33c0fb3..a03e630 100644
+--- a/src/ui/classic/uifleet.c
++++ b/src/ui/classic/uifleet.c
+@@ -66,6 +66,13 @@ static void fleet_draw_cb(void *vptr)
+     lbxgfx_draw_frame(0, 0, d->gfx_fleetbrb);
+     lbxgfx_set_new_frame(ui_data.gfx.starmap.fleetbut_scrap, 1);
+     lbxgfx_draw_frame(224, 181, ui_data.gfx.starmap.fleetbut_scrap);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.fleetbut_scrap, 224, 181, "拆解");
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.fleetbut_ok, 1);
++    lbxgfx_draw_frame(268, 181, ui_data.gfx.starmap.fleetbut_ok);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.fleetbut_ok, 268, 181, "確定");
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.fleetbut_view, 1);
++    lbxgfx_draw_frame(180, 181, ui_data.gfx.starmap.fleetbut_view);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.fleetbut_view, 180, 181, "查看");
+     lbxgfx_set_new_frame(ui_data.gfx.starmap.fleetbut_up, 1);
+     lbxgfx_set_new_frame(ui_data.gfx.starmap.fleetbut_down, 1);
+     lbxgfx_draw_frame(307, 24, ui_data.gfx.starmap.fleetbut_up);
+@@ -292,8 +299,8 @@ shipdesign_id_t ui_fleet(struct game_s *g, player_id_t active_player)
+             uiobj_table_clear();
+             UIOBJ_CLEAR_LOCAL();
+ 
+-            oi_ok = uiobj_add_t0(268, 181, "", ui_data.gfx.starmap.fleetbut_ok, MOO_KEY_SPACE, -1);
+-            oi_view = uiobj_add_t0(180, 181, "", ui_data.gfx.starmap.fleetbut_view, MOO_KEY_v, -1);
++            oi_ok = uiobj_add_mousearea(268, 181, 268 + lbxgfx_get_w(ui_data.gfx.starmap.fleetbut_ok) - 1, 181 + lbxgfx_get_h(ui_data.gfx.starmap.fleetbut_ok) - 1, MOO_KEY_SPACE, -1);
++            oi_view = uiobj_add_mousearea(180, 181, 180 + lbxgfx_get_w(ui_data.gfx.starmap.fleetbut_view) - 1, 181 + lbxgfx_get_h(ui_data.gfx.starmap.fleetbut_view) - 1, MOO_KEY_v, -1);
+             if (d.pos > 0) {
+                 oi_up = uiobj_add_t0(307, 24, "", ui_data.gfx.starmap.fleetbut_up, MOO_KEY_COMMA, -1);
+             }
+@@ -301,11 +308,9 @@ shipdesign_id_t ui_fleet(struct game_s *g, player_id_t active_player)
+                 oi_down = uiobj_add_t0(307, 156, "", ui_data.gfx.starmap.fleetbut_down, MOO_KEY_PERIOD, -1);
+             }
+             if ((g->eto[active_player].shipdesigns_num > 1) && !flag_scrap) {
+-                oi_scrap = uiobj_add_t0(224, 181, "", ui_data.gfx.starmap.fleetbut_scrap, MOO_KEY_s, -1);
+-            } else {
+-                lbxgfx_set_new_frame(ui_data.gfx.starmap.fleetbut_scrap, 1);
+-                lbxgfx_draw_frame(224, 181, ui_data.gfx.starmap.fleetbut_scrap);
++                oi_scrap = uiobj_add_mousearea(224, 181, 224 + lbxgfx_get_w(ui_data.gfx.starmap.fleetbut_scrap) - 1, 181 + lbxgfx_get_h(ui_data.gfx.starmap.fleetbut_scrap) - 1, MOO_KEY_s, -1);
+             }
++            /* 不可拆解時:draw_cb 已畫好按鈕(含中文),不再重畫英文底圖蓋掉 */
+             if (flag_scrap) {
+                 for (shipdesign_id_t i = SHIPDESIGN_0; i < g->eto[active_player].shipdesigns_num; ++i) {
+                     int x0;
+diff --git a/src/ui/classic/uigmap.c b/src/ui/classic/uigmap.c
+index 27d35d7..6604bb1 100644
+--- a/src/ui/classic/uigmap.c
++++ b/src/ui/classic/uigmap.c
+@@ -295,6 +295,21 @@ static void gmap_draw_cb(void *vptr)
+     lbxfont_print_str_normal(250, 88, game_str_gm_mapkey);
+     lbxfont_set_temp_color(0x00);
+ 
++    lbxgfx_set_new_frame(d->gfx_but_ok, 1);
++    lbxgfx_draw_frame(246, 181, d->gfx_but_ok);
++    ui_draw_btn_cjk(d->gfx_but_ok, 246, 181, "確定");
++
++    /* 檢視模式切換鈕(選中態用 frame 1):殖民/環境/礦產 */
++    if (d->mode == 0) { lbxgfx_set_new_frame(d->gfx_but_col, 1); } else { lbxgfx_set_frame_0(d->gfx_but_col); }
++    lbxgfx_draw_frame(246, 27, d->gfx_but_col);
++    ui_draw_btn_cjk(d->gfx_but_col, 246, 27, "殖民");
++    if (d->mode == 1) { lbxgfx_set_new_frame(d->gfx_but_env, 1); } else { lbxgfx_set_frame_0(d->gfx_but_env); }
++    lbxgfx_draw_frame(246, 47, d->gfx_but_env);
++    ui_draw_btn_cjk(d->gfx_but_env, 246, 47, "環境");
++    if (d->mode == 2) { lbxgfx_set_new_frame(d->gfx_but_min, 1); } else { lbxgfx_set_frame_0(d->gfx_but_min); }
++    lbxgfx_draw_frame(246, 67, d->gfx_but_min);
++    ui_draw_btn_cjk(d->gfx_but_min, 246, 67, "礦產");
++
+     if (d->countdown < 0) {
+         d->planet_i = rnd_0_nm1(g->galaxy_stars, &g->seed);
+         d->countdown = 3;
+@@ -345,7 +360,7 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
+ {
+     struct gmap_data_s d;
+     bool flag_done = false, flag_do_focus = false;
+-    uiobj_id_t oi_scroll, /*oi_col, oi_env, oi_min,*/ oi_ok, oi_tbl_planet[PLANETS_MAX];
++    uiobj_id_t oi_scroll, oi_col, oi_env, oi_min, oi_ok, oi_tbl_planet[PLANETS_MAX];
+     int16_t scrollx = 0, scrolly = 0;
+ 
+     gmap_load_data(&d);
+@@ -357,10 +372,10 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
+ 
+     uiobj_table_clear();
+ 
+-    oi_ok = uiobj_add_t0(246, 181, "", d.gfx_but_ok, MOO_KEY_SPACE, -1);
+-    /*oi_col =*/ uiobj_add_t3(246, 27, "", d.gfx_but_col, &(d.mode), 0, MOO_KEY_c, -1);
+-    /*oi_env =*/ uiobj_add_t3(246, 47, "", d.gfx_but_env, &(d.mode), 1, MOO_KEY_e, -1);
+-    /*oi_min =*/ uiobj_add_t3(246, 67, "", d.gfx_but_min, &(d.mode), 2, MOO_KEY_m, -1);
++    oi_ok = uiobj_add_mousearea(246, 181, 246 + lbxgfx_get_w(d.gfx_but_ok) - 1, 181 + lbxgfx_get_h(d.gfx_but_ok) - 1, MOO_KEY_SPACE, -1);
++    oi_col = uiobj_add_mousearea(246, 27, 246 + lbxgfx_get_w(d.gfx_but_col) - 1, 27 + lbxgfx_get_h(d.gfx_but_col) - 1, MOO_KEY_c, -1);
++    oi_env = uiobj_add_mousearea(246, 47, 246 + lbxgfx_get_w(d.gfx_but_env) - 1, 47 + lbxgfx_get_h(d.gfx_but_env) - 1, MOO_KEY_e, -1);
++    oi_min = uiobj_add_mousearea(246, 67, 246 + lbxgfx_get_w(d.gfx_but_min) - 1, 67 + lbxgfx_get_h(d.gfx_but_min) - 1, MOO_KEY_m, -1);
+     for (planet_id_t i = PLANET_0; i < g->galaxy_stars; ++i) {
+         const planet_t *p = &(g->planet[i]);
+         int x, y;
+@@ -386,6 +401,13 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
+         if ((oi == oi_ok) || (oi == UIOBJI_ESC)) {
+             flag_done = true;
+         }
++        if (oi == oi_col) {
++            d.mode = 0;
++        } else if (oi == oi_env) {
++            d.mode = 1;
++        } else if (oi == oi_min) {
++            d.mode = 2;
++        }
+         if (oi != UIOBJI_NONE) {
+             ui_sound_play_sfx_24();
+         }
+diff --git a/src/ui/classic/uiplanets.c b/src/ui/classic/uiplanets.c
+index 92ee17f..b1f2701 100644
+--- a/src/ui/classic/uiplanets.c
++++ b/src/ui/classic/uiplanets.c
+@@ -81,6 +81,10 @@ static void planets_draw_cb(void *vptr)
+     lbxgfx_draw_frame(0, 0, d->gfx_report);
+     lbxgfx_set_new_frame(d->gfx_but_trans, 1);
+     lbxgfx_draw_frame(209, 181, d->gfx_but_trans);
++    ui_draw_btn_cjk(d->gfx_but_trans, 209, 181, "撥款");
++    lbxgfx_set_new_frame(d->gfx_but_ok, 1);
++    lbxgfx_draw_frame(256, 181, d->gfx_but_ok);
++    ui_draw_btn_cjk(d->gfx_but_ok, 256, 181, "確定");
+     vgabuf_draw_filled_rect(213, 159, 245, 162, 0x2f);
+ 
+     v = g->eto[d->api].tax;
+@@ -230,6 +234,9 @@ static void planets_transfer_draw_cb(void *vptr)
+     char buf[64];
+ 
+     vgabuf_copy_back_from_page2();
++    /* 報表底鈕在 page2 仍是英文底圖;CJK 走 overlay 層不入 page2,須每幀重疊 */
++    ui_draw_btn_cjk(d->gfx_but_ok, 256, 181, "確定");
++    ui_draw_btn_cjk(d->gfx_but_trans, 209, 181, "撥款");
+     lbxgfx_draw_frame(x, y, d->gfx_transfer);
+     vgabuf_draw_filled_rect(x + 14, y + 35, x + 64, y + 38, 0x2f);
+     if (d->amount_trans > 0) {
+@@ -246,6 +253,12 @@ static void planets_transfer_draw_cb(void *vptr)
+         v = (d->amount_trans * e->reserve_bc) / 100;
+         lbxfont_print_num_right(x + 95, y + 35, v);
+     }
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_cancel, 1);
++    lbxgfx_draw_frame(x + 10, y + 47, ui_data.gfx.starmap.reloc_bu_cancel);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_cancel, x + 10, y + 47, "取消");
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_accept, 1);
++    lbxgfx_draw_frame(x + 66, y + 47, ui_data.gfx.starmap.reloc_bu_accept);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_accept, x + 66, y + 47, "確定");
+ }
+ 
+ static void ui_planets_transfer(struct planets_data_s *d)
+@@ -279,8 +292,8 @@ static void ui_planets_transfer(struct planets_data_s *d)
+     }
+ 
+     uiobj_table_clear();
+-    oi_cancel = uiobj_add_t0(x + 10, y + 47, "", ui_data.gfx.starmap.reloc_bu_cancel, MOO_KEY_LEFT, -1); /* FIXME key == "\x01xb" ?? */
+-    oi_accept = uiobj_add_t0(x + 66, y + 47, "", ui_data.gfx.starmap.reloc_bu_accept, MOO_KEY_SPACE, -1);
++    oi_cancel = uiobj_add_mousearea(x + 10, y + 47, x + 10 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_cancel) - 1, y + 47 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_cancel) - 1, MOO_KEY_LEFT, -1); /* FIXME key == "\x01xb" ?? */
++    oi_accept = uiobj_add_mousearea(x + 66, y + 47, x + 66 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_accept) - 1, y + 47 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_accept) - 1, MOO_KEY_SPACE, -1);
+     /*oi_slider =*/ uiobj_add_slider(x + 14, y + 35, 0, 100, 0, 100, 50, 9, &d->amount_trans, MOO_KEY_UNKNOWN, -1);
+     oi_minus = uiobj_add_mousearea(x + 10, y + 33, x + 12, y + 41, MOO_KEY_UNKNOWN, -1);
+     oi_plus = uiobj_add_mousearea(x + 66, y + 33, x + 70, y + 41, MOO_KEY_UNKNOWN, -1);
+@@ -425,7 +438,7 @@ again:
+             uiobj_table_set_last(oi_alt_moola);
+             oi_up = uiobj_add_t0(292, 159, "", ui_data.gfx.starmap.reprtbut_up, MOO_KEY_COMMA, -1);
+             oi_down = uiobj_add_t0(292, 176, "", ui_data.gfx.starmap.reprtbut_down, MOO_KEY_PERIOD, -1);
+-            oi_ok = uiobj_add_t0(256, 181, "", d.gfx_but_ok, MOO_KEY_o, -1);
++            oi_ok = uiobj_add_mousearea(256, 181, 256 + lbxgfx_get_w(d.gfx_but_ok) - 1, 181 + lbxgfx_get_h(d.gfx_but_ok) - 1, MOO_KEY_o, -1);
+             for (int i = 0; i < PLANETS_ON_SCREEN; ++i) {
+                 int pi, y0, y1;
+                 pi = i + d.pos;
+@@ -439,7 +452,7 @@ again:
+             oi_trans = UIOBJI_INVALID;
+             if (!flag_trans) {
+                 if (g->eto[active_player].reserve_bc != 0) {
+-                    oi_trans = uiobj_add_t0(209, 181, "", d.gfx_but_trans, MOO_KEY_t, -1);
++                    oi_trans = uiobj_add_mousearea(209, 181, 209 + lbxgfx_get_w(d.gfx_but_trans) - 1, 181 + lbxgfx_get_h(d.gfx_but_trans) - 1, MOO_KEY_t, -1);
+                 }
+                 /*oi_slider =*/ uiobj_add_slider(213, 160, 0, 200, 0, 200, 32, 9, &g->eto[active_player].tax, MOO_KEY_UNKNOWN, -1);
+                 oi_minus = uiobj_add_mousearea(208, 157, 211, 165, MOO_KEY_UNKNOWN, -1);
+diff --git a/src/ui/classic/uistarmap_enroute.c b/src/ui/classic/uistarmap_enroute.c
+index ab04ce5..58da9b5 100644
+--- a/src/ui/classic/uistarmap_enroute.c
++++ b/src/ui/classic/uistarmap_enroute.c
+@@ -120,9 +120,13 @@ static void ui_starmap_enroute_draw_cb(void *vptr)
+     } else {
+         ui_data.starmap.scanner_delay = 0;
+     }
+-    if ((r->owner == d->api) && (d->en.can_move != NO_MOVE) && !ui_starmap_enroute_in_frange(d)) {
++    if ((r->owner == d->api) && (d->en.can_move != NO_MOVE)) {
++        lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_cancel, 1);
++        lbxgfx_draw_frame(227, 163, ui_data.gfx.starmap.reloc_bu_cancel);
++        ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_cancel, 227, 163, "取消");
+         lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_accept, 1);
+         lbxgfx_draw_frame(271, 163, ui_data.gfx.starmap.reloc_bu_accept);
++        ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_accept, 271, 163, "確定");
+     }
+     ui_data.starmap.frame_ship = (ui_data.starmap.frame_ship + 1) % 5;
+     ui_draw_set_stars_xoffs(false);
+@@ -290,9 +294,9 @@ void ui_starmap_enroute(struct game_s *g, player_id_t active_player)
+             ui_starmap_fill_oi_tbls(&d);
+             ui_starmap_fill_oi_tbl_stars(&d);
+             if ((r->owner == active_player) && (d.en.can_move != NO_MOVE)) {
+-                oi_cancel = uiobj_add_t0(227, 163, "", ui_data.gfx.starmap.reloc_bu_cancel, MOO_KEY_ESCAPE, -1);
++                oi_cancel = uiobj_add_mousearea(227, 163, 227 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_cancel) - 1, 163 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_cancel) - 1, MOO_KEY_ESCAPE, -1);
+                 if (ui_starmap_enroute_in_frange(&d)) {
+-                    oi_accept = uiobj_add_t0(271, 163, "", ui_data.gfx.starmap.reloc_bu_accept, MOO_KEY_SPACE, -1);
++                    oi_accept = uiobj_add_mousearea(271, 163, 271 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_accept) - 1, 163 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_accept) - 1, MOO_KEY_SPACE, -1);
+                 }
+             }
+             oi_scroll = uiobj_add_scrollarea(6, 6, 2, 2, 108, 86, &scrollx, &scrolly, -1);
+diff --git a/src/ui/classic/uistarmap_orbit_own.c b/src/ui/classic/uistarmap_orbit_own.c
+index 55fd1bb..a1f6ac6 100644
+--- a/src/ui/classic/uistarmap_orbit_own.c
++++ b/src/ui/classic/uistarmap_orbit_own.c
+@@ -140,6 +140,10 @@ static void ui_starmap_orbit_own_draw_cb(void *vptr)
+     }
+     lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_accept, 1);
+     lbxgfx_draw_frame(271, 180, ui_data.gfx.starmap.reloc_bu_accept);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_accept, 271, 180, "確定");
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_cancel, 1);
++    lbxgfx_draw_frame(227, 180, ui_data.gfx.starmap.reloc_bu_cancel);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_cancel, 227, 180, "取消");
+ }
+ 
+ /* -------------------------------------------------------------------------- */
+@@ -477,9 +481,9 @@ void ui_starmap_orbit_own(struct game_s *g, player_id_t active_player)
+             STARMAP_UIOBJ_FILL_FX();
+             ui_starmap_fill_oi_tbls(&d);
+             ui_starmap_fill_oi_tbl_stars(&d);
+-            oi_cancel = uiobj_add_t0(227, 180, "", ui_data.gfx.starmap.reloc_bu_cancel, MOO_KEY_ESCAPE, -1);
++            oi_cancel = uiobj_add_mousearea(227, 180, 227 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_cancel) - 1, 180 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_cancel) - 1, MOO_KEY_ESCAPE, -1);
+             if (d.in_frange && d.ss.shiptypenon0numsel) {
+-                oi_accept = uiobj_add_t0(271, 180, "", ui_data.gfx.starmap.reloc_bu_accept, MOO_KEY_SPACE, -1);
++                oi_accept = uiobj_add_mousearea(271, 180, 271 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_accept) - 1, 180 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_accept) - 1, MOO_KEY_SPACE, -1);
+             }
+             oi_scroll = uiobj_add_scrollarea(6, 6, 2, 2, 108, 86, &scrollx, &scrolly, -1);
+             ui_starmap_fill_oi_ctrl(&d);
+diff --git a/src/ui/classic/uistarmap_trans.c b/src/ui/classic/uistarmap_trans.c
+index 82ebe3d..c11380c 100644
+--- a/src/ui/classic/uistarmap_trans.c
++++ b/src/ui/classic/uistarmap_trans.c
+@@ -66,6 +66,10 @@ static void ui_starmap_trans_draw_cb(void *vptr)
+     ui_starmap_draw_frame_offs(x0, y0, ui_data.gfx.starmap.planbord);
+     lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_accept, 1);
+     lbxgfx_draw_frame(271, 163, ui_data.gfx.starmap.reloc_bu_accept);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_accept, 271, 163, "確定");
++    lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_cancel, 1);
++    lbxgfx_draw_frame(227, 163, ui_data.gfx.starmap.reloc_bu_cancel);
++    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_cancel, 227, 163, "取消");
+     if (d->from != g->planet_focus_i[d->api]) {
+         const uint8_t *ctbl;
+         int x1, y1;
+@@ -293,13 +297,13 @@ void ui_starmap_trans(struct game_s *g, player_id_t active_player)
+             uiobj_table_clear();
+             UIOBJ_CLEAR_LOCAL();
+             ui_starmap_fill_oi_tbl_stars(&d);
+-            oi_cancel = uiobj_add_t0(227, 163, "", ui_data.gfx.starmap.reloc_bu_cancel, MOO_KEY_UNKNOWN, -1);
++            oi_cancel = uiobj_add_mousearea(227, 163, 227 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_cancel) - 1, 163 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_cancel) - 1, MOO_KEY_UNKNOWN, -1);
+             if ((d.tr.other) && (pt->owner != PLAYER_NONE)
+               && (pt->within_frange[active_player] == 1)
+               && BOOLVEC_IS1(pt->explored, active_player)
+               && (pt->type >= g->eto[active_player].have_colony_for)
+             ) {
+-                oi_accept = uiobj_add_t0(271, 163, "", ui_data.gfx.starmap.reloc_bu_accept, ui_qol_extra_key_bindings ? MOO_KEY_SPACE : MOO_KEY_UNKNOWN, -1);
++                oi_accept = uiobj_add_mousearea(271, 163, 271 + lbxgfx_get_w(ui_data.gfx.starmap.reloc_bu_accept) - 1, 163 + lbxgfx_get_h(ui_data.gfx.starmap.reloc_bu_accept) - 1, ui_qol_extra_key_bindings ? MOO_KEY_SPACE : MOO_KEY_UNKNOWN, -1);
+                 uiobj_add_slider(258, 124, 0, trans_max, 0, trans_max, 41, 8, &d.tr.num, MOO_KEY_UNKNOWN, -1);
+                 oi_minus = uiobj_add_mousearea(252, 124, 256, 131, MOO_KEY_MINUS, -1);
+                 oi_plus = uiobj_add_mousearea(301, 124, 305, 131, MOO_KEY_PLUS, -1);
