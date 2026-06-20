@@ -1,0 +1,70 @@
+diff --git a/src/ui/classic/uibattlepre.c b/src/ui/classic/uibattlepre.c
+index b5ec4bd..5cafb22 100644
+--- a/src/ui/classic/uibattlepre.c
++++ b/src/ui/classic/uibattlepre.c
+@@ -109,6 +109,9 @@ static void ui_battle_pre_draw_cb(void *vptr)
+         strcpy(buf, game_str_tbl_races[race]);
+     }
+     lbxfont_print_str_center(267, 130, buf);
++    lbxgfx_set_new_frame(d->gfx_contbutt, 1);
++    lbxgfx_draw_frame(227, 163, d->gfx_contbutt);
++    ui_draw_btn_cjk(d->gfx_contbutt, 227, 163, "繼續");
+ }
+ 
+ void ui_battle_pre(struct game_s *g, int party_u, int party_d, planet_id_t planet_i, bool flag_human_att, bool hide_other)
+@@ -130,7 +133,7 @@ void ui_battle_pre(struct game_s *g, int party_u, int party_d, planet_id_t plane
+         g->planet_focus_i[party_d] = planet_i;
+     }
+     uiobj_table_clear();
+-    oi_cont = uiobj_add_t0(227, 163, "", d->gfx_contbutt, MOO_KEY_c, -1);
++    oi_cont = uiobj_add_mousearea(227, 163, 227 + lbxgfx_get_w(d->gfx_contbutt) - 1, 163 + lbxgfx_get_h(d->gfx_contbutt) - 1, MOO_KEY_c, -1);
+     if (!ui_qol_prebattle_no_setfocus) {
+         uiobj_set_focus(oi_cont);
+     }
+diff --git a/src/ui/classic/uibomb.c b/src/ui/classic/uibomb.c
+index 58652c0..34add52 100644
+--- a/src/ui/classic/uibomb.c
++++ b/src/ui/classic/uibomb.c
+@@ -117,6 +117,12 @@ static void bomb_ask_draw_cb(void *vptr)
+         lbxfont_print_str_center(268, 140, buf);
+         lbxfont_print_str_center(268, 148, game_str_sm_trinb2);
+     }
++    lbxgfx_set_new_frame(d->gfx_bombbutc, 1);
++    lbxgfx_draw_frame(227, 164, d->gfx_bombbutc);
++    ui_draw_btn_cjk(d->gfx_bombbutc, 227, 164, "取消");
++    lbxgfx_set_new_frame(d->gfx_bombbutt, 1);
++    lbxgfx_draw_frame(271, 164, d->gfx_bombbutt);
++    ui_draw_btn_cjk(d->gfx_bombbutt, 271, 164, "轟炸");
+ }
+ 
+ static void bomb_show_draw_cb(void *vptr)
+@@ -174,6 +180,9 @@ static void bomb_show_draw_cb(void *vptr)
+             lbxfont_print_str_center(267, 147, game_str_sm_bfact2);
+         }
+     }
++    lbxgfx_set_new_frame(d->gfx_contbutt, 1);
++    lbxgfx_draw_frame(227, 164, d->gfx_contbutt);
++    ui_draw_btn_cjk(d->gfx_contbutt, 227, 164, "繼續");
+ }
+ 
+ /* -------------------------------------------------------------------------- */
+@@ -191,8 +200,8 @@ bool ui_bomb_ask(struct game_s *g, player_id_t pi, planet_id_t planet_i, int pop
+     bomb_load_data(&d);
+     uiobj_set_callback_and_delay(bomb_ask_draw_cb, &d, 4);
+     uiobj_table_clear();
+-    oi_n = uiobj_add_t0(227, 164, "", d.gfx_bombbutc, MOO_KEY_ESCAPE, -1);
+-    oi_y = uiobj_add_t0(271, 164, "", d.gfx_bombbutt, MOO_KEY_b, -1);
++    oi_n = uiobj_add_mousearea(227, 164, 227 + lbxgfx_get_w(d.gfx_bombbutc) - 1, 164 + lbxgfx_get_h(d.gfx_bombbutc) - 1, MOO_KEY_ESCAPE, -1);
++    oi_y = uiobj_add_mousearea(271, 164, 271 + lbxgfx_get_w(d.gfx_bombbutt) - 1, 164 + lbxgfx_get_h(d.gfx_bombbutt) - 1, MOO_KEY_b, -1);
+     ui_sound_play_music(0xd);
+     while (!flag_done) {
+         uiobj_id_t oi;
+@@ -232,7 +241,7 @@ void ui_bomb_show(struct game_s *g, player_id_t attacker_i, player_id_t owner_i,
+     bomb_load_data(&d);
+     uiobj_set_callback_and_delay(bomb_show_draw_cb, &d, 4);
+     uiobj_table_clear();
+-    uiobj_add_t0(227, 164, "", d.gfx_contbutt, MOO_KEY_c, -1);
++    uiobj_add_mousearea(227, 164, 227 + lbxgfx_get_w(d.gfx_contbutt) - 1, 164 + lbxgfx_get_h(d.gfx_contbutt) - 1, MOO_KEY_c, -1);
+     if (g->planet[planet_i].owner == PLAYER_NONE) {
+         ui_sound_play_music(0xe);
+     } else if (play_music) {
