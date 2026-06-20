@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uitech.c b/src/ui/classic/uitech.c
-index baa7153..b8198a1 100644
+index baa7153..ecb974d 100644
 --- a/src/ui/classic/uitech.c
 +++ b/src/ui/classic/uitech.c
 @@ -3,6 +3,7 @@
@@ -20,7 +20,25 @@ index baa7153..b8198a1 100644
  #define TECH_SCROLL_NUM 12
  
  struct tech_data_s {
-@@ -158,7 +162,7 @@ static void tech_draw_cb(void *vptr)
+@@ -154,11 +158,25 @@ static void tech_draw_cb(void *vptr)
+     lbxgfx_draw_frame(7, 36, ui_data.gfx.screens.techback);
+     lbxgfx_draw_frame(0, 0, d->gfx);
+ 
++    /* 繁中:六大領域 tab 標籤烘在 d->gfx,蓋 tab 色後疊中文(小字型 -> 14px CJK)。 */
++    {
++        static const int16_t tab[6][4] = {
++            { 5, 4, 53, 15 }, { 55, 4, 108, 15 }, { 109, 4, 161, 16 },
++            { 5, 19, 54, 31 }, { 55, 19, 108, 31 }, { 109, 19, 161, 31 }
++        };
++        for (tech_field_t i = TECH_FIELD_COMPUTER; i < TECH_FIELD_NUM; ++i) {
++            uint8_t col = (d->field == i) ? 0x89 : 0xc0;
++            vgabuf_draw_filled_rect(tab[i][0] + 2, tab[i][1] + 1, tab[i][2] - 2, tab[i][3] - 1, col);
++            lbxfont_select(0, (d->field == i) ? 0xf : 1, 0, 0);
++            lbxfont_print_str_center((tab[i][0] + tab[i][2]) / 2, (tab[i][1] + tab[i][3]) / 2 - 5, game_str_tbl_te_field[i]);
++        }
++    }
++
+     sprintf(buf, "%i %s", e->total_research_bc, game_str_bc);
      lbxfont_select(2, 6, 0, 0);
      lbxfont_print_str_right(309, 169, buf);
  
@@ -29,7 +47,7 @@ index baa7153..b8198a1 100644
          if ((i + d->pos) < d->num) {
              uint8_t a2;
              if (i == d->selected) {
-@@ -170,7 +174,7 @@ static void tech_draw_cb(void *vptr)
+@@ -170,7 +188,7 @@ static void tech_draw_cb(void *vptr)
              }
              lbxfont_select(2, a2, 0, 0);
              game_tech_get_name(g->gaux, d->field, d->completed[i + d->pos], buf);
@@ -38,7 +56,7 @@ index baa7153..b8198a1 100644
          }
      }
      game_tech_get_descr(g->gaux, d->field, d->completed[d->selected + d->pos], buf);
-@@ -320,7 +324,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -320,7 +338,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
  
      d.field = TECH_FIELD_COMPUTER;
      ui_tech_build_completed(&d);
@@ -47,7 +65,7 @@ index baa7153..b8198a1 100644
      SETMAX(d.pos, 0);
      d.selected = d.num - 1 - d.pos;
  
-@@ -348,7 +352,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -348,7 +366,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
                  ui_sound_play_sfx_24();
                  d.field = i;
                  ui_tech_build_completed(&d);
@@ -56,7 +74,7 @@ index baa7153..b8198a1 100644
                  SETMAX(d.pos, 0);
                  d.selected = d.num - 1 - d.pos;
              } else if (oi == oi_tbl_lock[i]) {
-@@ -376,7 +380,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -376,7 +394,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
                  d.hmm = !d.hmm;
              }
          }
@@ -65,7 +83,7 @@ index baa7153..b8198a1 100644
              if (oi == oi_tbl_techname[i]) {
                  ui_sound_play_sfx_24();
                  d.selected = i;
-@@ -391,8 +395,8 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -391,8 +409,8 @@ void ui_tech(struct game_s *g, player_id_t active_player)
              t->slider[4] = 17;
              t->slider[5] = 17;
          }
@@ -76,7 +94,7 @@ index baa7153..b8198a1 100644
          }
          SETMAX(d.pos, 0);
          if ((d.selected + d.pos) >= d.num) {
-@@ -403,11 +407,11 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -403,11 +421,11 @@ void ui_tech(struct game_s *g, player_id_t active_player)
              tech_draw_cb(&d);
              uiobj_table_clear();
              UIOBJ_CLEAR_LOCAL();
@@ -90,7 +108,7 @@ index baa7153..b8198a1 100644
                      oi_down = uiobj_add_t0(157, 141, "", ui_data.gfx.screens.tech_but_down, MOO_KEY_PERIOD, -1);
                  }
              }
-@@ -430,9 +434,9 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -430,9 +448,9 @@ void ui_tech(struct game_s *g, player_id_t active_player)
                      d.oi_tbl_slider[i] = uiobj_add_slider(227, y, 0, 100, 0, 100, 50, 9, &t->slider[i], MOO_KEY_UNKNOWN, -1);
                  }
              }

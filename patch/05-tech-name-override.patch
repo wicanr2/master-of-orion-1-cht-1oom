@@ -1,3 +1,74 @@
+diff --git a/src/game/game_audience.c b/src/game/game_audience.c
+index 01c7e4b..0bd550f 100644
+--- a/src/game/game_audience.c
++++ b/src/game/game_audience.c
+@@ -9,6 +9,7 @@
+ 
+ #include "game_audience.h"
+ #include "comp.h"
++#include "strtr.h"
+ #include "game.h"
+ #include "game_ai.h"
+ #include "game_aux.h"
+@@ -113,11 +114,22 @@ static const char *game_audience_get_str1(struct audience_s *au)
+                 SETMAX(v, 0);
+             }
+             g->gaux->diplo_d0_rval = v;
+-            msg = DIPLOMAT_MSG_PTR(g->gaux, v, dtype);
++            msg = strtr(DIPLOMAT_MSG_PTR(g->gaux, v, dtype)); /* 繁中:外交訊息覆蓋(含 token) */
+         }
+         for (int i = 0; (i < DIPLOMAT_MSG_LEN) && (msg[i] != 0); ++i) {
+             char c;
+             c = msg[i];
++            /* 繁中:UTF-8 中文(3-byte)整段複製,避免續位元組被當 token。 */
++            if (((unsigned char)c >= 0xe0) && ((unsigned char)c <= 0xef)
++             && (i + 2 < DIPLOMAT_MSG_LEN)
++             && (((unsigned char)msg[i + 1] & 0xc0) == 0x80)
++             && (((unsigned char)msg[i + 2] & 0xc0) == 0x80)) {
++                *buf++ = msg[i];
++                *buf++ = msg[i + 1];
++                *buf++ = msg[i + 2];
++                i += 2;
++                continue;
++            }
+             if (c & 0x80) {
+                 const char *s;
+                 int len = 0;
+diff --git a/src/game/game_news.c b/src/game/game_news.c
+index c41dd8b..1425320 100644
+--- a/src/game/game_news.c
++++ b/src/game/game_news.c
+@@ -5,6 +5,7 @@
+ 
+ #include "game_news.h"
+ #include "comp.h"
++#include "strtr.h"
+ #include "game.h"
+ #include "game_aux.h"
+ #include "game_stat.h"
+@@ -19,10 +20,21 @@
+ 
+ void game_news_get_msg(const struct game_s *g, struct news_s *ns, char *buf)
+ {
+-    const char *msg = EVENTMSG_PTR(g->gaux, ns->type, ns->subtype);
++    const char *msg = strtr(EVENTMSG_PTR(g->gaux, ns->type, ns->subtype)); /* 繁中:新聞訊息覆蓋 */
+     for (int i = 0; (i < EVENTMSG_LEN) && (msg[i] != 0); ++i) {
+         char c;
+         c = msg[i];
++        /* 繁中:UTF-8 中文(3-byte)整段複製,避免續位元組被當 token。 */
++        if (((unsigned char)c >= 0xe0) && ((unsigned char)c <= 0xef)
++         && (i + 2 < EVENTMSG_LEN)
++         && (((unsigned char)msg[i + 1] & 0xc0) == 0x80)
++         && (((unsigned char)msg[i + 2] & 0xc0) == 0x80)) {
++            *buf++ = msg[i];
++            *buf++ = msg[i + 1];
++            *buf++ = msg[i + 2];
++            i += 2;
++            continue;
++        }
+         if (c & 0x80) {
+             int len;
+             switch (c & 0x7f) {
 diff --git a/src/game/game_tech.c b/src/game/game_tech.c
 index 7d401fa..d94f2ea 100644
 --- a/src/game/game_tech.c
@@ -50,15 +121,16 @@ index 7d401fa..d94f2ea 100644
  }
 diff --git a/src/strtr.c b/src/strtr.c
 new file mode 100644
-index 0000000..53b7dac
+index 0000000..b5edb85
 --- /dev/null
 +++ b/src/strtr.c
-@@ -0,0 +1,129 @@
+@@ -0,0 +1,151 @@
 +#include "config.h"
 +
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
++#include <ctype.h>
 +#include <dirent.h>
 +#include <sys/stat.h>
 +
@@ -84,6 +156,25 @@ index 0000000..53b7dac
 +}
 +
 +static int tr_cap = 0;
++
++/* 原地解碼 \xNN 跳脫為單一位元組(供外交/新聞訊息的 token byte >=0x80)。
++   其他內容原樣保留。回傳解碼後長度。 */
++static size_t strtr_unescape(char *s)
++{
++    char *o = s;
++    for (char *p = s; *p; ) {
++        if (p[0] == '\\' && p[1] == 'x'
++         && isxdigit((unsigned char)p[2]) && isxdigit((unsigned char)p[3])) {
++            char h[3] = { p[2], p[3], 0 };
++            *o++ = (char)(unsigned char)strtol(h, NULL, 16);
++            p += 4;
++        } else {
++            *o++ = *p++;
++        }
++    }
++    *o = '\0';
++    return (size_t)(o - s);
++}
 +
 +/* 載入單一 TSV 檔(append,不排序)。回傳新增筆數。 */
 +static int strtr_load_file(const char *path)
@@ -114,6 +205,8 @@ index 0000000..53b7dac
 +            tr_cap = tr_cap ? tr_cap * 2 : 256;
 +            tr = lib_realloc(tr, sizeof(struct entry_s) * tr_cap);
 +        }
++        strtr_unescape(en);                 /* \xNN -> token byte(外交/新聞) */
++        strtr_unescape(zh);
 +        tr[tr_num].en = lib_stralloc(en);
 +        tr[tr_num].zh = lib_stralloc(zh);
 +        ++tr_num;
