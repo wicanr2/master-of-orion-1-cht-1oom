@@ -52,10 +52,24 @@ index aaec8f4..f80ce74 100644
  
  #endif
 diff --git a/src/ui/classic/uiraces.c b/src/ui/classic/uiraces.c
-index ff8ed70..cef11a3 100644
+index ff8ed70..5be29d3 100644
 --- a/src/ui/classic/uiraces.c
 +++ b/src/ui/classic/uiraces.c
-@@ -224,6 +224,11 @@ static void races_draw_cb(void *vptr)
+@@ -94,6 +94,13 @@ static void races_draw_cb(void *vptr)
+     } else {
+         vgabuf_draw_filled_rect(238, 141, 283, 144, 0x5a);
+     }
++    /* 繁中:OVERALL SECURITY 烘字標題疊中文(整體保安) */
++    {
++        uint8_t f = *vgabuf_get_xy(167, 148);
++        vgabuf_draw_filled_rect(164, 142, 236, 149, f);
++        lbxfont_select(2, 6, 0, 0);
++        lbxfont_print_str_normal(167, 142, "整體保安");
++    }
+     lbxfont_select(2, 6, 0, 0);
+     lbxfont_print_str_normal(167, 150, game_str_ra_secline1);
+     lbxfont_print_str_normal(167, 157, game_str_ra_secline2);
+@@ -224,16 +231,24 @@ static void races_draw_cb(void *vptr)
      lbxgfx_draw_frame(245, 180, ui_data.gfx.screens.races_bu.audience);
      lbxgfx_set_new_frame(ui_data.gfx.screens.races_bu.ok, 1);
      lbxgfx_draw_frame(290, 180, ui_data.gfx.screens.races_bu.ok);
@@ -67,7 +81,48 @@ index ff8ed70..cef11a3 100644
      for (int i = 0; i < d->num; ++i) {
          int x, y;
          x = (i / 3) * 157;
-@@ -388,9 +393,9 @@ int ui_races(struct game_s *g, player_id_t api)
+         y = (i % 3) * 64;
+         lbxgfx_set_new_frame(ui_data.gfx.screens.races_bu.hiding, (d->tbl_spymode[i] == SPYMODE_HIDE) ? 1 : 0);
+         lbxgfx_draw_frame(x + 59, y + 55, ui_data.gfx.screens.races_bu.hiding);
++        ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.hiding, x + 59, y + 55, "隱匿");
+         lbxgfx_set_new_frame(ui_data.gfx.screens.races_bu.sabotage, (d->tbl_spymode[i] == SPYMODE_SABOTAGE) ? 1 : 0);
+         lbxgfx_draw_frame(x + 77, y + 55, ui_data.gfx.screens.races_bu.sabotage);
++        ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.sabotage, x + 77, y + 55, "破壞");
+         lbxgfx_set_new_frame(ui_data.gfx.screens.races_bu.espionage, (d->tbl_spymode[i] == SPYMODE_ESPIONAGE) ? 1 : 0);
+         lbxgfx_draw_frame(x + 114, y + 55, ui_data.gfx.screens.races_bu.espionage);
++        ui_draw_btn_cjk(ui_data.gfx.screens.races_bu.espionage, x + 114, y + 55, "間諜");
+     }
+ }
+ 
+@@ -244,11 +259,9 @@ int ui_races(struct game_s *g, player_id_t api)
+     struct races_data_s d;
+     bool flag_done = false;
+     uiobj_id_t oi_ok, oi_audience, oi_report, oi_status, oi_sec_minus, oi_sec_plus,
+-            /*
+             oi_tbl_hiding[PLAYER_NUM - 1],
+             oi_tbl_espionage[PLAYER_NUM - 1],
+             oi_tbl_sabotage[PLAYER_NUM - 1],
+-            */
+             oi_tbl_spying[PLAYER_NUM - 1],
+             oi_tbl_oppon[PLAYER_NUM - 1],
+             oi_tbl_spy_minus[PLAYER_NUM - 1],
+@@ -369,6 +382,15 @@ int ui_races(struct game_s *g, player_id_t api)
+                 } else {
+                     d.cursor_mode = 0;
+                 }
++            } else if (oi == oi_tbl_hiding[i]) {
++                ui_sound_play_sfx_24();
++                d.tbl_spymode[i] = SPYMODE_HIDE;
++            } else if (oi == oi_tbl_sabotage[i]) {
++                ui_sound_play_sfx_24();
++                d.tbl_spymode[i] = SPYMODE_SABOTAGE;
++            } else if (oi == oi_tbl_espionage[i]) {
++                ui_sound_play_sfx_24();
++                d.tbl_spymode[i] = SPYMODE_ESPIONAGE;
+             }
+         }
+         UIOBJ_CLEAR_LOCAL();
+@@ -388,17 +410,18 @@ int ui_races(struct game_s *g, player_id_t api)
              uiobj_table_clear();
              if (d.num > 0) {
                  if (d.cursor_mode == 0) {
@@ -79,7 +134,19 @@ index ff8ed70..cef11a3 100644
                      }
                      for (int i = 0; i < d.num; ++i) {
                          int x, y;
-@@ -412,8 +417,8 @@ int ui_races(struct game_s *g, player_id_t api)
+                         x = (i / 3) * 157;
+                         y = (i % 3) * 64;
+-                        /*oi_tbl_hiding[i] =*/ uiobj_add_t3(x + 59, y + 55, "", ui_data.gfx.screens.races_bu.hiding, &(d.tbl_spymode[i]), SPYMODE_HIDE, MOO_KEY_UNKNOWN, -1);
+-                        /*oi_tbl_sabotage[i] =*/ uiobj_add_t3(x + 77, y + 55, "", ui_data.gfx.screens.races_bu.sabotage, &(d.tbl_spymode[i]), SPYMODE_SABOTAGE, MOO_KEY_UNKNOWN, -1);
+-                        /*oi_tbl_espionage[i] =*/ uiobj_add_t3(x + 114, y + 55, "", ui_data.gfx.screens.races_bu.espionage, &(d.tbl_spymode[i]), SPYMODE_ESPIONAGE, MOO_KEY_UNKNOWN, -1);
++                        /* 繁中:t3 會重畫 gfx 蓋掉疊字,改 mousearea + draw_cb 疊中文,點擊手動設模式 */
++                        oi_tbl_hiding[i] = uiobj_add_mousearea(x + 59, y + 55, x + 59 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.hiding) - 1, y + 55 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.hiding) - 1, MOO_KEY_UNKNOWN, -1);
++                        oi_tbl_sabotage[i] = uiobj_add_mousearea(x + 77, y + 55, x + 77 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.sabotage) - 1, y + 55 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.sabotage) - 1, MOO_KEY_UNKNOWN, -1);
++                        oi_tbl_espionage[i] = uiobj_add_mousearea(x + 114, y + 55, x + 114 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.espionage) - 1, y + 55 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.espionage) - 1, MOO_KEY_UNKNOWN, -1);
+                     }
+                 } else {
+                     for (int i = 0; i < d.num; ++i) {
+@@ -412,8 +435,8 @@ int ui_races(struct game_s *g, player_id_t api)
                  }
              }
              if (d.cursor_mode == 0) {
