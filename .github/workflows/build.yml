@@ -28,13 +28,13 @@ jobs:
           cd 1oom
           for p in ../patch/*.patch; do echo "apply $p"; git apply --whitespace=nowarn "$p" || patch -p1 < "$p"; done
 
-      - name: Build (universal arm64+x86_64)
+      - name: Build (arm64 native)
         run: |
           cd 1oom
           [ -f configure ] || autoreconf -fi
           mkdir -p ../build-mac && cd ../build-mac
           ../1oom/configure --disable-hwsdl1 --disable-hwalleg4 --disable-tools \
-            CFLAGS="-O2 -arch arm64 -arch x86_64" LDFLAGS="-arch arm64 -arch x86_64"
+            CFLAGS="-O2"
           make -j3
           file src/1oom_classic_sdl2 || true
 
