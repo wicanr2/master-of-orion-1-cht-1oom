@@ -226,10 +226,35 @@ index 7fd61c5..0ddee81 100644
      }
  }
 diff --git a/src/ui/classic/uistarmap_common.c b/src/ui/classic/uistarmap_common.c
-index ab778cf..3ead833 100644
+index ab778cf..5f24ece 100644
 --- a/src/ui/classic/uistarmap_common.c
 +++ b/src/ui/classic/uistarmap_common.c
-@@ -149,6 +149,28 @@ static void ui_starmap_draw_sliders_and_prod(struct starmap_data_s *d)
+@@ -3,6 +3,7 @@
+ #include <stdio.h>
+ 
+ #include "uistarmap_common.h"
++#include "strtr.h"
+ #include "comp.h"
+ #include "game.h"
+ #include "game_aux.h"
+@@ -38,8 +39,15 @@ static void ui_starmap_draw_planetinfo_do(const struct game_s *g, player_id_t ap
+ {
+     const planet_t *p = &g->planet[planet_i];
+     if (explored) {
++        const char *zh = strtr(p->name);
+         lbxfont_select_set_12_4(4, 0xf, 0, 0);
+-        lbxfont_print_str_center(269, 10, p->name);
++        if (zh != p->name) {
++            char hbuf[48];
++            snprintf(hbuf, sizeof(hbuf), "%s(%s)", zh, p->name);
++            lbxfont_print_str_center(269, 10, hbuf);
++        } else {
++            lbxfont_print_str_center(269, 10, p->name);
++        }
+         if (ui_qol_starmap_planet_neb && (p->battlebg == 0)) {
+             ui_draw_box1(228, 25, 309, 52, 0xd3, 0xd3);
+         }
+@@ -149,6 +157,28 @@ static void ui_starmap_draw_sliders_and_prod(struct starmap_data_s *d)
          }
      }
  
@@ -258,7 +283,7 @@ index ab778cf..3ead833 100644
      lbxfont_select(2, 0xa, 0, 0);
      if (p->buildship == BUILDSHIP_STARGATE) {
          vgabuf_draw_filled_rect(229, 141, 274, 166, 0);
-@@ -512,8 +534,11 @@ void ui_starmap_draw_basic(struct starmap_data_s *d)
+@@ -512,8 +542,11 @@ void ui_starmap_draw_basic(struct starmap_data_s *d)
                  lbxgfx_set_frame(ui_data.gfx.starmap.col_butt_trans, 1);
              }
              lbxgfx_draw_frame(282, 140, ui_data.gfx.starmap.col_butt_ship);
@@ -270,6 +295,24 @@ index ab778cf..3ead833 100644
          }
      }
      ui_starmap_draw_planetinfo(g, d->api, g->planet_focus_i[d->api]);
+@@ -635,7 +668,7 @@ void ui_starmap_draw_starmap(struct starmap_data_s *d)
+                 lbxfont_select(2, tbl_banner_fontparam[g->eto[p->owner].banner], 0, 0);
+                 tx = ui_starmap_x_to_screen(p->x) + 8;
+                 ty = ui_starmap_y_to_screen(p->y) + 16;
+-                ui_starmap_print_str_center_limit(tx, ty, p->name);
++                ui_starmap_print_str_center_limit(tx, ty, strtr(p->name));
+             } else if (IN_CONTACT(g, d->api, p->owner) || (p->within_frange[d->api] == 1)) {
+                 /* MOO1 does not check (d->api != p->owner) due to within_frange check */
+                 do_print = true;
+@@ -645,7 +678,7 @@ void ui_starmap_draw_starmap(struct starmap_data_s *d)
+             if (do_print) {
+                 tx = ui_starmap_x_to_screen(p->x) + 8;
+                 ty = ui_starmap_y_to_screen(p->y) + 16;
+-                ui_starmap_print_str_center_limit(tx, ty, p->name);
++                ui_starmap_print_str_center_limit(tx, ty, strtr(p->name));
+             }
+         }
+     }
 diff --git a/src/ui/classic/uistarmap_enroute.c b/src/ui/classic/uistarmap_enroute.c
 index ab04ce5..58da9b5 100644
 --- a/src/ui/classic/uistarmap_enroute.c
