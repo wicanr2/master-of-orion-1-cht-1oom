@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uinewgame.c b/src/ui/classic/uinewgame.c
-index 3100c0f..522a799 100644
+index 3100c0f..ff545bc 100644
 --- a/src/ui/classic/uinewgame.c
 +++ b/src/ui/classic/uinewgame.c
 @@ -22,6 +22,7 @@
@@ -10,20 +10,22 @@ index 3100c0f..522a799 100644
  #include "uiobj.h"
  #include "uipal.h"
  #include "uisound.h"
-@@ -95,11 +96,37 @@ static void new_game_free_data(struct new_game_data_s *d)
+@@ -95,11 +96,41 @@ static void new_game_free_data(struct new_game_data_s *d)
      lib_free(d->str_tbl_2space_race[RACE_NUM + 1]);
  }
  
-+/* 繁中:在按鈕圖上蓋掉烘字英文(取樣鈕面色填中段)後置中印中文。 */
++/* 繁中:畫凸鈕後,取樣鈕面橘色蓋掉烘字英文,再置中印中文(與原版同位置)。 */
 +static void new_game_draw_button_cjk(uint8_t *gfx, int x, int y, const char *s)
 +{
 +    int w = lbxgfx_get_w(gfx);
 +    int h = lbxgfx_get_h(gfx);
 +    lbxgfx_draw_frame(x, y, gfx);
-+    uint8_t face = *vgabuf_get_xy(x + 4, y + 2);          /* 取樣鈕面色(上緣) */
-+    vgabuf_draw_filled_rect(x + 3, y + h / 2 - 5, x + w - 3, y + h / 2 + 5, face);
++    /* 取樣鈕面橘色:避開烘字(中央)與凸邊,取上方 1/4 高處。 */
++    uint8_t face = *vgabuf_get_xy(x + w / 2, y + h / 4);
++    vgabuf_draw_filled_rect(x + 4, y + 3, x + w - 4, y + h - 3, face);
 +    lbxfont_select(0, 5, 0, 0);
-+    lbxfont_print_str_center(x + w / 2, y + h / 2 - 5, s);
++    /* 垂直置中:print 的 y 為頂端,glyph 約 12 邏輯高,行中心對齊鈕中心。 */
++    lbxfont_print_str_center(x + w / 2, y + h / 2 - 2, s);
 +}
 +
  static void new_game_draw_cb1(void *vptr)
@@ -31,16 +33,18 @@ index 3100c0f..522a799 100644
      struct new_game_data_s *d = vptr;
      vgabuf_clear();
      lbxgfx_draw_frame(0, 0, d->gfx_newgame);
-+    /* 繁中化:面板標籤與按鈕文字烘在 LBX 圖裡。取樣面板/鈕面色蓋掉英文後疊上 CJK。 */
++    /* 繁中化:面板標籤與按鈕文字烘在 LBX 圖裡。取樣 row 中央橘色蓋英文後疊 CJK,
++       對齊原版(左對齊、垂直置中於橘色 bar)。 */
 +    {
-+        static const struct { int y; const char *s; } lbl[3] = {
-+            { 0x1f, "銀河大小" }, { 0x46, "難度" }, { 0x6d, "對手" }
-+        };
++        /* row_cy = 各列垂直中心;label 左緣對齊原英文起點 0x6a。 */
++        static const int row_cy[3] = { 0x25, 0x4c, 0x73 };
++        static const char *lbl[3] = { "銀河大小", "難度", "對手" };
 +        for (int i = 0; i < 3; ++i) {
-+            uint8_t bg = *vgabuf_get_xy(0x60, lbl[i].y - 7); /* 取樣標籤上方面板色 */
-+            vgabuf_draw_filled_rect(0x5e, lbl[i].y - 3, 0xa6, lbl[i].y + 13, bg);
++            int cy = row_cy[i];
++            uint8_t orange = *vgabuf_get_xy(0x50, cy); /* row 中央左側乾淨橘色 */
++            vgabuf_draw_filled_rect(0x60, cy - 7, 0xa8, cy + 6, orange); /* 蓋英文(左緣足夠) */
 +            lbxfont_select(0, 5, 0, 0);
-+            lbxfont_print_str_normal(0x6c, lbl[i].y, lbl[i].s);
++            lbxfont_print_str_normal(0x68, cy - 2, lbl[i]); /* glyph 中心 ≈ print_y+2 = cy */
 +        }
 +    }
 +    new_game_draw_button_cjk(d->gfx_optb_cancel, 0x5a, 0x93, "取消");
@@ -48,7 +52,7 @@ index 3100c0f..522a799 100644
  }
  
  static void new_game_draw_race_cb(void *vptr)
-@@ -111,7 +138,9 @@ static void new_game_draw_race_cb(void *vptr)
+@@ -111,7 +142,9 @@ static void new_game_draw_race_cb(void *vptr)
          lbxfont_select(0, 4, 0, 0);
          for (int i = 0; i < 3; ++i) {
              if (*game_str_tbl_traits[d->selected * 3 + i]) {
@@ -59,7 +63,7 @@ index 3100c0f..522a799 100644
              }
          }
      }
-@@ -260,8 +289,8 @@ bool ui_new_game(struct game_new_options_s *newopts)
+@@ -260,8 +293,8 @@ bool ui_new_game(struct game_new_options_s *newopts)
          oi_gsize = uiobj_add_t0(0xaf, 0x1d, game_str_tbl_gsize[gsize], d.gfx_optb_ng, MOO_KEY_UNKNOWN, -1); \
          oi_diffic = uiobj_add_t0(0xaf, 0x44, game_str_tbl_diffic[diffic], d.gfx_optb_ng, MOO_KEY_UNKNOWN, -1); \
          oi_oppon = uiobj_add_t0(0xaf, 0x6b, game_str_tbl_oppon[oppon], d.gfx_optb_ng, MOO_KEY_UNKNOWN, -1); \
