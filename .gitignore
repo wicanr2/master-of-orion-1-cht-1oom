@@ -26,3 +26,6 @@
 /assets/fonts/*_test.bin
 /build/
 /build-asan/
+
+# 萃取工具 stderr
+*.err
