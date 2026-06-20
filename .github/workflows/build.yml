@@ -1,0 +1,106 @@
+name: build
+
+# 跨平台建置(macOS / Linux)。Windows 用本地 scripts/build-windows.sh(mingw)。
+# Android:1oom 為桌面 SDL2 引擎,無 Android 專案(無 SDL2 Android port / 觸控),本專案不提供。
+# 注意:公開 artifact 僅含引擎 + 字型 + 譯文,**不含版權遊戲資料**;使用者自備正版 MOO 1.3 資料置於 data/。
+
+on:
+  push:
+    branches: [ master ]
+    paths: [ 'patch/**', 'scripts/**', '.github/workflows/**', 'docs/translation/**', 'assets/fonts/**' ]
+  workflow_dispatch:
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          brew update
+          brew install sdl2 sdl2_mixer libsamplerate automake autoconf libtool pkg-config dylibbundler
+
+      - name: Fetch engine + apply patches
+        run: |
+          git clone --branch master-vanilla-testing "https://git@git.sourcecraft.dev/fork1oom/1oom.git" 1oom \
+            || git clone "https://github.com/1oom-fork/1oom.git" 1oom
+          cd 1oom
+          for p in ../patch/*.patch; do echo "apply $p"; git apply --whitespace=nowarn "$p" || patch -p1 < "$p"; done
+
+      - name: Build (universal arm64+x86_64)
+        run: |
+          cd 1oom
+          [ -f configure ] || autoreconf -fi
+          mkdir -p ../build-mac && cd ../build-mac
+          ../1oom/configure --disable-hwsdl1 --disable-hwalleg4 --disable-tools \
+            CFLAGS="-O2 -arch arm64 -arch x86_64" LDFLAGS="-arch arm64 -arch x86_64"
+          make -j3
+          file src/1oom_classic_sdl2 || true
+
+      - name: Bundle .app + .dmg
+        run: |
+          APP="Master of Orion CHT.app"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/data/translation"
+          cp build-mac/src/1oom_classic_sdl2 "$APP/Contents/MacOS/moo-cht"
+          # 字型 + 譯文(資料由使用者自備放 Resources/data/)
+          cp assets/fonts/cjk24.bin "$APP/Contents/Resources/data/"
+          cp docs/translation/*_zh.tsv "$APP/Contents/Resources/data/translation/"
+          # 啟動 wrapper:用 .app 內 data 夾(使用者把原版 .lbx 放進去)
+          cat > "$APP/Contents/MacOS/launch" <<'EOF'
+          #!/bin/bash
+          DIR="$(cd "$(dirname "$0")" && pwd)"
+          exec "$DIR/moo-cht" -data "$DIR/../Resources/data" -winw 960 -winh 600 "$@"
+          EOF
+          chmod +x "$APP/Contents/MacOS/launch"
+          cat > "$APP/Contents/Info.plist" <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+          <key>CFBundleName</key><string>Master of Orion CHT</string>
+          <key>CFBundleExecutable</key><string>launch</string>
+          <key>CFBundleIdentifier</key><string>org.cht.moo</string>
+          <key>CFBundleVersion</key><string>1.0</string>
+          <key>CFBundlePackageType</key><string>APPL</string>
+          <key>NSHighResolutionCapable</key><true/>
+          </dict></plist>
+          EOF
+          # 內嵌 SDL2 等 dylib
+          dylibbundler -od -b -x "$APP/Contents/MacOS/moo-cht" -d "$APP/Contents/libs" -p @executable_path/../libs || true
+          # README 說明資料放法
+          printf '把正版 Master of Orion 1.3 的 *.lbx 等檔放入\nMaster of Orion CHT.app/Contents/Resources/data/\n然後執行 App。\n' > 安裝說明.txt
+          # DMG
+          hdiutil create -volname "MasterOfOrion-CHT" -srcfolder "$APP" -srcfolder "安裝說明.txt" -ov -format UDZO MasterOfOrion-CHT-mac.dmg
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MasterOfOrion-CHT-mac
+          path: MasterOfOrion-CHT-mac.dmg
+
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install deps
+        run: sudo apt-get update && sudo apt-get install -y build-essential autoconf automake libtool pkg-config libsdl2-dev libsdl2-mixer-dev libsamplerate-dev libgl1-mesa-dev
+      - name: Fetch engine + patches
+        run: |
+          git clone --branch master-vanilla-testing "https://git@git.sourcecraft.dev/fork1oom/1oom.git" 1oom \
+            || git clone "https://github.com/1oom-fork/1oom.git" 1oom
+          cd 1oom && for p in ../patch/*.patch; do git apply --whitespace=nowarn "$p" || patch -p1 < "$p"; done
+      - name: Build
+        run: |
+          cd 1oom && [ -f configure ] || autoreconf -fi
+          mkdir -p ../build-lin && cd ../build-lin
+          ../1oom/configure --disable-hwsdl1 --disable-hwalleg4 && make -j3
+      - name: Stage artifact (engine + 字型 + 譯文,無遊戲資料)
+        run: |
+          mkdir -p out/data/translation
+          cp build-lin/src/1oom_classic_sdl2 out/
+          cp assets/fonts/cjk24.bin out/data/
+          cp docs/translation/*_zh.tsv out/data/translation/
+          printf '把正版 MOO 1.3 的 *.lbx 放入 data/ 後:\n./1oom_classic_sdl2 -data data -winw 960 -winh 600\n' > out/README.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MasterOfOrion-CHT-linux
+          path: out

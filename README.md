@@ -72,6 +72,20 @@ MOO_STR_TR=docs/translation \
 
 `scripts/playtest.sh` 會載入存檔自動巡覽各主要畫面、截圖並偵測 crash,用於驗收可玩性。
 
+## 下載與打包
+
+各平台打包(因公開版權考量,釋出檔僅含**引擎 + 字型 + 譯文**,玩家自備正版 MOO 1.3 資料放入 `data/`):
+
+| 平台 | 方式 | 產物 |
+|---|---|---|
+| **Linux** | `scripts/build-appimage.sh`(本地)或 GitHub Actions | `.AppImage` / 目錄 |
+| **Windows** | `scripts/build-windows.sh`(本地 mingw 交叉編譯,含 SDL2 DLL) | `.zip`(含 `玩.bat`) |
+| **macOS** | GitHub Actions(`macos-14`,universal arm64+x86_64) | `.dmg`(`.app` 內附 `安裝說明`) |
+| **Android** | — | 不提供:1oom 為桌面 SDL2 引擎,無 Android port(觸控/GLES CJK 需從零開發) |
+
+本地 `build-appimage.sh` / `build-windows.sh` 會產生**完整含遊戲**的包(輸出 `release/`,不入庫,僅供自備正版者本地使用)。
+GitHub Actions(`.github/workflows/build.yml`)推送即觸發 macOS / Linux 建置,產出不含版權資料的 artifact。
+
 ## 目錄結構
 
 | 路徑 | 說明 |
