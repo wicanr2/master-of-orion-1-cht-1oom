@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uitech.c b/src/ui/classic/uitech.c
-index baa7153..ecb974d 100644
+index baa7153..245014c 100644
 --- a/src/ui/classic/uitech.c
 +++ b/src/ui/classic/uitech.c
 @@ -3,6 +3,7 @@
@@ -10,17 +10,18 @@ index baa7153..ecb974d 100644
  #include "comp.h"
  #include "game.h"
  #include "game_aux.h"
-@@ -29,6 +30,9 @@
+@@ -29,6 +30,10 @@
  /* -------------------------------------------------------------------------- */
  
  #define TECH_ON_SCREEN  16
 +/* 繁中:24px CJK 行距加大 -> 可見列數減少。陣列仍用 TECH_ON_SCREEN(16)為上限。 */
 +static int tech_row_h(void) { return cjkfont_available() ? 14 : 7; }
-+static int tech_vis(void) { return cjkfont_available() ? 8 : TECH_ON_SCREEN; }
++static int tech_vis(void) { return cjkfont_available() ? 7 : TECH_ON_SCREEN; }
++#define TECH_LIST_Y0  (cjkfont_available() ? 41 : 37)  /* 繁中:清單下移避免蓋框頂 */
  #define TECH_SCROLL_NUM 12
  
  struct tech_data_s {
-@@ -154,11 +158,25 @@ static void tech_draw_cb(void *vptr)
+@@ -154,11 +159,32 @@ static void tech_draw_cb(void *vptr)
      lbxgfx_draw_frame(7, 36, ui_data.gfx.screens.techback);
      lbxgfx_draw_frame(0, 0, d->gfx);
  
@@ -36,6 +37,13 @@ index baa7153..ecb974d 100644
 +            lbxfont_select(0, (d->field == i) ? 0xf : 1, 0, 0);
 +            lbxfont_print_str_center((tab[i][0] + tab[i][2]) / 2, (tab[i][1] + tab[i][3]) / 2 - 5, game_str_tbl_te_field[i]);
 +        }
++        /* 右側六大領域欄位標題(烘在 d->gfx):蓋鎖色後疊中文。 */
++        for (tech_field_t i = TECH_FIELD_COMPUTER; i < TECH_FIELD_NUM; ++i) {
++            int hy = 21 * i + 22;
++            vgabuf_draw_filled_rect(168, hy, 217, hy + 8, t->slider_lock[i] ? 0x24 : 0xbc);
++            lbxfont_select(0, 0xf, 0, 0);
++            lbxfont_print_str_normal(170, hy - 2, game_str_tbl_te_field[i]);
++        }
 +    }
 +
      sprintf(buf, "%i %s", e->total_research_bc, game_str_bc);
@@ -47,16 +55,16 @@ index baa7153..ecb974d 100644
          if ((i + d->pos) < d->num) {
              uint8_t a2;
              if (i == d->selected) {
-@@ -170,7 +188,7 @@ static void tech_draw_cb(void *vptr)
+@@ -170,7 +196,7 @@ static void tech_draw_cb(void *vptr)
              }
              lbxfont_select(2, a2, 0, 0);
              game_tech_get_name(g->gaux, d->field, d->completed[i + d->pos], buf);
 -            lbxfont_print_str_normal(9, 37 + i * 7, buf);
-+            lbxfont_print_str_normal(9, 37 + i * tech_row_h(), buf);
++            lbxfont_print_str_normal(9, TECH_LIST_Y0 + i * tech_row_h(), buf);
          }
      }
      game_tech_get_descr(g->gaux, d->field, d->completed[d->selected + d->pos], buf);
-@@ -320,7 +338,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -320,7 +346,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
  
      d.field = TECH_FIELD_COMPUTER;
      ui_tech_build_completed(&d);
@@ -65,7 +73,7 @@ index baa7153..ecb974d 100644
      SETMAX(d.pos, 0);
      d.selected = d.num - 1 - d.pos;
  
-@@ -348,7 +366,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -348,7 +374,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
                  ui_sound_play_sfx_24();
                  d.field = i;
                  ui_tech_build_completed(&d);
@@ -74,7 +82,7 @@ index baa7153..ecb974d 100644
                  SETMAX(d.pos, 0);
                  d.selected = d.num - 1 - d.pos;
              } else if (oi == oi_tbl_lock[i]) {
-@@ -376,7 +394,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -376,7 +402,7 @@ void ui_tech(struct game_s *g, player_id_t active_player)
                  d.hmm = !d.hmm;
              }
          }
@@ -83,7 +91,7 @@ index baa7153..ecb974d 100644
              if (oi == oi_tbl_techname[i]) {
                  ui_sound_play_sfx_24();
                  d.selected = i;
-@@ -391,8 +409,8 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -391,8 +417,8 @@ void ui_tech(struct game_s *g, player_id_t active_player)
              t->slider[4] = 17;
              t->slider[5] = 17;
          }
@@ -94,7 +102,7 @@ index baa7153..ecb974d 100644
          }
          SETMAX(d.pos, 0);
          if ((d.selected + d.pos) >= d.num) {
-@@ -403,11 +421,11 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -403,11 +429,11 @@ void ui_tech(struct game_s *g, player_id_t active_player)
              tech_draw_cb(&d);
              uiobj_table_clear();
              UIOBJ_CLEAR_LOCAL();
@@ -108,7 +116,7 @@ index baa7153..ecb974d 100644
                      oi_down = uiobj_add_t0(157, 141, "", ui_data.gfx.screens.tech_but_down, MOO_KEY_PERIOD, -1);
                  }
              }
-@@ -430,9 +448,9 @@ void ui_tech(struct game_s *g, player_id_t active_player)
+@@ -430,9 +456,9 @@ void ui_tech(struct game_s *g, player_id_t active_player)
                      d.oi_tbl_slider[i] = uiobj_add_slider(227, y, 0, 100, 0, 100, 50, 9, &t->slider[i], MOO_KEY_UNKNOWN, -1);
                  }
              }
@@ -116,7 +124,7 @@ index baa7153..ecb974d 100644
 +            for (int i = 0; i < tech_vis(); ++i) {
                  if ((i + d.pos) < d.num) {
 -                    oi_tbl_techname[i] = uiobj_add_mousearea(9, i * 7 + 37, 160, i * 7 + 43, MOO_KEY_UNKNOWN, -1);
-+                    oi_tbl_techname[i] = uiobj_add_mousearea(9, i * tech_row_h() + 37, 160, i * tech_row_h() + 37 + tech_row_h() - 2, MOO_KEY_UNKNOWN, -1);
++                    oi_tbl_techname[i] = uiobj_add_mousearea(9, i * tech_row_h() + TECH_LIST_Y0, 160, i * tech_row_h() + TECH_LIST_Y0 + tech_row_h() - 2, MOO_KEY_UNKNOWN, -1);
                  }
              }
              ui_draw_finish();
