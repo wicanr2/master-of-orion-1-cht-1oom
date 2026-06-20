@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uidesign.c b/src/ui/classic/uidesign.c
-index 39afc5d..e6da3f2 100644
+index 39afc5d..ab29f6e 100644
 --- a/src/ui/classic/uidesign.c
 +++ b/src/ui/classic/uidesign.c
 @@ -4,6 +4,7 @@
@@ -10,7 +10,37 @@ index 39afc5d..e6da3f2 100644
  #include "comp.h"
  #include "game.h"
  #include "game_aux.h"
-@@ -544,10 +545,12 @@ static struct xy_s ui_design_draw_selbox(int xpos, int xoff1, int xoff2, int xof
+@@ -98,6 +99,29 @@ static void design_draw_cb(void *vptr)
+ 
+     vgabuf_draw_filled_rect(5, 5, 315, 195, 1);
+     lbxgfx_draw_frame(0, 0, ui_data.gfx.design.bg);
++
++    /* 繁中:design.bg 烘字標籤疊中文(SHIP SIZE/ICON 與 NAME/COST/SPACE 資訊框) */
++    {
++        static const struct { int x0, y0, x1, y1, cen; const char *s; } lab[] = {
++            {  16, 148,  83, 159, 1, "艦體" },
++            {  86, 149, 140, 158, 1, "圖示" },
++            { 161, 151, 200, 159, 0, "名稱" },
++            { 161, 163, 205, 171, 0, "造價" },
++            { 161, 175, 220, 183, 0, "總空間" },
++            { 161, 187, 240, 195, 0, "可用空間" },
++        };
++        lbxfont_select(0, 0xd, 0, 0);
++        for (int i = 0; i < (int)(sizeof(lab) / sizeof(lab[0])); ++i) {
++            uint8_t f = *vgabuf_get_xy(lab[i].x0 + 1, lab[i].y1 - 1);
++            vgabuf_draw_filled_rect(lab[i].x0, lab[i].y0, lab[i].x1, lab[i].y1, f);
++            if (lab[i].cen) {
++                lbxfont_print_str_center((lab[i].x0 + lab[i].x1) / 2, lab[i].y0 + 1, lab[i].s);
++            } else {
++                lbxfont_print_str_normal(lab[i].x0 + 1, lab[i].y0 + 1, lab[i].s);
++            }
++        }
++    }
++
+     oi = uiobj_get_clicked_oi();
+     lbxfont_select(0, 6, 0, 3);
+     lbxfont_set_colors(((d->oi_comp == oi) || d->flag_disable_comp) ? colortbl_sd_ba : colortbl_sd_bf);
+@@ -544,10 +568,12 @@ static struct xy_s ui_design_draw_selbox(int xpos, int xoff1, int xoff2, int xof
      struct xy_s xy;
      int x0, y0, x1, y1;
  
@@ -25,7 +55,7 @@ index 39afc5d..e6da3f2 100644
      SETMAX(x0, 0);
      SETMIN(x1, 159);
      SETMAX(y0, 0);
-@@ -1150,12 +1153,14 @@ static void ui_design_sel_weapon(struct design_data_s *d, int wslot)
+@@ -1150,12 +1176,14 @@ static void ui_design_sel_weapon(struct design_data_s *d, int wslot)
      {
          int listi;
          struct xy_s xy;
@@ -43,7 +73,7 @@ index 39afc5d..e6da3f2 100644
          }
          if (listi < 0) {
              sd->wpnt[wslot] = actwpnt;
-@@ -1247,12 +1252,14 @@ static void ui_design_sel_special(struct design_data_s *d, int sslot)
+@@ -1247,12 +1275,14 @@ static void ui_design_sel_special(struct design_data_s *d, int sslot)
      {
          int listi;
          struct xy_s xy;
