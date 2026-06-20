@@ -1,0 +1,104 @@
+diff --git a/src/ui/classic/uigameopts.c b/src/ui/classic/uigameopts.c
+index db82255..530e58e 100644
+--- a/src/ui/classic/uigameopts.c
++++ b/src/ui/classic/uigameopts.c
+@@ -1,6 +1,7 @@
+ #include "config.h"
+ 
+ #include "uigameopts.h"
++#include "cjkfont.h"
+ #include "game_cfg.h"
+ #include "hw.h"
+ #include "kbd.h"
+@@ -26,6 +27,7 @@
+ 
+ struct gameopts_data_s {
+     int selected;
++    int16_t fxmusic;    /* 繁中:供 draw_cb 依音效模式畫 toggle 選中態 */
+     uint8_t *gfx_game;
+     uint8_t *gfx_save;
+     uint8_t *gfx_load;
+@@ -57,11 +59,54 @@ static void free_go_data(struct gameopts_data_s *d)
+     lbxfile_item_release(LBXFILE_VORTEX, d->gfx_music);
+ }
+ 
++/* 繁中:面板烘字標題(Game/Sound/Ok)疊中文 —— 取樣標題框色蓋掉英文後置中印。 */
++static void gameopts_label_cjk(int x0, int y0, int x1, int y1, const char *s)
++{
++    uint8_t face = *vgabuf_get_xy(x0 + 2, y0 + 1);
++    int cjkh, logh;
++    vgabuf_draw_filled_rect(x0, y0, x1, y1, face);
++    if ((y1 - y0) >= 15) {
++        lbxfont_select_set_12_4(5, 0xf, 0, 0);
++    } else {
++        lbxfont_select(0, 0xf, 0, 0);
++    }
++    cjkh = cjkfont_size_for(lbxfont_get_height());
++    logh = cjkh / 2;
++    lbxfont_print_str_center((x0 + x1) / 2, y0 + (y1 - y0 - logh) / 2 + 1, s);
++}
++
+ static void gameopts_draw_cb(void *vptr)
+ {
+     struct gameopts_data_s *d = vptr;
+     vgabuf_clear();
+     lbxgfx_draw_frame(0, 0, d->gfx_game);
++
++    /* 烘字按鈕:儲存 / 載入 / 離開 */
++    lbxgfx_set_new_frame(d->gfx_save, 1);
++    lbxgfx_draw_frame(115, 56, d->gfx_save);
++    ui_draw_btn_cjk(d->gfx_save, 115, 56, "儲存");
++    lbxgfx_set_new_frame(d->gfx_load, 1);
++    lbxgfx_draw_frame(115, 81, d->gfx_load);
++    ui_draw_btn_cjk(d->gfx_load, 115, 81, "載入");
++    lbxgfx_set_new_frame(d->gfx_quit, 1);
++    lbxgfx_draw_frame(115, 106, d->gfx_quit);
++    ui_draw_btn_cjk(d->gfx_quit, 115, 106, "離開");
++
++    /* 音效模式 toggle(選中態 frame 1):靜音 / 音效 / 音樂 */
++    if (d->fxmusic == 0) { lbxgfx_set_new_frame(d->gfx_silent, 1); } else { lbxgfx_set_frame_0(d->gfx_silent); }
++    lbxgfx_draw_frame(210, 56, d->gfx_silent);
++    ui_draw_btn_cjk(d->gfx_silent, 210, 56, "靜音");
++    if (d->fxmusic == 1) { lbxgfx_set_new_frame(d->gfx_fx, 1); } else { lbxgfx_set_frame_0(d->gfx_fx); }
++    lbxgfx_draw_frame(210, 81, d->gfx_fx);
++    ui_draw_btn_cjk(d->gfx_fx, 210, 81, "音效");
++    if (d->fxmusic == 2) { lbxgfx_set_new_frame(d->gfx_music, 1); } else { lbxgfx_set_frame_0(d->gfx_music); }
++    lbxgfx_draw_frame(210, 106, d->gfx_music);
++    ui_draw_btn_cjk(d->gfx_music, 210, 106, "音樂");
++
++    /* 面板烘字標題:遊戲 / 聲音 / 確定(Ok) */
++    gameopts_label_cjk(126, 36, 186, 50, "遊戲");
++    gameopts_label_cjk(206, 36, 263, 50, "聲音");
++    gameopts_label_cjk(173, 134, 226, 150, "確定");
+ }
+ 
+ /* -------------------------------------------------------------------------- */
+@@ -82,12 +127,13 @@ gameopts_act_t ui_gameopts(struct game_s *g, int *load_game_i_ptr)
+     ui_draw_finish_mode = 2;
+ 
+     uiobj_table_clear();
+-    oi_load = uiobj_add_t0(115, 81, "", d.gfx_load, MOO_KEY_l, -1);
+-    oi_save = uiobj_add_t0(115, 56, "", d.gfx_save, MOO_KEY_s, -1);
+-    oi_quit = uiobj_add_t0(115, 106, "", d.gfx_quit, MOO_KEY_q, -1);
+-    oi_silent = uiobj_add_t3(210, 56, "", d.gfx_silent, &fxmusic, 0, MOO_KEY_i, -1);
+-    oi_fx = uiobj_add_t3(210, 81, "", d.gfx_fx, &fxmusic, 1, MOO_KEY_f, -1);
+-    oi_music = uiobj_add_t3(210, 106, "", d.gfx_music, &fxmusic, 2, MOO_KEY_m, -1);
++    d.fxmusic = fxmusic;
++    oi_save = uiobj_add_mousearea(115, 56, 115 + lbxgfx_get_w(d.gfx_save) - 1, 56 + lbxgfx_get_h(d.gfx_save) - 1, MOO_KEY_s, -1);
++    oi_load = uiobj_add_mousearea(115, 81, 115 + lbxgfx_get_w(d.gfx_load) - 1, 81 + lbxgfx_get_h(d.gfx_load) - 1, MOO_KEY_l, -1);
++    oi_quit = uiobj_add_mousearea(115, 106, 115 + lbxgfx_get_w(d.gfx_quit) - 1, 106 + lbxgfx_get_h(d.gfx_quit) - 1, MOO_KEY_q, -1);
++    oi_silent = uiobj_add_mousearea(210, 56, 210 + lbxgfx_get_w(d.gfx_silent) - 1, 56 + lbxgfx_get_h(d.gfx_silent) - 1, MOO_KEY_i, -1);
++    oi_fx = uiobj_add_mousearea(210, 81, 210 + lbxgfx_get_w(d.gfx_fx) - 1, 81 + lbxgfx_get_h(d.gfx_fx) - 1, MOO_KEY_f, -1);
++    oi_music = uiobj_add_mousearea(210, 106, 210 + lbxgfx_get_w(d.gfx_music) - 1, 106 + lbxgfx_get_h(d.gfx_music) - 1, MOO_KEY_m, -1);
+     oi_done = uiobj_add_mousearea(173, 134, 226, 150, MOO_KEY_SPACE, -1);
+     uiobj_set_downcount(1);
+     uiobj_set_callback_and_delay(gameopts_draw_cb, &d, 2);
+@@ -100,6 +146,8 @@ gameopts_act_t ui_gameopts(struct game_s *g, int *load_game_i_ptr)
+             ui_sound_play_sfx_24();
+             flag_done = true;
+         } else if ((oi == oi_silent) || (oi == oi_fx) || (oi == oi_music)) {
++            fxmusic = (oi == oi_music) ? 2 : ((oi == oi_fx) ? 1 : 0);
++            d.fxmusic = fxmusic;
+             opt_music_enabled = (fxmusic == 2);
+             opt_sfx_enabled = (fxmusic >= 1);
+             if (cmoo_buf) {
