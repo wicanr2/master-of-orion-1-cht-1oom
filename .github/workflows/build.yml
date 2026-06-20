@@ -32,9 +32,13 @@ jobs:
         run: |
           cd 1oom
           [ -f configure ] || autoreconf -fi
+          export PKG_CONFIG_PATH="$(brew --prefix sdl2)/lib/pkgconfig:$(brew --prefix sdl2_mixer)/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
           mkdir -p ../build-mac && cd ../build-mac
           ../1oom/configure --disable-hwsdl1 --disable-hwalleg4 --disable-tools \
-            CFLAGS="-O2"
+            SDL2_CFLAGS="$(sdl2-config --cflags)" \
+            SDL2_LIBS="$(sdl2-config --libs)" \
+            SDL2MIXER_LIBS="-L$(brew --prefix sdl2_mixer)/lib -lSDL2_mixer" \
+            CFLAGS="-O2 $(sdl2-config --cflags) -I$(brew --prefix sdl2_mixer)/include/SDL2"
           make -j3
           file src/1oom_classic_sdl2 || true
 
