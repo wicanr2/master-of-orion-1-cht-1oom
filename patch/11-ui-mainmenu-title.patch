@@ -1,0 +1,14 @@
+diff --git a/src/ui/classic/uimainmenu.c b/src/ui/classic/uimainmenu.c
+index 33893d8..47a26a1 100644
+--- a/src/ui/classic/uimainmenu.c
++++ b/src/ui/classic/uimainmenu.c
+@@ -53,6 +53,9 @@ static void main_menu_draw_cb(void *vptr)
+     ui_draw_copy_buf();
+     lbxgfx_draw_frame(0, 0, d->gfx_vortex);
+     lbxgfx_draw_frame(0, 0, d->gfx_title);
++    /* 繁中:在 ORION 標題 logo 下方加「銀河霸主」中文字樣(font 4 -> 24px) */
++    lbxfont_select_set_12_4(4, 0xf, 0, 0);
++    lbxfont_print_str_center(160, 58, "銀河霸主");
+     if (d->have_continue) {
+         lbxfont_select(4, (d->selected == MAIN_MENU_ACT_CONTINUE_GAME) ? 3 : 2, 0, 0);
+     } else {
