@@ -1,0 +1,63 @@
+diff --git a/src/ui/classic/uidesign.c b/src/ui/classic/uidesign.c
+index 39afc5d..e6da3f2 100644
+--- a/src/ui/classic/uidesign.c
++++ b/src/ui/classic/uidesign.c
+@@ -4,6 +4,7 @@
+ #include <string.h>
+ 
+ #include "uidesign.h"
++#include "cjkfont.h"
+ #include "comp.h"
+ #include "game.h"
+ #include "game_aux.h"
+@@ -544,10 +545,12 @@ static struct xy_s ui_design_draw_selbox(int xpos, int xoff1, int xoff2, int xof
+     struct xy_s xy;
+     int x0, y0, x1, y1;
+ 
++    /* 繁中:CJK 列距 14px(見 uiobj_select_from_list),框高須同步放大,否則列溢出框外 */
++    const int rh = (cjkfont_available() && (lbxfont_get_height() < 14)) ? 14 : 8;
+     x0 = (VGABUF_W / 2 - 1) - (xpos + xoff1) / 2;
+     x1 = x0 + xpos + 20;
+-    y0 = (VGABUF_H / 2 - 1) - (n * 8 + 20) / 2;
+-    y1 = y0 + n * 8;
++    y0 = (VGABUF_H / 2 - 1) - (n * rh + 20) / 2;
++    y1 = y0 + n * rh;
+     SETMAX(x0, 0);
+     SETMIN(x1, 159);
+     SETMAX(y0, 0);
+@@ -1150,12 +1153,14 @@ static void ui_design_sel_weapon(struct design_data_s *d, int wslot)
+     {
+         int listi;
+         struct xy_s xy;
+-        SETMIN(n, 18);
++        /* 繁中:14px CJK 列距下 18 列 (252px) 超出 200px 螢幕,可見列降到 11 並提早捲動 */
++        int maxvis = (cjkfont_available() && (lbxfont_get_height() < 14)) ? 11 : 18;
++        SETMIN(n, maxvis);
+         xy = ui_design_draw_selbox(xpos, 160, 160, 0, n + 2, game_str_sd_weaps);
+-        if (numlines < 18) {
++        if (numlines < maxvis) {
+             listi = uiobj_select_from_list1(xy.x + 14, xy.y + 20, xpos + 131, titlebuf, lineptr, &curweap, flag_tbl_enable, 1, 0, 0x60, 0, 0, 0, -1);
+         } else {
+-            listi = uiobj_select_from_list2(xy.x + 14, xy.y + 20, xpos + 131, titlebuf, lineptr, &curweap, flag_tbl_enable, 18, 312, 19, ui_data.gfx.design.popscrol_u, 313, 183, ui_data.gfx.design.popscrol_d, 1, 0, 0x60, 0, 0, 0, -1);
++            listi = uiobj_select_from_list2(xy.x + 14, xy.y + 20, xpos + 131, titlebuf, lineptr, &curweap, flag_tbl_enable, maxvis, 312, 19, ui_data.gfx.design.popscrol_u, 313, 183, ui_data.gfx.design.popscrol_d, 1, 0, 0x60, 0, 0, 0, -1);
+         }
+         if (listi < 0) {
+             sd->wpnt[wslot] = actwpnt;
+@@ -1247,12 +1252,14 @@ static void ui_design_sel_special(struct design_data_s *d, int sslot)
+     {
+         int listi;
+         struct xy_s xy;
+-        SETMIN(n, 18);
++        /* 繁中:同武器選單,CJK 列距下降可見列並提早捲動 */
++        int maxvis = (cjkfont_available() && (lbxfont_get_height() < 14)) ? 11 : 18;
++        SETMIN(n, maxvis);
+         xy = ui_design_draw_selbox(xpos, 150, 152, -54, n + 2, game_str_sd_specs);
+-        if (numlines < 18) {
++        if (numlines < maxvis) {
+             listi = uiobj_select_from_list1(xy.x + 14, xy.y + 20, xpos + 81, titlebuf, lineptr, &curspec, flag_tbl_enable, 1, 0, 0x60, 0, 0, 0, -1);
+         } else {
+-            listi = uiobj_select_from_list2(xy.x + 14, xy.y + 20, xpos + 81, titlebuf, lineptr, &curspec, flag_tbl_enable, 18, 312, 19, ui_data.gfx.design.popscrol_u, 313, 183, ui_data.gfx.design.popscrol_d, 1, 0, 0x60, 0, 0, 0, -1);
++            listi = uiobj_select_from_list2(xy.x + 14, xy.y + 20, xpos + 81, titlebuf, lineptr, &curspec, flag_tbl_enable, maxvis, 312, 19, ui_data.gfx.design.popscrol_u, 313, 183, ui_data.gfx.design.popscrol_d, 1, 0, 0x60, 0, 0, 0, -1);
+         }
+         if (listi < 0) {
+             sd->special[sslot] = actspec;
