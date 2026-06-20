@@ -1,5 +1,5 @@
 diff --git a/src/game/game_str.c b/src/game/game_str.c
-index 013856e..47d4e81 100644
+index 013856e..00c82aa 100644
 --- a/src/game/game_str.c
 +++ b/src/game/game_str.c
 @@ -9,43 +9,43 @@
@@ -73,45 +73,1223 @@ index 013856e..47d4e81 100644
  
  const char *game_str_tbl_planet_names[PLANET_NAMES_MAX] = {
      "Paranar", "Denubius", "Antares", "Draconis", "Zoctan", "Rigel", "Talas", "Moro", "Quayal", "Neptunus",
-@@ -442,13 +442,13 @@ const char *game_str_bs_line2 = "bases to eliminate?";
- const char *game_str_bs_bases = "Bases";
+@@ -65,7 +65,7 @@ const char *game_str_tbl_home_names[RACE_NUM + 1] = {
+     "Sol", "Fierias", "Cryslon", "Sssla", "Mentar", "Altair", "Kholdan", "Ursa", "Meklon", "Nazin", "Randomia"
+ };
+ 
+-const char *game_str_rndempname = "Mr Random";
++const char *game_str_rndempname = "隨機先生";
+ const char *game_str_planet_name_orion = "Orion";
+ 
+ const char *game_str_tbl_ship_names[RACE_NUM * SHIP_NAME_NUM] = {
+@@ -82,7 +82,7 @@ const char *game_str_tbl_ship_names[RACE_NUM * SHIP_NAME_NUM] = {
+ };
+ 
+ const char *game_str_tbl_stship_names[NUM_SHIPDESIGNS] = {
+-    "SCOUT", "FIGHTER", "DESTROYER", "BOMBER", "COLONY SHIP", "NONE"
++    "偵察艦", "戰鬥機", "驅逐艦", "轟炸機", "殖民船", "無"
+ };
+ 
+ const char *game_str_tbl_copyprotection_ship_names[40] = {
+@@ -97,232 +97,232 @@ const char *game_str_tbl_copyprotection_ship_names[40] = {
+ };
+ 
+ const char *game_str_tbl_monsh_names[MONSTER_NUM] = {
+-    "SPACE CRYSTAL", "SPACE AMOEBA", "GUARDIAN"
++    "太空水晶", "太空變形蟲", "守護者"
+ };
+ 
+ const char *game_str_tbl_mon_names[MONSTER_NUM] = {
+-    "Space Crystal", "Space Amoeba", "Guardian"
++    "太空水晶", "太空變形蟲", "守護者"
+ };
+ 
+-const char *game_str_ai_colonyship = "COLONY SHIP";
++const char *game_str_ai_colonyship = "殖民船";
+ 
+-const char *game_str_st_none = "NONE";
+-const char *game_str_st_none2 = "None";
++const char *game_str_st_none = "無";
++const char *game_str_st_none2 = "無";
+ 
+ const char *game_str_tbl_st_weap[WEAPON_NUM - 1] = {
+-    "NUCLEAR BOMB", "LASER", "NUCLEAR MISSILE", "NUCLEAR MISSILE", "HEAVY LASER", "HYPER-V ROCKET", "HYPER-V ROCKET", "GATLING LASER",
+-    "NEUTRON PELLET GUN", "HYPER-X ROCKET", "HYPER-X ROCKET", "FUSION BOMB", "ION CANNON", "HEAVY ION CANNON", "SCATTER PACK V", "SCATTER PACK V",
+-    "DEATH SPORES", "MASS DRIVER", "MERCULITE MISSILE", "MERCULITE MISSILE", "NEUTRON BLASTER", "HEAVY BLAST CANNON", "ANTI-MATTER BOMB", "GRAVITON BEAM",
+-    "STINGER MISSLE", "STINGER MISSLE", "HARD BEAM", "FUSION BEAM", "HEAVY FUSION BEAM", "OMEGA-V BOMB", "ANTI-MATTER TORP", "MEGABOLT CANNON",
+-    "PHASOR", "HEAVY PHASOR", "SCATTER PACK VII", "SCATTER PACK VII", "DOOM VIRUS", "AUTO BLASTER", "PULSON MISSLE", "PULSON MISSLE",
+-    "TACHYON BEAM", "GAUSS AUTOCANON", "PARTICLE BEAM", "HERCULAR MISSILE", "HERCULAR MISSILE", "PLASMA CANNON", "DISRUPTOR", "PULSE PHASOR",
+-    "NEUTRONIUM BOMB", "BIO TERMINATOR", "HELLFIRE TORPEDO", "ZEON MISSLE", "ZEON MISSLE", "PROTON TORPEDO", "SCATTER PACK X", "SCATTER PACK X",
+-    "TRI-FOCUS PLASMA", "STELLAR CONVERTER", "MAULER DEVICE", "PLASMA TORPEDO", "CRYSTAL RAY", "DEATH RAY", "AMEOBA STREAM"
++    "核子炸彈", "雷射", "核子飛彈", "核子飛彈", "重型雷射", "超V火箭", "超V火箭", "格林雷射",
++    "中子彈丸槍", "超X火箭", "超X火箭", "融合炸彈", "離子砲", "重型離子砲", "散射莢艙V", "散射莢艙V",
++    "死亡孢子", "質量投射器", "莫古飛彈", "莫古飛彈", "中子爆破槍", "重型爆破砲", "反物質炸彈", "重力光束",
++    "毒刺飛彈", "毒刺飛彈", "硬光束", "融合光束", "重型融合光束", "歐米茄V炸彈", "反物質魚雷", "百萬伏特砲",
++    "相位砲", "重型相位砲", "散射莢艙VII", "散射莢艙VII", "末日病毒", "自動爆破槍", "脈衝飛彈", "脈衝飛彈",
++    "迅子光束", "高斯機砲", "粒子光束", "海克力士飛彈", "海克力士飛彈", "電漿砲", "瓦解光束", "脈衝相位砲",
++    "中子炸彈", "生化終結者", "地獄火魚雷", "齊昂飛彈", "齊昂飛彈", "質子魚雷", "散射莢艙X", "散射莢艙X",
++    "三焦電漿", "恆星轉換器", "毀滅裝置", "電漿魚雷", "水晶射線", "死亡射線", "變形蟲噴流"
+ };
+ 
+ const char *game_str_tbl_st_weapx[WEAPON_NUM - 1] = {
+-    "GROUND ATTACKS ONLY", " ", "2 SHOTS, +1 SPEED", "5 SHOTS", " ", "2 SHOTS, +1 SPEED", "5 SHOTS", "FIRES 4 TIMES/TURN ",
+-    "HALVES ENEMY SHIELDS", "2 SHOTS, +1 TO HIT", "5 SHOTS, +1 TO HIT", "GROUND ATTACKS ONLY ", " ", " ", "2 SHOTS, MIRVS TO 5", "5 SHOTS, MIRVS TO 5",
+-    "BIOLOGICAL WEAPON", "HALVES ENEMY SHIELDS", "2 SHOTS, +2 TO HIT", "5 SHOTS, +2 TO HIT", " ", " ", "GROUND ATTACKS ONLY", "STREAMING ATTACK",
+-    "2 SHOTS, +3 TO HIT", "5 SHOTS, +3 TO HIT", "HALVES SHIELD STR", " ", " ", "GROUND ATTACKS ONLY ", "FIRES ONE PER 2 TURNS", "+3 LEVELS TO HIT",
+-    " ", " ", "2 SHOTS, MIRVS TO 7", "5 SHOTS, MIRVS TO 7", "BIOLOGICAL WEAPON", "FIRES 3 TIMES/TURN", "2 SHOTS, +4 TO HIT", "5 SHOTS, +4 TO HIT",
+-    "STREAMING ATTACK", "1/2 SHIELDS, FIRES 4$", "HALVES SHIELDS STR", "2 SHOTS, +5 TO HIT", "5 SHOTS, +5 TO HIT", " ", " ", "FIRES 3 TIMES/TURN",
+-    "GROUND ATTACKS ONLY", "BIOLOGICAL WEAPON", "HITS ALL FOUR SHIELDS", "2 SHOTS, +6 TO HIT", "5 SHOTS, +6 TO HIT", "FIRES ONE PER 2 TURNS", "2 SHOTS, MIRVS TO 10", "5 SHOTS, MIRVS TO 10",
+-    " ", "HITS ALL FOUR SHIELDS", "CRUEL BRUTAL DAMAGE", "LOSES 15 DAMAGE/HEX", "", "", ""
++    "僅限對地攻擊", " ", "2發, +1速度", "5發", " ", "2發, +1速度", "5發", "每回合射4次 ",
++    "敵護盾減半", "2發, +1命中", "5發, +1命中", "僅限對地攻擊 ", " ", " ", "2發, 分裂為5", "5發, 分裂為5",
++    "生物武器", "敵護盾減半", "2發, +2命中", "5發, +2命中", " ", " ", "僅限對地攻擊", "連續噴射攻擊",
++    "2發, +3命中", "5發, +3命中", "護盾強度減半", " ", " ", "僅限對地攻擊 ", "每2回合射1次", "+3級命中",
++    " ", " ", "2發, 分裂為7", "5發, 分裂為7", "生物武器", "每回合射3次", "2發, +4命中", "5發, +4命中",
++    "連續噴射攻擊", "護盾減半, 射4$", "護盾強度減半", "2發, +5命中", "5發, +5命中", " ", " ", "每回合射3次",
++    "僅限對地攻擊", "生物武器", "貫穿全部四層護盾", "2發, +6命中", "5發, +6命中", "每2回合射1次", "2發, 分裂為10", "5發, 分裂為10",
++    " ", "貫穿全部四層護盾", "殘酷劇烈傷害", "每格損失15傷害", "", "", ""
+ };
+ 
+ const char *game_str_tbl_st_comp[SHIP_COMP_NUM - 1] = {
+-    "MARK I", "MARK II", "MARK III", "MARK IV", "MARK V", "MARK VI", "MARK VII", "MARK VIII",
+-    "MARK IX", "MARK X", "MARK XI"
++    "I型", "II型", "III型", "IV型", "V型", "VI型", "VII型", "VIII型",
++    "IX型", "X型", "XI型"
+ };
+ 
+ const char *game_str_tbl_st_engine[SHIP_ENGINE_NUM] = {
+-    "RETROS", "NUCLEAR", "SUB-LIGHT", "FUSION", "IMPULSE", "ION", "ANTI-MATTER", "INTERPHASED", "HYPERTHRUST"
++    "反推", "核子", "次光速", "融合", "脈衝", "離子", "反物質", "相間", "超推進"
+ };
+ 
+ const char *game_str_tbl_st_armor[SHIP_ARMOR_NUM] = {
+-    "TITANIUM", "TITANIUM II", "DURALLOY", "DURALLOY II", "ZORTRIUM", "ZORTRIUM II", "ANDRIUM", "ANDRIUM II", "TRITANIUM",
+-    "TRITANIUM II", "ADAMANTIUM", "ADAMANTIUM II", "NEUTRONIUM", "NEUTRONIUM II"
++    "鈦合金", "鈦合金II", "杜拉鋼", "杜拉鋼II", "佐特合金", "佐特合金II", "安鐸合金", "安鐸合金II", "三鈦合金",
++    "三鈦合金II", "精金", "精金II", "中子素", "中子素II"
+ };
+ 
+ const char *game_str_tbl_st_shield[SHIP_SHIELD_NUM - 1] = {
+-    "CLASS I", "CLASS II", "CLASS III", "CLASS IV", "CLASS V", "CLASS VI", "CLASS VII", "CLASS IX",
+-    "CLASS XI", "CLASS XIII", "CLASS XV"
++    "I級", "II級", "III級", "IV級", "V級", "VI級", "VII級", "IX級",
++    "XI級", "XIII級", "XV級"
+ };
+ 
+ const char *game_str_tbl_st_jammer[SHIP_JAMMER_NUM - 1] = {
+-    "JAMMER I", "JAMMER II", "JAMMER III", "JAMMER IV", "JAMMER V", "JAMMER VI", "JAMMER VII", "JAMMER VIII",
+-    "JAMMER IX", "JAMMER X"
++    "干擾器I", "干擾器II", "干擾器III", "干擾器IV", "干擾器V", "干擾器VI", "干擾器VII", "干擾器VIII",
++    "干擾器IX", "干擾器X"
+ };
+ 
+ const char *game_str_tbl_st_specsh[SHIP_SPECIAL_NUM] = {
+-    "NO SPECIALS", "RESERVE TANKS", "COLONY BASE", "BARREN BASE", "TUNDRA BASE", "DEAD BASE", "INFERNO BASE", "TOXIC BASE", 
+-    "RADIATED BASE", "BATTLE SCANNER", "ANTI-MISSILES", "REPULSOR BEAM", "WARP DISSIPATOR", "ENERGY PULSAR", "INERT STABILIZER", "ZYRO SHIELD", 
+-    "AUTO REPAIR", "STASIS FIELD", "CLOAKING DEVICE", "ION STREAM", "H-ENERGY FOCUS", "IONIC PULSAR", "BLACK HOLE GEN", "TELEPORTER", 
+-    "LIGHTNING SHIELD", "NEUTRON STREAM", "ADV DMG CONTROL", "TECH NULLIFIER", "INERT. NULLIFIER", "ORACLE INTERFACE", "DISPLACE DEVICE"
++    "無特殊裝置", "備用油箱", "殖民基地", "貧瘠基地", "凍原基地", "死寂基地", "煉獄基地", "毒性基地",
++    "輻射基地", "戰鬥掃描器", "反飛彈", "斥力光束", "曲速消散器", "能量脈衝星", "慣性穩定器", "齊羅護盾",
++    "自動維修", "靜滯場", "隱形裝置", "離子噴流", "高能聚焦", "離子脈衝星", "黑洞產生器", "傳送器",
++    "閃電護盾", "中子噴流", "高級損管", "科技抑制器", "慣性抑制器", "神諭介面", "位移裝置"
+ };
+ const char *game_str_tbl_st_special[SHIP_SPECIAL_NUM - 1] = {
+-    "RESERVE FUEL TANKS", "STANDARD COLONY BASE", "BARREN COLONY BASE", "TUNDRA COLONY BASE", "DEAD COLONY BASE", "INFERNO COLONY BASE", "TOXIC COLONY BASE", "RADIATED COLONY BASE",
+-    "BATTLE SCANNER", "ANTI-MISSILE ROCKETS", "REPULSOR BEAM", "WARP DISSIPATOR", "ENERGY PULSAR", "INERTIAL STABILIZER", "ZYRO SHIELD", "AUTOMATED REPAIR",
+-    "STASIS FIELD", "CLOAKING DEVICE", "ION STREAM PROJECTOR", "HIGH ENERGY FOCUS", "IONIC PULSAR", "BLACK HOLE GENERATOR", "SUB SPACE TELEPORTER", "LIGHTNING SHIELD",
+-    "NEUTRON STREAM PROJECTOR", "ADV DAMAGE CONTROL", "TECHNOLOGY NULLIFIER", "INERTIAL NULLIFIER", "ORACLE INTERFACE", "DISPLACMENT DEVICE"
++    "備用燃料箱", "標準殖民基地", "貧瘠殖民基地", "凍原殖民基地", "死寂殖民基地", "煉獄殖民基地", "毒性殖民基地", "輻射殖民基地",
++    "戰鬥掃描器", "反飛彈火箭", "斥力光束", "曲速消散器", "能量脈衝星", "慣性穩定器", "齊羅護盾", "自動維修",
++    "靜滯場", "隱形裝置", "離子噴流投射器", "高能聚焦", "離子脈衝星", "黑洞產生器", "次空間傳送器", "閃電護盾",
++    "中子噴流投射器", "高級損害管制", "科技抑制器", "慣性抑制器", "神諭介面", "位移裝置"
+ };
+ const char *game_str_tbl_st_specialx[SHIP_SPECIAL_NUM - 1] = {
+-    "EXTENDS SHIP RANGE BY 3 PARSECS", "ALLOWS NORMAL PLANET LANDINGS", "ALLOWS BARREN PLANET LANDINGS", "ALLOWS TUNDRA PLANET LANDINGS", "ALLOWS DEAD PLANET LANDINGS", "ALLOWS INFERNO PLANET LANDINGS",
+-    "ALLOWS TOXIC PLANET LANDINGS", "ALLOWS RADIATED PLANET LANDINGS", "DISPLAYS ENEMY SHIP STATS", "40% CHANCE MISSILES DESTROYED", "MOVES ENEMY SHIPS BACK 1 SPACE", "REDUCES SPEED OF ENEMY SHIPS",
+-    "EXPANDS TO INFLICT 1-5 HITS", "ADDS +2 TO MANEUVERABILITY", "75% CHANCE MISSILES DESTROYED", "HEALS 15% OF SHIP'S HITS A TURN", "ENEMY FROZEN FOR 1 TURN", "RENDERS SHIPS NEARLY INVISIBLE",
+-    "REDUCES ENEMY ARMOR BY 20%", "INCREASES WEAPON RANGES BY 3", "EXPANDS TO INFLICT 2-10 HITS", "KILLS 25%-100% OF ENEMY SHIPS", "TELEPORTS SHIP IN COMBAT", "100% CHANCE MISSILES DESTROYED",
+-    "REDUCES ENEMY ARMOR BY 40%", "HEALS 30% OF SHIP'S HITS A TURN", "DESTROYS ENEMY COMPUTERS", "ADDS +4 TO MANEUVERABILITY", "CONCENTRATES BEAM ATTACKS", "1/3 OF ALL ENEMY ATTACKS MISS"
+-};
+-
+-const char *game_str_tbl_st_hull[SHIP_HULL_NUM] = { "SMALL", "MEDIUM", "LARGE", "HUGE" };
+-
+-const char *game_str_sm_crystal = "CRYSTAL";
+-const char *game_str_sm_amoeba = "AMOEBA";
+-const char *game_str_sm_game = "Game";
+-const char *game_str_sm_design = "Design";
+-const char *game_str_sm_fleet = "Fleet";
+-const char *game_str_sm_map = "Map";
+-const char *game_str_sm_races = "Races";
+-const char *game_str_sm_planets = "Planets";
+-const char *game_str_sm_tech = "Tech";
+-const char *game_str_sm_next_turn = "Next Turn";
++    "射程增加3秒差距", "可降落一般行星", "可降落貧瘠行星", "可降落凍原行星", "可降落死寂行星", "可降落煉獄行星",
++    "可降落毒性行星", "可降落輻射行星", "顯示敵艦數據", "40%機率摧毀飛彈", "敵艦後退1格", "降低敵艦速度",
++    "擴散造成1-5點傷害", "機動力+2", "75%機率摧毀飛彈", "每回合回復15%艦體傷害", "敵艦凍結1回合", "使艦船近乎隱形",
++    "敵方裝甲減20%", "武器射程+3", "擴散造成2-10點傷害", "殲滅25%-100%敵艦", "戰鬥中傳送艦船", "100%機率摧毀飛彈",
++    "敵方裝甲減40%", "每回合回復30%艦體傷害", "摧毀敵方電腦", "機動力+4", "集中光束攻擊", "敵方1/3攻擊落空"
++};
++
++const char *game_str_tbl_st_hull[SHIP_HULL_NUM] = { "小型", "中型", "大型", "巨型" };
++
++const char *game_str_sm_crystal = "水晶";
++const char *game_str_sm_amoeba = "變形蟲";
++const char *game_str_sm_game = "遊戲";
++const char *game_str_sm_design = "設計";
++const char *game_str_sm_fleet = "艦隊";
++const char *game_str_sm_map = "星圖";
++const char *game_str_sm_races = "種族";
++const char *game_str_sm_planets = "行星";
++const char *game_str_sm_tech = "科技";
++const char *game_str_sm_next_turn = "下一回合";
+ 
+ const char *game_str_tbl_sm_stinfo[STAR_TYPE_NUM] = {
+-    "Yellow stars offer the best chance of discovering terran and sub-terran planets.",
+-    "Red stars are old, dull stars that commonly have poor planets.",
+-    "Green stars are moderately bright and have a wide range of planetary types.",
+-    "White stars burn incredibly hot and generally have hostile planets.",
+-    "Blue stars are relatively young stars with mineral rich lifeless planets.",
+-    "Neutron stars are rare and offer the greatest chance of finding rich planets."
+-};
+-
+-const char *game_str_sm_range = "Range";
+-const char *game_str_sm_parsec = "Parsec";
+-const char *game_str_sm_parsecs = "Parsecs";
+-const char *game_str_sm_parsecs2 = "PARSECS";
+-const char *game_str_sm_colony = "Colony";
+-const char *game_str_sm_lastrep = "Last Reported As A";
+-const char *game_str_sm_stargate = "STAR GATE";
+-const char *game_str_sm_prodnone = "NONE";
+-const char *game_str_sm_prod_y = "Y";
+-const char *game_str_sm_defupg = "UPGRD";
+-const char *game_str_sm_defshld = "SHIELD";
+-const char *game_str_sm_refit = "REFIT";
+-const char *game_str_sm_indmax = "MAX";
+-const char *game_str_sm_indres = "RESERV";
+-const char *game_str_sm_ecowaste = "WASTE";
+-const char *game_str_sm_ecoclean = "CLEAN";
+-const char *game_str_sm_ecoatmos = "ATMOS";
+-const char *game_str_sm_ecotform = "T-FORM";
+-const char *game_str_sm_ecosoil = "SOIL";
+-const char *game_str_sm_ecogaia = "GAIA";
+-const char *game_str_sm_ecopop = "POP";
+-const char *game_str_sm_unexplored = "UNEXPLORED";
+-const char *game_str_sm_nohabit = "NO HABITABLE";
+-const char *game_str_sm__planets = "PLANETS";
++    "黃色恆星最有機會發現類地與近類地行星。",
++    "紅色恆星是古老黯淡的恆星，行星通常貧瘠。",
++    "綠色恆星亮度中等，擁有種類繁多的行星。",
++    "白色恆星熾熱無比，行星多半惡劣。",
++    "藍色恆星相對年輕，行星富含礦藏但無生命。",
++    "中子星十分罕見，最有機會找到富礦行星。"
++};
++
++const char *game_str_sm_range = "射程";
++const char *game_str_sm_parsec = "秒差距";
++const char *game_str_sm_parsecs = "秒差距";
++const char *game_str_sm_parsecs2 = "秒差距";
++const char *game_str_sm_colony = "殖民地";
++const char *game_str_sm_lastrep = "最後回報為";
++const char *game_str_sm_stargate = "星門";
++const char *game_str_sm_prodnone = "無";
++const char *game_str_sm_prod_y = "是";
++const char *game_str_sm_defupg = "升級";
++const char *game_str_sm_defshld = "護盾";
++const char *game_str_sm_refit = "改裝";
++const char *game_str_sm_indmax = "上限";
++const char *game_str_sm_indres = "備用";
++const char *game_str_sm_ecowaste = "污染";
++const char *game_str_sm_ecoclean = "清理";
++const char *game_str_sm_ecoatmos = "大氣";
++const char *game_str_sm_ecotform = "改造";
++const char *game_str_sm_ecosoil = "土壤";
++const char *game_str_sm_ecogaia = "蓋亞";
++const char *game_str_sm_ecopop = "人口";
++const char *game_str_sm_unexplored = "未探索";
++const char *game_str_sm_nohabit = "不可居住";
++const char *game_str_sm__planets = "行星";
+ 
+ const char *game_str_tbl_sm_pltype[PLANET_TYPE_NUM + 1] = {
+-    "NO HABITABLE PLANETS", "RADIATED", "TOXIC", "INFERNO", "DEAD",
+-    "TUNDRA", "BARREN", "MINIMAL", "DESERT", "STEPPE", "ARID", "OCEAN",
+-    "JUNGLE", "TERRAN", "GAIA"
++    "無可居住行星", "輻射", "毒性", "煉獄", "死寂",
++    "凍原", "貧瘠", "微居", "沙漠", "草原", "乾旱", "海洋",
++    "叢林", "類地", "蓋亞"
+ };
+ 
+-const char *game_str_sm_plague = "Plague";
+-const char *game_str_sm_nova = "Nova";
+-const char *game_str_sm_comet = "Comet";
+-const char *game_str_sm_pirates = "Pirates";
+-const char *game_str_sm_rebellion = "Rebellion";
+-const char *game_str_sm_unrest = "UNREST";
+-const char *game_str_sm_accident = "Accident";
++const char *game_str_sm_plague = "瘟疫";
++const char *game_str_sm_nova = "新星";
++const char *game_str_sm_comet = "彗星";
++const char *game_str_sm_pirates = "海盜";
++const char *game_str_sm_rebellion = "叛亂";
++const char *game_str_sm_unrest = "動亂";
++const char *game_str_sm_accident = "意外";
+ 
+ const char *game_str_tbl_sm_pgrowth[PLANET_GROWTH_NUM] = {
+-    "HOSTILE", " ", "FERTILE", "GAIA"
++    "惡劣", " ", "肥沃", "蓋亞"
+ };
+ 
+ const char *game_str_tbl_sm_pspecial[PLANET_SPECIAL_NUM] = {
+-    "ULTRA POOR", "POOR", "", "ARTIFACTS", "RICH", "ULTRA RICH", "4$ TECH"
++    "超貧瘠", "貧瘠", "", "古物", "富礦", "超富礦", "4$科技"
+ };
+ 
+-const char *game_str_sm_popmaxw = "POP      MAX";
+-const char *game_str_sm_popmaxn = "POP     MAX";
++const char *game_str_sm_popmaxw = "人口      上限";
++const char *game_str_sm_popmaxn = "人口     上限";
+ 
+-const char *game_str_sm_hasreached = "has reached its";
+-const char *game_str_sm_indmaxof = "industry maximum of";
+-const char *game_str_sm_factories = "factories";
+-const char *game_str_sm_extrares = " The extra spent was placed in the planetary reserve.";
+-const char *game_str_sm_popmaxof = "population maximum of";
+-const char *game_str_sm_colonists = "colonists";
+-const char *game_str_sm_hasterraf = "has been terraformed to a";
++const char *game_str_sm_hasreached = "已達到其";
++const char *game_str_sm_indmaxof = "工業上限";
++const char *game_str_sm_factories = "工廠";
++const char *game_str_sm_extrares = " 多餘的支出已撥入行星備用金。";
++const char *game_str_sm_popmaxof = "人口上限";
++const char *game_str_sm_colonists = "殖民者";
++const char *game_str_sm_hasterraf = "已被改造為";
+ const char *game_str_tbl_sm_terraf[3] = {
+-    "normal", "fertile", "gaia"
++    "一般", "肥沃", "蓋亞"
+ };
+-const char *game_str_sm_envwith = "environment with";
++const char *game_str_sm_envwith = "環境，擁有";
+ const char *game_str_tbl_sm_envmore[3] = {
+-    "", "150% of ", "double "
+-};
+-const char *game_str_sm_stdgrow = "the standard growth rate";
+-const char *game_str_sm_hasfsgate = "has finished building a stargate";
+-const char *game_str_sm_hasfshield = "has completed building a Class";
+-const char *game_str_sm_planshield = "Planetary Shield";
+-const char *game_str_sm_planratio = " Planetary spending ratios may be changed at this time. ";
+-
+-const char *game_str_sm_fleetdep = "FLEET DEPLOYMENT";
+-const char *game_str_sm_destoor = "DESTINATION IS OUT OF RANGE,";
+-const char *game_str_sm_parsfromcc = "PARSECS FROM CLOSEST COLONY";
+-const char *game_str_sm_eta = "ETA";
+-const char *game_str_sm_turn = "TURN";
+-const char *game_str_sm_turns = "TURNS";
+-const char *game_str_sm_chdest = "Choose destination and number to send";
+-
+-const char *game_str_sm_outsr = "OUT SHIP RANGE BY";
+-
+-const char *game_str_sm_sreloc = "Ship Relocation";
+-const char *game_str_sm_sreloc2 = "Choose another star system under your control to redirect newly built ships to.";
+-const char *game_str_sm_delay = "DELAY";
+-
+-const char *game_str_sm_seltr = "Select a destination star system to send colonists or troops to.";
+-const char *game_str_sm_notrange = "You do not have the required ship range to reach the system.";
+-const char *game_str_sm_notrange1 = "The star system is";
+-const char *game_str_sm_notrange2 = "parsecs away and you have a maximum range of";
+-const char *game_str_sm_notrange3 = "parsecs.";
+-const char *game_str_sm_trfirste = "You must first explore a star system and form a new colony before transporting colonists.";
+-const char *game_str_sm_trcontr1 = "You must have at least controlled";
+-const char *game_str_sm_trcontr2 = "environments to land troops onto the planet.";
+-const char *game_str_sm_trfirstc = "You must first build a ship equipped with a colony base and create a new colony before sending out transports.";
+-const char *game_str_sm_trwarna = "Warning, destination is owned by an ally";
+-const char *game_str_sm_trwarnm1 = "Warning - Target planet can only support";
+-const char *game_str_sm_trwarnm2 = "million!";
+-const char *game_str_sm_trchnum1 = "Choose number of colonists to transport";
+-const char *game_str_sm_trchnum2 = "Choose number of troops to transport";
+-const char *game_str_sm_trans1 = "Transport";
+-const char *game_str_sm_transs = "Transports";
+-const char *game_str_sm_tdest = "Destination";
+-
+-const char *game_str_sm_bomb1 = "Bomb the";
+-const char *game_str_sm_bomb2 = "Enemy Planet?";
+-const char *game_str_sm_trinb1 = "Troop Transport";
+-const char *game_str_sm_trinb1s = "Troop Transport";
+-const char *game_str_sm_trinb2 = "Currently Enroute";
+-
+-const char *game_str_sm_obomb1 = "Orbital";
+-const char *game_str_sm_obomb2 = "Bombardment";
+-const char *game_str_sm_cdest1 = "colony";
+-const char *game_str_sm_cdest2 = "destroyed";
+-const char *game_str_sm_ineff1 = "bombing";
+-const char *game_str_sm_ineff2 = "ineffective";
+-const char *game_str_sm_bkill1 = "MILLION";
+-const char *game_str_sm_bkill2 = "KILLED";
+-const char *game_str_sm_bfact1 = "FACTORY";
+-const char *game_str_sm_bfact1s = "FACTORIES";
+-const char *game_str_sm_bfact2 = "DESTROYED";
+-
+-const char *game_str_sm_traad1 = "transports attempting to land on";
+-const char *game_str_sm_traad2 = "were all destroyed.";
+-const char *game_str_sm_trbdb1 = "The base at";
+-const char *game_str_sm_trbdb2 = "was destroyed before the transports arrived leaving the colonists without supplies and shelter. All have perished.";
+-
+-const char *game_str_sm_inorbit = "In Orbit";
++    "", "150%的", "雙倍"
++};
++const char *game_str_sm_stdgrow = "標準成長率";
++const char *game_str_sm_hasfsgate = "已完成建造星門";
++const char *game_str_sm_hasfshield = "已完成建造";
++const char *game_str_sm_planshield = "級行星防護罩";
++const char *game_str_sm_planratio = " 此時可調整行星支出比例。 ";
++
++const char *game_str_sm_fleetdep = "艦隊部署";
++const char *game_str_sm_destoor = "目的地超出射程，";
++const char *game_str_sm_parsfromcc = "秒差距（距最近殖民地）";
++const char *game_str_sm_eta = "預計抵達";
++const char *game_str_sm_turn = "回合";
++const char *game_str_sm_turns = "回合";
++const char *game_str_sm_chdest = "選擇目的地與派遣數量";
++
++const char *game_str_sm_outsr = "超出艦船射程";
++
++const char *game_str_sm_sreloc = "艦船重新部署";
++const char *game_str_sm_sreloc2 = "選擇另一個你控制的星系，將新建造的艦船改派至該處。";
++const char *game_str_sm_delay = "延遲";
++
++const char *game_str_sm_seltr = "選擇目的地星系以派遣殖民者或部隊。";
++const char *game_str_sm_notrange = "你的艦船射程不足以抵達該星系。";
++const char *game_str_sm_notrange1 = "該星系距離";
++const char *game_str_sm_notrange2 = "秒差距，而你的最大射程為";
++const char *game_str_sm_notrange3 = "秒差距。";
++const char *game_str_sm_trfirste = "你必須先探索星系並建立新殖民地，才能運送殖民者。";
++const char *game_str_sm_trcontr1 = "你至少必須掌控";
++const char *game_str_sm_trcontr2 = "環境控制，才能讓部隊登陸該行星。";
++const char *game_str_sm_trfirstc = "你必須先建造配備殖民基地的艦船並建立新殖民地，才能派出運輸船。";
++const char *game_str_sm_trwarna = "警告，目的地屬於盟友所有";
++const char *game_str_sm_trwarnm1 = "警告 - 目標行星僅能支撐";
++const char *game_str_sm_trwarnm2 = "百萬！";
++const char *game_str_sm_trchnum1 = "選擇運送的殖民者數量";
++const char *game_str_sm_trchnum2 = "選擇運送的部隊數量";
++const char *game_str_sm_trans1 = "運輸船";
++const char *game_str_sm_transs = "運輸船";
++const char *game_str_sm_tdest = "目的地";
++
++const char *game_str_sm_bomb1 = "轟炸";
++const char *game_str_sm_bomb2 = "敵方行星？";
++const char *game_str_sm_trinb1 = "運兵船";
++const char *game_str_sm_trinb1s = "運兵船";
++const char *game_str_sm_trinb2 = "正在途中";
++
++const char *game_str_sm_obomb1 = "軌道";
++const char *game_str_sm_obomb2 = "轟炸";
++const char *game_str_sm_cdest1 = "殖民地";
++const char *game_str_sm_cdest2 = "已摧毀";
++const char *game_str_sm_ineff1 = "轟炸";
++const char *game_str_sm_ineff2 = "無效";
++const char *game_str_sm_bkill1 = "百萬";
++const char *game_str_sm_bkill2 = "人喪生";
++const char *game_str_sm_bfact1 = "工廠";
++const char *game_str_sm_bfact1s = "工廠";
++const char *game_str_sm_bfact2 = "已摧毀";
++
++const char *game_str_sm_traad1 = "試圖登陸的運輸船於";
++const char *game_str_sm_traad2 = "全數被摧毀。";
++const char *game_str_sm_trbdb1 = "位於";
++const char *game_str_sm_trbdb2 = "的基地在運輸船抵達前被摧毀，殖民者失去補給與庇護，全數罹難。";
++
++const char *game_str_sm_inorbit = "環繞軌道中";
+ 
+ const char *game_str_tbl_roman[31] = {
+     " ", "I", "II", "III", "IV", "V", "VI", "VII",
+@@ -331,420 +331,420 @@ const char *game_str_tbl_roman[31] = {
+     "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX"
+ };
+ 
+-const char *game_str_no_events = "No Events";
++const char *game_str_no_events = "無事件";
+ const char *game_str_bc = "BC";
+-const char *game_str_y = "Y";
+-const char *game_str_year = "Year ";
+-const char *game_str_year0 = "/Year";
+-const char *game_str_year1 = "Year:";
+-const char *game_str_player = "Player";
+-
+-const char *game_str_pl_reserve = "Reserve";
+-const char *game_str_pl_plague = "PLAGUE";
+-const char *game_str_pl_nova = "SUPER NOVA";
+-const char *game_str_pl_comet = "COMET";
+-const char *game_str_pl_pirates = "PIRATES";
+-const char *game_str_pl_rebellion = "REBELLION";
+-const char *game_str_pl_unrest = "UNREST";
+-const char *game_str_pl_accident = "ACCIDENT";
+-const char *game_str_pl_spending = "Spending Costs";
+-const char *game_str_pl_tincome = "Total Income";
+-const char *game_str_pl_transof = "Transfer of planetary";
+-const char *game_str_pl_resto = "reserves to";
+-
+-const char *game_str_sd_cancel = "CANCEL";
+-const char *game_str_sd_build = "BUILD";
+-const char *game_str_sd_clear = "CLEAR";
+-const char *game_str_sd_comp = "Computer";
+-const char *game_str_sd_shield = "Shield";
+-const char *game_str_sd_ecm = "Ecm";
+-const char *game_str_sd_armor = "Armor";
+-const char *game_str_sd_engine = "Engine";
+-const char *game_str_sd_man = "Maneuver";
++const char *game_str_y = "年";
++const char *game_str_year = "年 ";
++const char *game_str_year0 = "/年";
++const char *game_str_year1 = "年份：";
++const char *game_str_player = "玩家";
++
++const char *game_str_pl_reserve = "備用";
++const char *game_str_pl_plague = "瘟疫";
++const char *game_str_pl_nova = "超新星";
++const char *game_str_pl_comet = "彗星";
++const char *game_str_pl_pirates = "海盜";
++const char *game_str_pl_rebellion = "叛亂";
++const char *game_str_pl_unrest = "動亂";
++const char *game_str_pl_accident = "意外";
++const char *game_str_pl_spending = "支出成本";
++const char *game_str_pl_tincome = "總收入";
++const char *game_str_pl_transof = "行星備用金";
++const char *game_str_pl_resto = "轉移至";
++
++const char *game_str_sd_cancel = "取消";
++const char *game_str_sd_build = "建造";
++const char *game_str_sd_clear = "清除";
++const char *game_str_sd_comp = "電腦";
++const char *game_str_sd_shield = "護盾";
++const char *game_str_sd_ecm = "ECM";
++const char *game_str_sd_armor = "裝甲";
++const char *game_str_sd_engine = "引擎";
++const char *game_str_sd_man = "機動";
+ const char *game_str_tbl_sd_spec[SPECIAL_SLOT_NUM] = {
+-    "Special 1", "Special 2", "Special 3"
++    "特殊 1", "特殊 2", "特殊 3"
+ };
+ const char *game_str_tbl_sd_weap[WEAPON_SLOT_NUM] = {
+-    "Weapon 1", "Weapon 2", "Weapon 3", "Weapon 4",
+-};
+-const char *game_str_sd_count = "Count";
+-const char *game_str_sd_sweap = "Ship Weapons";
+-const char *game_str_sd_damage = "Damage";
+-const char *game_str_sd_rng = "Rng";
+-const char *game_str_sd_notes = "Notes";
+-const char *game_str_sd_hp = "HIT POINTS";
+-const char *game_str_sd_warp = "WARP";
+-const char *game_str_sd_def = "DEF";
+-const char *game_str_sd_cspeed = "COMBAT SPEED";
+-const char *game_str_sd_absorbs = "ABSORBS";
+-const char *game_str_sd_hit = "HIT";
+-const char *game_str_sd_hits = "HITS";
+-const char *game_str_sd_misdef = "MISSILE DEF";
+-const char *game_str_sd_att = "ATTACK LEVEL";
+-const char *game_str_sd_comptype = "COMPUTER TYPE";
+-const char *game_str_sd_cost = "COST";
+-const char *game_str_sd_size = "SIZE";
+-const char *game_str_sd_power = "POWER";
+-const char *game_str_sd_space = "SPACE";
+-const char *game_str_sd_comps = "COMPUTERS";
+-const char *game_str_sd_shieldtype = "SHIELD TYPE";
+-const char *game_str_sd_shields = "SHIELDS";
+-const char *game_str_sd_ecmtype = "ECM TYPE";
++    "武器 1", "武器 2", "武器 3", "武器 4",
++};
++const char *game_str_sd_count = "數量";
++const char *game_str_sd_sweap = "艦載武器";
++const char *game_str_sd_damage = "傷害";
++const char *game_str_sd_rng = "射程";
++const char *game_str_sd_notes = "備註";
++const char *game_str_sd_hp = "生命值";
++const char *game_str_sd_warp = "曲速";
++const char *game_str_sd_def = "防禦";
++const char *game_str_sd_cspeed = "戰鬥速度";
++const char *game_str_sd_absorbs = "吸收";
++const char *game_str_sd_hit = "命中";
++const char *game_str_sd_hits = "命中";
++const char *game_str_sd_misdef = "飛彈防禦";
++const char *game_str_sd_att = "攻擊等級";
++const char *game_str_sd_comptype = "電腦類型";
++const char *game_str_sd_cost = "成本";
++const char *game_str_sd_size = "尺寸";
++const char *game_str_sd_power = "動力";
++const char *game_str_sd_space = "空間";
++const char *game_str_sd_comps = "電腦";
++const char *game_str_sd_shieldtype = "護盾類型";
++const char *game_str_sd_shields = "護盾";
++const char *game_str_sd_ecmtype = "ECM類型";
+ const char *game_str_sd_ecm2 = "ECM";
+-const char *game_str_sd_armortype = "ARMOR TYPE";
+-const char *game_str_sd_armor2 = "ARMOR";
+-const char *game_str_sd_engtype = "ENGINE TYPE";
+-const char *game_str_sd_numengs = "NUM ENGINES";
+-const char *game_str_sd_engs = "ENGINES";
+-const char *game_str_sd_man1 = "MANEUVER";
+-const char *game_str_sd_man2 = "MANEUVERABILITY";
+-const char *game_str_sd_class = "CLASS";
+-const char *game_str_sd_speed = "SPEED";
+-const char *game_str_sd_max = "MAX";
+-const char *game_str_sd_weapname = "WEAPON NAME";
+-const char *game_str_sd_descr = "DESCRIPTION";
+-const char *game_str_sd_dmg = "DMG";
+-const char *game_str_sd_weaps = "WEAPONS";
+-const char *game_str_sd_specname = "SPECIAL NAME";
+-const char *game_str_sd_specs = "SPECIAL DEVICES";
+-
+-const char *game_str_sp_only6 = "Only 6 ships may be commisioned at one time. 1/4 the decomissioned ship's cost is placed in the planetary reserve.";
+-const char *game_str_sp_wantscrap = "Do you want to scrap this ship?";
+-const char *game_str_sp_before = "Before a new design can be created, you must first scrap one of the six current designs.";
+-const char *game_str_sp_cost = "Cost";
+-
+-const char *game_str_fl_station = "STATION";
+-const char *game_str_fl_inorbit = "IN ORBIT";
+-const char *game_str_fl_moving = "MOVING TO";
+-const char *game_str_fl_unknown = "UNKNOWN";
+-const char *game_str_fl_system = "SYSTEM";
++const char *game_str_sd_armortype = "裝甲類型";
++const char *game_str_sd_armor2 = "裝甲";
++const char *game_str_sd_engtype = "引擎類型";
++const char *game_str_sd_numengs = "引擎數量";
++const char *game_str_sd_engs = "引擎";
++const char *game_str_sd_man1 = "機動";
++const char *game_str_sd_man2 = "機動力";
++const char *game_str_sd_class = "級別";
++const char *game_str_sd_speed = "速度";
++const char *game_str_sd_max = "上限";
++const char *game_str_sd_weapname = "武器名稱";
++const char *game_str_sd_descr = "說明";
++const char *game_str_sd_dmg = "傷害";
++const char *game_str_sd_weaps = "武器";
++const char *game_str_sd_specname = "特殊名稱";
++const char *game_str_sd_specs = "特殊裝置";
++
++const char *game_str_sp_only6 = "同時最多只能服役6種艦船設計。退役艦船成本的1/4將撥入行星備用金。";
++const char *game_str_sp_wantscrap = "你要報廢這艘艦船嗎？";
++const char *game_str_sp_before = "建立新設計前，你必須先報廢目前六種設計之一。";
++const char *game_str_sp_cost = "成本";
++
++const char *game_str_fl_station = "駐守";
++const char *game_str_fl_inorbit = "環繞軌道";
++const char *game_str_fl_moving = "移動至";
++const char *game_str_fl_unknown = "未知";
++const char *game_str_fl_system = "星系";
+ 
+ const char *game_str_gm_tchar = "TJOASDMBUEIPRN";
+ const char *game_str_tbl_gm_spec[PLANET_SPECIAL_NUM] = {
+-    "U POOR", "POOR", "", "ARTIFACTS", "RICH", "U RICH", "ORION"
++    "超貧瘠", "貧瘠", "", "古物", "富礦", "超富礦", "ORION"
+ };
+-const char *game_str_gm_unable = "Unable to land on";
+-const char *game_str_gm_prod = "PROD";
+-const char *game_str_gm_tech = "TECH";
++const char *game_str_gm_unable = "無法降落於";
++const char *game_str_gm_prod = "生產";
++const char *game_str_gm_tech = "科技";
+ const char *game_str_gm_1_3 = "1/3";
+ const char *game_str_gm_1_2 = "1/2";
+ const char *game_str_gm_2x = "2$ ";
+ const char *game_str_gm_3x = "3$ ";
+ const char *game_str_gm_4x = "4$ ";
+-const char *game_str_gm_prodb1 = "PRODUCTION BONUSES";
+-const char *game_str_gm_prodb2 = "APPLY TO INDUSTRY,";
+-const char *game_str_gm_prodb3 = "SHIPS AND DEFENSE";
+-const char *game_str_gm_gmap = "Galaxy Map";
+-const char *game_str_gm_mapkey = "Map Key";
++const char *game_str_gm_prodb1 = "生產加成";
++const char *game_str_gm_prodb2 = "適用於工業、";
++const char *game_str_gm_prodb3 = "艦船與防禦";
++const char *game_str_gm_gmap = "銀河星圖";
++const char *game_str_gm_mapkey = "圖例";
+ 
+-const char *game_str_bs_line1 = "How many missile";
+-const char *game_str_bs_line2 = "bases to eliminate?";
+-const char *game_str_bs_bases = "Bases";
++const char *game_str_bs_line1 = "要拆除多少座";
++const char *game_str_bs_line2 = "飛彈基地？";
++const char *game_str_bs_bases = "飛彈基地";
  
  const char *game_str_tbl_te_field[TECH_FIELD_NUM] = {
 -    "Computer", "Construction", "Force Field", "Planetology", "Propulsion", "Weapon"
-+    "電腦", "建造", "力場", "行星學", "推進", "武器"
- };
+-};
 -const char *game_str_te_adv = "Advanced";
 -const char *game_str_te_tech = "Tech";
 -const char *game_str_te_techno = "Technology";
 -const char *game_str_te_techno2 = "technology";
 -const char *game_str_te_genimp = "General improvements of existing ";
+-const char *game_str_te_nmis = "Missles tipped with nuclear warheads that explode for 4 points of damage and move at a speed of 2.";
+-const char *game_str_te_nbomb = "Bombs that explode for 3-12 points of damage on ground targets only.";
+-const char *game_str_te_scrange = "SCANNER RANGE";
+-const char *game_str_te_rctrl = "Robot Controls";
+-const char *game_str_te_col = "col";
+-const char *game_str_te_fwaste = "FACTORY WASTE";
+-const char *game_str_te_gcombat = "GROUND COMBAT";
+-const char *game_str_te_tform = "TERRAFORM";
+-const char *game_str_te_wasteel = "WASTE ELIMINATION";
+-const char *game_str_te_shrange = "SHIP RANGE";
+-const char *game_str_te_max = "MAX";
++    "電腦", "建造", "力場", "行星學", "推進", "武器"
++};
 +const char *game_str_te_adv = "先進";
 +const char *game_str_te_tech = "科技";
 +const char *game_str_te_techno = "科技";
 +const char *game_str_te_techno2 = "科技";
 +const char *game_str_te_genimp = "改良現有";
- const char *game_str_te_nmis = "Missles tipped with nuclear warheads that explode for 4 points of damage and move at a speed of 2.";
- const char *game_str_te_nbomb = "Bombs that explode for 3-12 points of damage on ground targets only.";
- const char *game_str_te_scrange = "SCANNER RANGE";
-@@ -631,8 +631,8 @@ const char *game_str_el_chose2 = ", the Council has chosen";
- const char *game_str_el_chose3 = "to be the High Master of the New Republic.";
- const char *game_str_el_neither = "Neither leader has a two thirds majority...";
- const char *game_str_el_accept = "Do you accept the ruling?";
++const char *game_str_te_nmis = "裝有核子彈頭的飛彈，爆炸造成4點傷害，速度為2。";
++const char *game_str_te_nbomb = "僅對地面目標爆炸造成3-12點傷害的炸彈。";
++const char *game_str_te_scrange = "掃描射程";
++const char *game_str_te_rctrl = "機器人控制";
++const char *game_str_te_col = "殖";
++const char *game_str_te_fwaste = "工廠污染";
++const char *game_str_te_gcombat = "地面戰";
++const char *game_str_te_tform = "地貌改造";
++const char *game_str_te_wasteel = "污染清除";
++const char *game_str_te_shrange = "艦船射程";
++const char *game_str_te_max = "上限";
+ const char *game_str_te_rp = "RP";
+ 
+-const char *game_str_nt_achieve = "Scientists Achieve A";
+-const char *game_str_nt_break = "Breakthrough";
+-const char *game_str_nt_infil = "Spies Infiltrate The Research Center At";
+-const char *game_str_nt_ruins = "Troopers At The Ruins Of";
+-const char *game_str_nt_discover = "Discover";
+-const char *game_str_nt_orion = "Troopers Landing on Orion Discover";
+-const char *game_str_nt_scouts = "Scouts Exploring The Ruins Of";
+-const char *game_str_nt_choose = "Choose the area of research our scientists now focus on";
+-const char *game_str_nt_reveal = "Scientists Reveal Their";
+-const char *game_str_nt_secrets = "Secrets";
+-const char *game_str_nt_frame = "Your spies managed to frame another race for the theft";
+-const char *game_str_nt_victim = "Choose the victim race:";
+-const char *game_str_nt_doyou = "Do you want to ";
+-const char *game_str_nt_inc = "increase the ";
+-const char *game_str_nt_redueco = "reduce the ecology ratio of all of your colonies to the minimum amount necessary to keep them clean?";
+-const char *game_str_nt_ind = "industry ratios of all of your colonies to upgrade your factory controls?";
+-const char *game_str_nt_ecoall = "ecology ratios of all of your colonies";
+-const char *game_str_nt_terra = " in order to begin terraforming your planets?";
+-const char *game_str_nt_def = "defense ratio of all of your colonies to build the new planetary shields?";
+-const char *game_str_nt_ecostd = "ecology ratio of your colonies with standard environments";
+-const char *game_str_nt_ecohost = "ecology ratio of your colonies with hostile environments";
++const char *game_str_nt_achieve = "科學家取得";
++const char *game_str_nt_break = "重大突破";
++const char *game_str_nt_infil = "間諜滲透了研究中心，位於";
++const char *game_str_nt_ruins = "部隊於遺跡";
++const char *game_str_nt_discover = "發現";
++const char *game_str_nt_orion = "登陸 Orion 的部隊發現";
++const char *game_str_nt_scouts = "偵察隊探索遺跡";
++const char *game_str_nt_choose = "選擇我方科學家現在專注的研究領域";
++const char *game_str_nt_reveal = "科學家揭露了他們的";
++const char *game_str_nt_secrets = "秘密";
++const char *game_str_nt_frame = "你的間諜成功將竊取行為嫁禍給另一個種族";
++const char *game_str_nt_victim = "選擇嫁禍的種族：";
++const char *game_str_nt_doyou = "你是否要";
++const char *game_str_nt_inc = "提高所有殖民地的";
++const char *game_str_nt_redueco = "降低所有殖民地的生態比例至維持清潔所需的最低限度？";
++const char *game_str_nt_ind = "工業比例以升級你的工廠控制？";
++const char *game_str_nt_ecoall = "生態比例";
++const char *game_str_nt_terra = "以開始改造你的行星？";
++const char *game_str_nt_def = "防禦比例以建造新的行星防護罩？";
++const char *game_str_nt_ecostd = "一般環境殖民地的生態比例";
++const char *game_str_nt_ecohost = "惡劣環境殖民地的生態比例";
+ const char *game_str_tbl_nt_adj[4] = {
+-    "NO", "+25%", "+50%", "+75%"
+-};
+-
+-const char *game_str_ra_nocont = "No Contact";
+-const char *game_str_ra_notpres = "Not Present";
+-const char *game_str_ra_secline1 = "SECURITY INCREASES THE CHANCE OF";
+-const char *game_str_ra_secline2 = "CATCHING ALL ENEMY SPIES. ";
+-const char *game_str_ra_alloc = "Allocations";
+-const char *game_str_ra_planres = "Planetary Resources";
+-const char *game_str_ra_diplo = "Diplomat";
+-const char *game_str_ra_gone = "Gone";
+-const char *game_str_ra_nospies = "NO SPIES";
+-const char *game_str_ra_spy = "SPY";
+-const char *game_str_ra_spies = "SPIES";
++    "不", "+25%", "+50%", "+75%"
++};
++
++const char *game_str_ra_nocont = "未接觸";
++const char *game_str_ra_notpres = "未出現";
++const char *game_str_ra_secline1 = "保安提高了";
++const char *game_str_ra_secline2 = "揪出所有敵方間諜的機率。 ";
++const char *game_str_ra_alloc = "分配";
++const char *game_str_ra_planres = "行星資源";
++const char *game_str_ra_diplo = "外交官";
++const char *game_str_ra_gone = "已消失";
++const char *game_str_ra_nospies = "無間諜";
++const char *game_str_ra_spy = "間諜";
++const char *game_str_ra_spies = "間諜";
+ const char *game_str_tbl_ra_treaty[TREATY_NUM] = {
+-    "No Treaty", "Non-Aggression Pact", "Alliance", "War", "Final War"
++    "無條約", "互不侵犯協定", "同盟", "戰爭", "終極戰爭"
+ };
+-const char *game_str_ra_trade = "Trade";
+-const char *game_str_ra_notrade = "No Trade";
++const char *game_str_ra_trade = "貿易";
++const char *game_str_ra_notrade = "無貿易";
+ const char *game_str_tbl_ra_relat[17] = {
+-    "FEUD", "HATE", "DISCORD", "TROUBLED", "TENSE", "RESTLESS", "WARY", "UNEASE",
+-    "NEUTRAL", "RELAXED", "AMIABLE", "CALM", "AFFABLE", "PEACEFUL", "FRIENDLY", "UNITY",
+-    "HARMONY"
+-};
+-const char *game_str_ra_stats = "Racial Stats";
+-
+-const char *game_str_re_reportis = "REPORT IS";
+-const char *game_str_re_current = "CURRENT";
+-const char *game_str_re_yearsold = "years old";
+-const char *game_str_re_alliance = "Alliances";
+-const char *game_str_re_wars = "Wars";
+-const char *game_str_re_environ = "ENVIRON";
+-
+-const char *game_str_sc_caught = "Spies Caught  Yours  Theirs";
+-
+-const char *game_str_bp_scombat = "Space Combat";
+-const char *game_str_bp_attack = "attack";
+-const char *game_str_bp_attacks = "attacks";
+-const char *game_str_bt_auto_move = "AUTO MOVE";
+-const char *game_str_bt_pop = "POPULATION";
+-const char *game_str_bt_ind = "INDUSTRY";
+-const char *game_str_bt_bases = "MISSILE BASES";
+-const char *game_str_bt_subint = "SUBSPACE INTERDICTOR";
+-const char *game_str_bt_launch = "LAUNCHERS";
+-const char *game_str_bt_coldest = "Colony Was Destroyed!";
+-
+-const char *game_str_es_youresp1 = "YOUR SPIES HAVE INFILTRATED A";
+-const char *game_str_es_youresp2 = "BASE";
+-const char *game_str_es_youresp3 = "CHOOSE THE TYPE OF TECHNOLOGY TO STEAL";
+-const char *game_str_es_thesp1 = "Espionage";
+-const char *game_str_es_thesp2 = "spies steal the plans for:";
+-
+-const char *game_str_sb_choose = "Choose target for sabotage";
+-const char *game_str_sb_lastrep = "Last Report:";
+-const char *game_str_sb_pop = "Population:";
+-const char *game_str_sb_fact = "Factories:";
+-const char *game_str_sb_bases = "Missile Bases:";
+-const char *game_str_sb_unkn = "Unknown spy";
+-const char *game_str_sb_your = "Your";
+-const char *game_str_sb_spies = "spies";
+-const char *game_str_sb_increv = "incited a revolt!";
+-const char *game_str_sb_inc1 = "incited";
+-const char *game_str_sb_inc2 = "rebels. Unrest now at";
+-const char *game_str_sb_destr = "destroyed";
+-const char *game_str_sb_fact2 = "factory";
+-const char *game_str_sb_facts = "factories";
+-const char *game_str_sb_mbase = "missile base";
+-const char *game_str_sb_mbases = "missile bases";
+-const char *game_str_sb_failed = "failed!";
+-const char *game_str_sb_nofact = "No factories to sabotage";
+-const char *game_str_sb_nobases = "No missile bases to sabotage";
+-const char *game_str_sb_noinc = "failed to incite any rebels";
+-const char *game_str_sb_frame = "Your spies managed to frame another race for the sabotage";
+-
+-const char *game_str_ex_planeta = "Planetary";
+-const char *game_str_ex_scanner = "scanners";
+-const char *game_str_ex_scout = "Scout ships";
+-const char *game_str_ex_explore = "explore a new";
+-const char *game_str_ex_starsys = "star system";
+-const char *game_str_ex_build = "Build a";
+-const char *game_str_ex_colony = "new colony?";
+-const char *game_str_ex_popgr = "POPULATION GROWTH";
+-const char *game_str_ex_resopnt = "RESOURCE POINTS";
+-const char *game_str_ex_fromind = "FROM INDUSTRY ARE";
+-const char *game_str_ex_techpnt = "TECHNOLOGY POINTS";
+-const char *game_str_ex_fromres = "FROM RESEARCH";
+-const char *game_str_ex_aredbl = "ARE DOUBLED.";
+-const char *game_str_ex_arequad = "ARE QUADRUPLED.";
++    "世仇", "憎恨", "不和", "緊繃", "緊張", "躁動", "戒備", "不安",
++    "中立", "緩和", "親善", "平靜", "和藹", "和平", "友好", "團結",
++    "和諧"
++};
++const char *game_str_ra_stats = "種族數據";
++
++const char *game_str_re_reportis = "報告為";
++const char *game_str_re_current = "最新";
++const char *game_str_re_yearsold = "年前";
++const char *game_str_re_alliance = "同盟";
++const char *game_str_re_wars = "戰爭";
++const char *game_str_re_environ = "環境";
++
++const char *game_str_sc_caught = "間諜落網  我方  敵方";
++
++const char *game_str_bp_scombat = "太空戰鬥";
++const char *game_str_bp_attack = "攻擊";
++const char *game_str_bp_attacks = "攻擊";
++const char *game_str_bt_auto_move = "自動移動";
++const char *game_str_bt_pop = "人口";
++const char *game_str_bt_ind = "工業";
++const char *game_str_bt_bases = "飛彈基地";
++const char *game_str_bt_subint = "次空間攔截器";
++const char *game_str_bt_launch = "發射器";
++const char *game_str_bt_coldest = "殖民地已被摧毀！";
++
++const char *game_str_es_youresp1 = "你的間諜已滲透一座";
++const char *game_str_es_youresp2 = "基地";
++const char *game_str_es_youresp3 = "選擇要竊取的科技類型";
++const char *game_str_es_thesp1 = "諜報";
++const char *game_str_es_thesp2 = "間諜竊取了以下藍圖：";
++
++const char *game_str_sb_choose = "選擇破壞目標";
++const char *game_str_sb_lastrep = "最後回報：";
++const char *game_str_sb_pop = "人口：";
++const char *game_str_sb_fact = "工廠：";
++const char *game_str_sb_bases = "飛彈基地：";
++const char *game_str_sb_unkn = "未知間諜";
++const char *game_str_sb_your = "你的";
++const char *game_str_sb_spies = "間諜";
++const char *game_str_sb_increv = "煽動了一場叛亂！";
++const char *game_str_sb_inc1 = "煽動了";
++const char *game_str_sb_inc2 = "名叛軍。動亂程度現為";
++const char *game_str_sb_destr = "摧毀了";
++const char *game_str_sb_fact2 = "座工廠";
++const char *game_str_sb_facts = "座工廠";
++const char *game_str_sb_mbase = "座飛彈基地";
++const char *game_str_sb_mbases = "座飛彈基地";
++const char *game_str_sb_failed = "失敗！";
++const char *game_str_sb_nofact = "沒有可破壞的工廠";
++const char *game_str_sb_nobases = "沒有可破壞的飛彈基地";
++const char *game_str_sb_noinc = "未能煽動任何叛軍";
++const char *game_str_sb_frame = "你的間諜成功將破壞行為嫁禍給另一個種族";
++
++const char *game_str_ex_planeta = "行星";
++const char *game_str_ex_scanner = "掃描器";
++const char *game_str_ex_scout = "偵察艦";
++const char *game_str_ex_explore = "探索了新的";
++const char *game_str_ex_starsys = "星系";
++const char *game_str_ex_build = "要在此建立";
++const char *game_str_ex_colony = "新殖民地嗎？";
++const char *game_str_ex_popgr = "人口成長";
++const char *game_str_ex_resopnt = "資源點";
++const char *game_str_ex_fromind = "來自工業的";
++const char *game_str_ex_techpnt = "科技點";
++const char *game_str_ex_fromres = "來自研究的";
++const char *game_str_ex_aredbl = "加倍。";
++const char *game_str_ex_arequad = "增為四倍。";
+ const char *game_str_ex_pg1[3] = {
+-    "Hostile", "Ecologicaly", "Ecological"
++    "惡劣", "生態", "生態"
+ };
+ const char *game_str_ex_pg2[3] = {
+-    "Environment", "Fertile", "Gaia"
++    "環境", "肥沃", "蓋亞"
+ };
+ const char *game_str_ex_pg3[3] = {
+-    "IS HALVED.", "IS +50% NORMAL.", "IS DOUBLED."
++    "減半。", "為正常的+50%。", "加倍。"
+ };
+ const char *game_str_ex_ps1[5] = {
+-    "Ultra Poor", "Mineral Poor", "Artifacts", "Mineral Rich", "Ultra Rich"
++    "超貧瘠", "礦藏貧瘠", "古物", "礦藏豐富", "超富礦"
+ };
+ const char *game_str_ex_ps2[4] = {
+-    "CUT TO ONE-THIRD.", "HALVED.", "DOUBLED.", "TRIPLED."
+-};
+-
+-const char *game_str_la_colony = "Colony Name...";
+-const char *game_str_la_inyear = "In the year";
+-const char *game_str_la_the = "the";
+-const char *game_str_la_formnew = "s form a new colony";
+-
+-const char *game_str_gr_carmor = "Combat Armor";
+-const char *game_str_gr_outof = "out of";
+-const char *game_str_gr_transs = "transports";
+-const char *game_str_gr_reclaim = "transports land to reclaim the colony";
+-const char *game_str_gr_penetr = "penetrate";
+-const char *game_str_gr_defenss = "defenses";
+-const char *game_str_gr_troops = "Troops";
+-const char *game_str_gr_rebel = "Rebel";
+-const char *game_str_gr_gcon = "Ground Combat On";
+-const char *game_str_gr_scapt = "s Capture";
+-const char *game_str_gr_itroops = "Imperial Troops Recapture";
+-const char *game_str_gr_succd = "s Successfully Defend";
+-const char *game_str_gr_fcapt = "factories captured";
+-const char *game_str_gr_tsteal = "technology stolen";
+-const char *game_str_gr_tnew = "new tech found";
+-
+-const char *game_str_el_no = "no";
+-const char *game_str_el_vote = "vote";
+-const char *game_str_el_votes = "votes";
+-const char *game_str_el_total = "total";
+-const char *game_str_el_start = "The High Council has convened to elect one leader to be Emperor of the Galaxy...";
+-const char *game_str_el_emperor = "Emperor";
+-const char *game_str_el_ofthe = "of the";
+-const char *game_str_el_and = "and";
+-const char *game_str_el_for = "for";
+-const char *game_str_el_nomin = "have been nominated.";
+-const char *game_str_el_abs1 = "The";
+-const char *game_str_el_abs2 = "abstain (";
+-const char *game_str_el_dots = ")...";
+-const char *game_str_el_your = "Your choice (";
++    "削減至三分之一。", "減半。", "加倍。", "增為三倍。"
++};
++
++const char *game_str_la_colony = "殖民地名稱…";
++const char *game_str_la_inyear = "於";
++const char *game_str_la_the = "年，";
++const char *game_str_la_formnew = "建立了新殖民地";
++
++const char *game_str_gr_carmor = "戰鬥裝甲";
++const char *game_str_gr_outof = "／共";
++const char *game_str_gr_transs = "運輸船";
++const char *game_str_gr_reclaim = "運輸船登陸以收復殖民地";
++const char *game_str_gr_penetr = "突破了";
++const char *game_str_gr_defenss = "防禦";
++const char *game_str_gr_troops = "部隊";
++const char *game_str_gr_rebel = "叛軍";
++const char *game_str_gr_gcon = "地面戰開始";
++const char *game_str_gr_scapt = "攻佔了";
++const char *game_str_gr_itroops = "帝國部隊收復";
++const char *game_str_gr_succd = "成功守住";
++const char *game_str_gr_fcapt = "座工廠被佔領";
++const char *game_str_gr_tsteal = "項科技被竊";
++const char *game_str_gr_tnew = "項新科技被發現";
++
++const char *game_str_el_no = "無";
++const char *game_str_el_vote = "票";
++const char *game_str_el_votes = "票";
++const char *game_str_el_total = "總計";
++const char *game_str_el_start = "最高議會已召開，以選出一位領袖擔任銀河皇帝…";
++const char *game_str_el_emperor = "皇帝";
++const char *game_str_el_ofthe = "－";
++const char *game_str_el_and = "與";
++const char *game_str_el_for = "獲得";
++const char *game_str_el_nomin = "已獲提名。";
++const char *game_str_el_abs1 = "";
++const char *game_str_el_abs2 = "棄權（";
++const char *game_str_el_dots = "）…";
++const char *game_str_el_your = "你的選擇（";
+ const char *game_str_el_bull = "[";
+-const char *game_str_el_self = "Yourself";
+-const char *game_str_el_abs = "Abstain";
+-const char *game_str_el_chose1 = "In the year";
+-const char *game_str_el_chose2 = ", the Council has chosen";
+-const char *game_str_el_chose3 = "to be the High Master of the New Republic.";
+-const char *game_str_el_neither = "Neither leader has a two thirds majority...";
+-const char *game_str_el_accept = "Do you accept the ruling?";
 -const char *game_str_el_yes = "Yes";
 -const char *game_str_el_no2 = "No";
+-const char *game_str_el_sobeit = "So be it. You defy the ruling of the council. Now you will feel the wrath of the New Republic!";
+-const char *game_str_el_isnow = "is now High Master.";
+-
+-const char *game_str_au_facts = "factories";
+-const char *game_str_au_bases = "missile bases";
+-const char *game_str_au_treaty = "treaty";
+-const char *game_str_au_allian = "Alliance";
+-const char *game_str_au_nonagg = "Non-Aggression Pact";
+-const char *game_str_au_tradea = "Trade Agreement";
+-const char *game_str_au_amreca = "(ambassador recalled)";
+-const char *game_str_au_tech = "tech";
+-const char *game_str_au_framed = "(you were framed)";
++const char *game_str_el_self = "你自己";
++const char *game_str_el_abs = "棄權";
++const char *game_str_el_chose1 = "於";
++const char *game_str_el_chose2 = "年，議會選擇了";
++const char *game_str_el_chose3 = "擔任新共和國的最高領主。";
++const char *game_str_el_neither = "兩位領袖皆未取得三分之二多數…";
++const char *game_str_el_accept = "你接受此裁決嗎？";
 +const char *game_str_el_yes = "是";
 +const char *game_str_el_no2 = "否";
- const char *game_str_el_sobeit = "So be it. You defy the ruling of the council. Now you will feel the wrath of the New Republic!";
- const char *game_str_el_isnow = "is now High Master.";
- 
-@@ -646,8 +646,8 @@ const char *game_str_au_amreca = "(ambassador recalled)";
- const char *game_str_au_tech = "tech";
- const char *game_str_au_framed = "(you were framed)";
++const char *game_str_el_sobeit = "那就這樣吧。你違抗議會的裁決。現在你將承受新共和國的怒火！";
++const char *game_str_el_isnow = "現為最高領主。";
++
++const char *game_str_au_facts = "工廠";
++const char *game_str_au_bases = "飛彈基地";
++const char *game_str_au_treaty = "條約";
++const char *game_str_au_allian = "同盟";
++const char *game_str_au_nonagg = "互不侵犯協定";
++const char *game_str_au_tradea = "貿易協定";
++const char *game_str_au_amreca = "（已召回大使）";
++const char *game_str_au_tech = "科技";
++const char *game_str_au_framed = "（你被嫁禍了）";
  const char *game_str_au_bull = "[";
 -const char *game_str_au_accept = "Accept";
 -const char *game_str_au_reject = "Reject";
+-const char *game_str_au_agree = "Agree";
+-const char *game_str_au_forget = "Forget It";
+-const char *game_str_au_forget2 = "Forget_it";
+-const char *game_str_au_inxchng = "In exchange you will receive:";
+-const char *game_str_au_whatif1 = "What if we were to also offer";
+-const char *game_str_au_whatif2 = "as an incentive";
+-const char *game_str_au_perrec1 = "Perhaps you would reconsider if we also provided";
+-const char *game_str_au_ques = "?";
+-const char *game_str_au_howmay = "How may our empire serve you:";
+-const char *game_str_au_youprte = "You propose a treaty:";
+-const char *game_str_au_youprta = "You propose a trade agreement for:";
+-const char *game_str_au_youract = "Your actions:";
+-const char *game_str_au_whatech = "What type of technology interests you?";
+-const char *game_str_au_whatrad = "What will you trade for it?";
+-const char *game_str_au_whatoff = "What do you offer as tribute?";
+-const char *game_str_au_perthr1 = "Perhaps if you were to throw in";
+-const char *game_str_au_perthr2 = "we could deal.";
+-const char *game_str_au_alsoof1 = "If you also offer us";
+-const char *game_str_au_alsoof2 = "we would accept.";
+-const char *game_str_au_whowar = "Who should we declare war on?";
+-const char *game_str_au_whobrk = "Who should we break our treaty with?";
+-const char *game_str_au_bcpery = "BC / year";
+-const char *game_str_au_whattr = "What do you offer as tribute?";
+-const char *game_str_au_techn = "[ Technology";
 +const char *game_str_au_accept = "接受";
 +const char *game_str_au_reject = "拒絕";
- const char *game_str_au_agree = "Agree";
- const char *game_str_au_forget = "Forget It";
- const char *game_str_au_forget2 = "Forget_it";
++const char *game_str_au_agree = "同意";
++const char *game_str_au_forget = "算了";
++const char *game_str_au_forget2 = "算了";
++const char *game_str_au_inxchng = "作為交換，你將獲得：";
++const char *game_str_au_whatif1 = "若我們再附上";
++const char *game_str_au_whatif2 = "作為誘因如何";
++const char *game_str_au_perrec1 = "若我們也提供下列條件，或許你會重新考慮";
++const char *game_str_au_ques = "？";
++const char *game_str_au_howmay = "我方帝國能為你效勞什麼：";
++const char *game_str_au_youprte = "你提議一項條約：";
++const char *game_str_au_youprta = "你提議一項貿易協定，內容為：";
++const char *game_str_au_youract = "你的行動：";
++const char *game_str_au_whatech = "你對哪類科技感興趣？";
++const char *game_str_au_whatrad = "你願意以什麼交換？";
++const char *game_str_au_whatoff = "你要進貢什麼？";
++const char *game_str_au_perthr1 = "若你願意再加上";
++const char *game_str_au_perthr2 = "我們或許可以成交。";
++const char *game_str_au_alsoof1 = "若你也提供我們";
++const char *game_str_au_alsoof2 = "我們便會接受。";
++const char *game_str_au_whowar = "我們該對誰宣戰？";
++const char *game_str_au_whobrk = "我們該與誰撕毀條約？";
++const char *game_str_au_bcpery = "BC / 年";
++const char *game_str_au_whattr = "你要進貢什麼？";
++const char *game_str_au_techn = "[ 科技";
+ 
+ const char *game_str_au_opts1[6] = {
+-    "[ Propose Treaty",
+-    "[ Form Trade Agreement",
+-    "[ Threaten/Break Treaty and Trade",
+-    "[ Offer Tribute",
+-    "[ Exchange Technology",
+-    "[ Good Bye"
++    "[ 提議條約",
++    "[ 締結貿易協定",
++    "[ 威脅／撕毀條約與貿易",
++    "[ 進貢",
++    "[ 交換科技",
++    "[ 再會"
+ };
+ const char *game_str_au_opts2[6] = {
+-    "[ Non-Aggression Pact",
+-    "[ Alliance",
+-    "[ Peace Treaty",
+-    "[ Declaration of War on Another Race",
+-    "[ Break Alliance With Another Race",
+-    "[ Forget It"
++    "[ 互不侵犯協定",
++    "[ 同盟",
++    "[ 和平條約",
++    "[ 對另一種族宣戰",
++    "[ 與另一種族解除同盟",
++    "[ 算了"
+ };
+ const char *game_str_au_opts3[2] = {
+-    "[ Agree",
+-    "[ Forget It"
++    "[ 同意",
++    "[ 算了"
+ };
+ const char *game_str_au_opts4[5] = {
+-    "[ Break Non-Aggression Pact",
+-    "[ Break Alliance",
+-    "[ Break Trade Agreement",
+-    "[ Threaten To Attack",
+-    "[ Forget It"
+-};
+-
+-const char *game_str_tr_cont1 = "Contact has been broken with the";
+-const char *game_str_tr_cont2 = "empire!";
+-const char *game_str_tr_fuel1 = "The fleet orbiting";
+-const char *game_str_tr_fuel2 = "has been cut off from refueling supply lines and has been lost.";
+-
+-const char *game_str_sv_envir = "environment";
+-const char *game_str_sv_stargt = "Star Gate";
+-const char *game_str_sv_shild1 = "CLASS";
+-const char *game_str_sv_shild2 = "SHIELD";
+-const char *game_str_sv_psize = "PLANET SIZE:";
+-const char *game_str_sv_fact = "FACTORIES:";
+-const char *game_str_sv_waste = "WASTE:";
+-const char *game_str_sv_pop = "POPULATION:";
+-const char *game_str_sv_growth = "GROWTH:";
+-const char *game_str_sv_techp = "Technology points from research are";
+-const char *game_str_sv_resp = "Resource points from industry are";
+-const char *game_str_sv_1_3x = "cut to one-third.";
+-const char *game_str_sv_1_2x = "halved.";
+-const char *game_str_sv_2x = "doubled.";
+-const char *game_str_sv_3x = "tripled.";
+-const char *game_str_sv_4x = "quadrupled.";
+-const char *game_str_sv_popgr = "Population growth is";
++    "[ 撕毀互不侵犯協定",
++    "[ 解除同盟",
++    "[ 撕毀貿易協定",
++    "[ 威脅攻擊",
++    "[ 算了"
++};
++
++const char *game_str_tr_cont1 = "已與下列帝國中斷聯繫：";
++const char *game_str_tr_cont2 = "";
++const char *game_str_tr_fuel1 = "環繞下列星系的艦隊";
++const char *game_str_tr_fuel2 = "已與補給燃料線斷絕，全數損失。";
++
++const char *game_str_sv_envir = "環境";
++const char *game_str_sv_stargt = "星門";
++const char *game_str_sv_shild1 = "";
++const char *game_str_sv_shild2 = "級護盾";
++const char *game_str_sv_psize = "行星大小：";
++const char *game_str_sv_fact = "工廠：";
++const char *game_str_sv_waste = "污染：";
++const char *game_str_sv_pop = "人口：";
++const char *game_str_sv_growth = "成長：";
++const char *game_str_sv_techp = "來自研究的科技點";
++const char *game_str_sv_resp = "來自工業的資源點";
++const char *game_str_sv_1_3x = "削減至三分之一。";
++const char *game_str_sv_1_2x = "減半。";
++const char *game_str_sv_2x = "加倍。";
++const char *game_str_sv_3x = "增為三倍。";
++const char *game_str_sv_4x = "增為四倍。";
++const char *game_str_sv_popgr = "人口成長";
+ const char *game_str_sv_pg1[3] = {
+-    "Hostile", "Fertile", "Gaia"
++    "惡劣", "肥沃", "蓋亞"
+ };
+ const char *game_str_sv_pg2[3] = {
+-    "halved.", "50% greater.", "doubled."
+-};
+-
+-const char *game_str_in_loading = "Loading Master of Orion...";
+-const char *game_str_wl_won_1 = "Escorted by Honor Guard, High Master ";
+-const char *game_str_wl_won_2 = "returns to Orion, throne world of the Ancients.";
+-const char *game_str_wl_won_3 = "The Galactic Imperium has been reformed...";
+-const char *game_str_wl_3_good_1 = "A new era has dawned. We must set aside our past";
+-const char *game_str_wl_3_good_2 = "conflicts and greet a new millenium as a united galaxy";
+-const char *game_str_wl_3_tyrant_1 = "The universe is mine and all shall bow before the";
+-const char *game_str_wl_3_tyrant_2 = "might of ";
+-const char *game_str_wl_3_tyrant_3 = ", Master of Orion.";
+-const char *game_str_wl_3_tyrant_4 = "Master of the Universe...";
+-const char *game_str_wl_exile_1 = "Exiled from the known galaxy, Emperor ";
+-const char *game_str_wl_exile_2 = "sets forth to conquer new worlds.";
+-const char *game_str_wl_exile_3 = "vowing to return and claim the renowned title of";
+-const char *game_str_wl_exile_4 = " Master of Orion...";
+-
+-const char *game_str_gnn_end_good = "And that's the way it is...";
+-const char *game_str_gnn_end_tyrant = "Oh well, another millenium serving under a ruthless tyrant...";
+-const char *game_str_gnn_also = "Also in the news...";
++    "減半。", "增加50%。", "加倍。"
++};
++
++const char *game_str_in_loading = "正在載入 Master of Orion…";
++const char *game_str_wl_won_1 = "在儀仗隊護衛下，最高領主 ";
++const char *game_str_wl_won_2 = "回到了 Orion，遠古者的王座之星。";
++const char *game_str_wl_won_3 = "銀河帝國已然重建…";
++const char *game_str_wl_3_good_1 = "新紀元已然降臨。我們必須拋下過往的";
++const char *game_str_wl_3_good_2 = "紛爭，以團結的銀河迎接新的千年";
++const char *game_str_wl_3_tyrant_1 = "宇宙屬於我，眾生皆須臣服於";
++const char *game_str_wl_3_tyrant_2 = "的威能之下：";
++const char *game_str_wl_3_tyrant_3 = "，Orion 的霸主。";
++const char *game_str_wl_3_tyrant_4 = "宇宙的主宰…";
++const char *game_str_wl_exile_1 = "被放逐出已知銀河，皇帝 ";
++const char *game_str_wl_exile_2 = "啟程征服新的世界。";
++const char *game_str_wl_exile_3 = "誓言歸來，奪取那舉世聞名的頭銜：";
++const char *game_str_wl_exile_4 = " Orion 的霸主…";
++
++const char *game_str_gnn_end_good = "事情就是這樣…";
++const char *game_str_gnn_end_tyrant = "唉，又是受暴君統治的一個千年…";
++const char *game_str_gnn_also = "其他新聞…";

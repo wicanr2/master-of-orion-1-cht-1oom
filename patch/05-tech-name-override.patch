@@ -1,5 +1,5 @@
 diff --git a/src/game/game_tech.c b/src/game/game_tech.c
-index 7d401fa..c054a60 100644
+index 7d401fa..d94f2ea 100644
 --- a/src/game/game_tech.c
 +++ b/src/game/game_tech.c
 @@ -3,6 +3,7 @@
@@ -32,7 +32,7 @@ index 7d401fa..c054a60 100644
          } else {
              buf[0] = '\0';
          }
-@@ -510,7 +511,7 @@ const char *game_tech_get_descr(const struct game_aux_s *gaux, tech_field_t fiel
+@@ -510,13 +511,13 @@ const char *game_tech_get_descr(const struct game_aux_s *gaux, tech_field_t fiel
      if (tech == 0) {
          buf[0] = '\0';
      } else if (tech > 50) {
@@ -41,17 +41,26 @@ index 7d401fa..c054a60 100644
      } else if (tech == -2) {
          strcpy(buf, game_str_te_nmis);
      } else if (tech == -1) {
+         strcpy(buf, game_str_te_nbomb);
+     } else {
+-        strcpy(buf, &(gaux->research.descr[(field * 50 + tech - 1) * RESEARCH_DESCR_LEN]));
++        strcpy(buf, strtr(&(gaux->research.descr[(field * 50 + tech - 1) * RESEARCH_DESCR_LEN]))); /* 繁中:科技描述覆蓋 */
+     }
+     return buf;
+ }
 diff --git a/src/strtr.c b/src/strtr.c
 new file mode 100644
-index 0000000..b1b2816
+index 0000000..53b7dac
 --- /dev/null
 +++ b/src/strtr.c
-@@ -0,0 +1,98 @@
+@@ -0,0 +1,129 @@
 +#include "config.h"
 +
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
++#include <dirent.h>
++#include <sys/stat.h>
 +
 +#include "strtr.h"
 +#include "lib.h"
@@ -74,6 +83,47 @@ index 0000000..b1b2816
 +    return strcmp(((const struct entry_s *)a)->en, ((const struct entry_s *)b)->en);
 +}
 +
++static int tr_cap = 0;
++
++/* 載入單一 TSV 檔(append,不排序)。回傳新增筆數。 */
++static int strtr_load_file(const char *path)
++{
++    FILE *f = fopen(path, "rb");
++    if (!f) {
++        log_warning("strtr: cannot open '%s'\n", path);
++        return 0;
++    }
++    char line[1024];
++    int added = 0;
++    while (fgets(line, sizeof(line), f)) {
++        char *tab = strchr(line, '\t');
++        if (!tab) {
++            continue;
++        }
++        *tab = '\0';
++        char *en = line;
++        char *zh = tab + 1;
++        size_t zl = strlen(zh);
++        while (zl && (zh[zl - 1] == '\n' || zh[zl - 1] == '\r')) {
++            zh[--zl] = '\0';
++        }
++        if (!en[0] || !zh[0]) {
++            continue;
++        }
++        if (tr_num >= tr_cap) {
++            tr_cap = tr_cap ? tr_cap * 2 : 256;
++            tr = lib_realloc(tr, sizeof(struct entry_s) * tr_cap);
++        }
++        tr[tr_num].en = lib_stralloc(en);
++        tr[tr_num].zh = lib_stralloc(zh);
++        ++tr_num;
++        ++added;
++    }
++    fclose(f);
++    return added;
++}
++
++/* path 為目錄時載入其中所有 *.tsv;為檔案時載入單檔。 */
 +bool strtr_init(const char *path)
 +{
 +    strtr_shutdown();
@@ -83,42 +133,29 @@ index 0000000..b1b2816
 +    if (!path || !path[0]) {
 +        return false;
 +    }
-+    FILE *f = fopen(path, "rb");
-+    if (!f) {
-+        log_warning("strtr: cannot open '%s'\n", path);
-+        return false;
++    struct stat st;
++    if ((stat(path, &st) == 0) && S_ISDIR(st.st_mode)) {
++        DIR *d = opendir(path);
++        if (d) {
++            struct dirent *e;
++            char fp[1024];
++            while ((e = readdir(d)) != NULL) {
++                const char *nm = e->d_name;
++                size_t l = strlen(nm);
++                /* 只載 *_zh.tsv(譯文檔),避開 *.tsv 英文來源檔 */
++                if (l > 7 && strcmp(nm + l - 7, "_zh.tsv") == 0) {
++                    snprintf(fp, sizeof(fp), "%s/%s", path, nm);
++                    strtr_load_file(fp);
++                }
++            }
++            closedir(d);
++        }
++        log_message("strtr: loaded %d translations from dir '%s'\n", tr_num, path);
++    } else {
++        strtr_load_file(path);
++        log_message("strtr: loaded %d translations from '%s'\n", tr_num, path);
 +    }
-+    char line[1024];
-+    int cap = 256;
-+    tr = lib_malloc(sizeof(struct entry_s) * cap);
-+    tr_num = 0;
-+    while (fgets(line, sizeof(line), f)) {
-+        char *tab = strchr(line, '\t');
-+        if (!tab) {
-+            continue;
-+        }
-+        *tab = '\0';
-+        char *en = line;
-+        char *zh = tab + 1;
-+        /* 去尾端換行 */
-+        size_t zl = strlen(zh);
-+        while (zl && (zh[zl - 1] == '\n' || zh[zl - 1] == '\r')) {
-+            zh[--zl] = '\0';
-+        }
-+        if (!en[0] || !zh[0]) {
-+            continue;
-+        }
-+        if (tr_num >= cap) {
-+            cap *= 2;
-+            tr = lib_realloc(tr, sizeof(struct entry_s) * cap);
-+        }
-+        tr[tr_num].en = lib_stralloc(en);
-+        tr[tr_num].zh = lib_stralloc(zh);
-+        ++tr_num;
-+    }
-+    fclose(f);
 +    qsort(tr, tr_num, sizeof(struct entry_s), cmp_entry);
-+    log_message("strtr: loaded %d translations from '%s'\n", tr_num, path);
 +    return tr_num > 0;
 +}
 +
@@ -133,6 +170,7 @@ index 0000000..b1b2816
 +        tr = NULL;
 +    }
 +    tr_num = 0;
++    tr_cap = 0;
 +}
 +
 +const char *strtr(const char *en)

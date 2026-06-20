@@ -1,0 +1,187 @@
+Computers	Battle Scanner	Reveals technical specifications of enemy spacecraft in combat.
+Computers	Ecm Jammer Mark I	Adds 1 level to defense against enemy missile attacks.
+Computers	Deep Space Scanner	Detects enemy ships up to 5 parsecs away from your colonies and 1 parsec away from your ships.
+Computers	Battle Computer Mark II	Increases weapon accuracy to level 2.
+Computers	Ecm Jammer Mark II	Adds 2 levels to defense against enemy missile attacks.
+Computers	Improved Robotic Controls III	Allows up to three factories to be operated per population. The refit cost to upgrade to Robotic Controls III is half the standard cost of each factory.
+Computers	Battle Computer Mark III	Increases weapon accuracy to level 3.
+Computers	Ecm Jammer Mark III	Adds 3 levels to defense against enemy missile attacks.
+Computers	Improved Space Scanner	Detects enemy ships up to 7 parsecs away from your colonies and 2 parsecs away from your ships. Enemy destinations and ETA can also be accurately determined.
+Computers	Battle Computer Mark IV	Increases weapon accuracy to level 4.
+Computers	Ecm Jammer Mark IV	Adds 4 levels to defense against enemy missile attacks.
+Computers	Improved Robotic Controls IV	Allows up to four factories to be operated per population. The refit cost to upgrade to Robotic Controls IV is the standard cost of each factory.
+Computers	Battle Computer Mark V	Increases weapon accuracy to level 5.
+Computers	Ecm Jammer Mark V	Adds 5 levels to defense against enemy missile attacks.
+Computers	Advanced Space Scanner	Allows exploration of planets from colony bases up to 9 parsecs away and detects enemy ships up to 3 parsecs away from your ships.
+Computers	Battle Computer Mark VI	Increases weapon accuracy to level 6.
+Computers	Ecm Jammer Mark VI	Adds 6 levels to defense against enemy missile attacks.
+Computers	Improved Robotic Controls V	Allows up to five factories to be operated per population. The refit cost to upgrade to Robotic Controls V is one and a half times the standard cost of each factory.
+Computers	Battle Computer Mark VII	Increases weapon accuracy to level 7.
+Computers	Ecm Jammer Mark VII	Adds 7 levels to defense against enemy missile attacks..
+Computers	Hyperspace Communications	Allows you to communicate with ships and transports in hyperspace, and change their destinations while in route.
+Computers	Battle Computer Mark VIII	Increases weapon accuracy to level 8.
+Computers	Ecm Jammer Mark VIII	Adds 8 levels to defense against enemy missile attacks.
+Computers	Improved Robotic Controls VI	Allows up to six factories to be operated per population. The refit cost to upgrade to Robotic Controls VI is twice the standard cost of each factory.
+Computers	Battle Computer Mark IX	Increases weapon accuracy to level 9.
+Computers	Ecm Jammer Mark IX	Adds 9 levels to defense against enemy missile attacks.
+Computers	Battle Computer Mark X	Increases weapon accuracy to level 10.
+Computers	Oracle Interface	Coordinates all beam weapon attacks into one simultaneous burst of concentrated fire, halving the enemy's shield strength.
+Computers	Ecm Jammer Mark X	Adds 10 levels to defense against enemy missile attacks.
+Computers	Improved Robotic Controls VII	Allows up to seven factories to be operated per population. The refit cost to upgrade to Robotic Controls VII is 2.5 times the standard cost of each factory.
+Computers	Technology Nullifier	Scrambles enemy battle computers, reducing the level of the computers up to 2-6 levels each time the nullifier is fired. The weapon has a 4 space range.
+Computers	Battle Computer Mark XI	Increases weapon accuracy to level 11.
+Construction	Reserve Fuel Tanks	Extends the range of a ship by an additional 3 parsecs.
+Construction	Improved Industrial Tech 9	Reduces factory construction costs to 9 BC each.
+Construction	Reduced Industrial Waste 80%	Decreases factory pollution levels to 80% of the normal rate.
+Construction	Improved Industrial Tech 8	Reduces factory construction costs to 8 BC each.
+Construction	Duralloy Armor	Increases the hit points of ships and transports by 50%. Personal combat armor is also enhanced, adding 5 to all ground attacks.
+Construction	Battle Suits	Armor that not only protects but also boosts strength. Adds 10 to all ground combat rolls.
+Construction	Improved Industrial Tech 7	Reduces factory construction costs to 7 BC each.
+Construction	Automated Repair System	Undestroyed ships can repair up to 15% of their total hit points at the end of each turn.
+Construction	Reduced Industrial Waste 60%	Decreases factory pollution levels to 60% of the normal rate.
+Construction	Zortium Armor	Increases the hit points of ships and transports by 100%. Personal combat armor is also enhanced, adding 10 to all ground attacks.
+Construction	Improved Industrial Tech 6	Reduces factory construction costs to 6 BC each.
+Construction	Improved Industrial Tech 5	Reduces factory construction costs to 5 BC each.
+Construction	Armored Exoskeleton	Advanced mobile suits that not only boost power and increase defenses but also offer limited flight to ground troops. Adds 20 to all ground combat rolls.
+Construction	Reduced Industrial Waste 40%	Decreases factory pollution levels to 40% of the normal rate.
+Construction	Andrium Armor	Increases the hit points of ships and transports by 150%. Personal combat armor is also enhanced, adding 15 to all ground attacks.
+Construction	Improved Industrial Tech 4	Reduces factory construction costs to 4 BC each.
+Construction	Improved Industrial Tech 3	Reduces factory construction costs to 3 BC each.
+Construction	Tritanium Armor	Increases the hit points of ships and transports by 200%. Personal combat armor is also enhanced, adding 20 to all ground attacks.
+Construction	Reduced Industrial Waste 20%	Decreases factory pollution levels to 20% of the normal rate.
+Construction	Advanced Damage Control	Undestroyed ships can repair up to 30% of their total hit points at the end of each turn.
+Construction	Improved Industrial Tech 2	Reduces factory construction costs to 2 BC each.
+Construction	Powered Armor	Combines high mobility, anti-grav flight, and heavy armored plating to form the most advanced armor available for ground troops. Adds 30 to all ground combat rolls.
+Construction	Adamantium Armor	Increases the hit points of ships and transports by 250%. Personal combat armor is also enhanced, adding 25 to all ground attacks.
+Construction	Industrial Waste Elimination	Factories cease to pollute.
+Construction	Neutronium Armor	Provides the best internal protection of any armor and increases the hit points of a ship by 300%. Personal combat armor is also enhanced, adding 30 to all ground attacks.
+Force Fields	Class I Deflector Shields	Absorbs 1 point of damage from all attacks.
+Force Fields	Class II Deflector Shields	Absorbs 2 points of damage from all attacks.
+Force Fields	Personal Deflector Shield	Protects individual ground troops with a directional force field. Adds +10 to all ground combat battles.
+Force Fields	Class III Deflector Shields	Absorbs 3 points of damage from all attacks.
+Force Fields	Class V Planetary Shield	Absorbs 5 points of damage from attacks against planet surfaces, and is cumulative with missile base deflector shields.
+Force Fields	Class IV Deflector Shields	Absorbs 4 points of damage from all attacks.
+Force Fields	Repulsor Beam	Repels enemy ships back one space away from the attacking ship. The special weapon has a 1 space range.
+Force Fields	Class V Deflector Shields	Absorbs 5 points of damage from all attacks.
+Force Fields	Personal Absorption Shield	Absorbs damage from all hand weapons. Adds 20 to all ground combat battles.
+Force Fields	Class X Planetary Shield	Absorbs 10 points of damage from all attacks against planet surfaces, and is cumulative with missile base deflector shields.
+Force Fields	Class VI Deflector Shields	Absorbs 6 points of damage from all attacks.
+Force Fields	Cloaking Device	Renders ships nearly invisible until they attack. While cloaked ships receive a +5 to their missile and beam defenses.
+Force Fields	Class VII Deflector Shields	Absorbs 7 points of damage from all attacks.
+Force Fields	Zyro Shield	An energy field that destroys incoming missiles and torpedoes 75% of the time, -1% per technology level of the missile.
+Force Fields	Class XV Planetary Shield	Absorbs 15 points of damage from all attacks against planet surfaces, and is cumulative with missile base deflector shields.
+Force Fields	Class IX Deflector Shields	Absorbs 9 points of damage from all attacks.
+Force Fields	Stasis Field	Freezes one group of enemy ships up to one space away, for one turn. Frozen ships cannot attack or be attacked.
+Force Fields	Personal Barrier Shield	Completely encases the soldier in an nearly impenetrable force field. Adds +30 to all ground combat rolls.
+Force Fields	Class XI Deflector Shields	Absorbs 11 points of damage from all attacks.
+Force Fields	Class XX Planetary Shield	Absorbs 20 points of damage from all attacks against planet surfaces, and is cumulative with missile base deflector shields.
+Force Fields	Black Hole Generator	Creates a sub-space field that warps normal space creating an instantaneous black hole, destroying 25%-100% of enemy ships, -2% per shield class.
+Force Fields	Class XIII Deflector Shields	Absorbs 13 points of damage from all attacks.
+Force Fields	Lightning Shield	An energy field that destroys incoming enemy missiles and torpedoes 100% of the time, -1% per technology level of the missile.
+Force Fields	Class XV Deflector Shields	Absorbs 15 points of damage from all attacks.
+Planetology	Ecological Restoration	Eliminates 2 units of industrial waste for a cost of 1 BC.
+Planetology	Improved Terraforming +10	Increases the population capacity of planets by 10M for a cost of 5 BC per million.
+Planetology	Controlled Barren Environment	Permits the colonization of barren planets.
+Planetology	Improved Eco Restoration	Eliminates 3 units of industrial waste for a cost of 1 BC.
+Planetology	Controlled Tundra Environment	Permits the colonization of tundra planets.
+Planetology	Improved Terraforming +20	Increases the population capacity of planets by 20M for a cost of 5 BC per million.
+Planetology	Controlled Dead Environment	Permits the colonization of dead planets.
+Planetology	Death Spores	Horrible biological weapons capable of reducing the maximum planetary populations by 1 million per attack.
+Planetology	Controlled Inferno Environment	Permits the colonization of inferno planets.
+Planetology	Enhanced Eco Restoration	Eliminates 5 units of industrial waste for a cost of 1 BC.
+Planetology	Improved Terraforming +30	Increases the population capacity of planets by 30M for a cost of 4 BC per million.
+Planetology	Controlled Toxic Environment	Permits the colonization of toxic planets.
+Planetology	Soil Enrichment	Converts standard planets to fertile enviroments, increasing population growth by 50% and raising the base planetary size by +25% for a one time cost of 150 BC.
+Planetology	Bio Toxin Antidote	Reduces casualties taken from biological weapons by 1 million per attack.
+Planetology	Controlled Radiated Environment	Permits the colonization of radiated planets.
+Planetology	Improved Terraforming +40	Increases the population capacity of planets by 40M for a cost of 4 BC per million.
+Planetology	Cloning	Allows bio engineered colonists to be grown at a rate of 1M per 10 BC.
+Planetology	Atmospheric Terraforming	Converts hostile planets to standard minimal environments, normalizing population growth for a one time cost of 200 BC.
+Planetology	Advanced Eco Restoration	Eliminates 10 units of industrial waste for a cost of 1 BC.
+Planetology	Improved Terraforming +50	Increases the population capacity of planets by 50M for a cost of 3 BC per million.
+Planetology	Doom Virus	Dreadful biological weapons capable of reducing planetary populations by 2 million per attack.
+Planetology	Advanced Soil Enrichment	Converts standard and fertile planets to gaias, doubling the population growth and increasing the planet's base size by +50% for the one time cost of 300 BC.
+Planetology	Improved Terraforming +60	Increases the population capacity of planets by 60M for a cost of 3 BC per million.
+Planetology	Complete Eco Restoration	Eliminates 20 units of industrial waste for a cost of 1 BC.
+Planetology	Universal Antidote	Reduces casualties taken from biological weapons by 2 million per attack.
+Planetology	Improved Terraforming +80	Increases the population capacity of planets by 80M for a cost of 2 BC per million.
+Planetology	Bio Terminator	Abominable biological weapons capable of reducing planetary populations by 3 million per attack.
+Planetology	Advanced Cloning	Allows bio engineered colonists to be grown at a rate of 1M per 5 BC.
+Planetology	Improved Terraforming +100	Increases the population capacity of planets by 100M for a cost of 2 BC per million.
+Planetology	Complete Terraforming	Increases the population capacity of planets by 120M for a cost of 2 BC per million.
+Propulsion	Retro Engines	Moves ships at warp one (1 parsecs per turn), and allows a maximum maneuverability of class I in combat.
+Propulsion	Hydrogen Fuel Cells (Range 4)	Fuel reserves allow ships to move up to 4 parsecs away from colony planets.
+Propulsion	Deuterium Fuel Cells (Range 5)	Fuel reserves allow ships to move up to 5 parsecs away from colony planets.
+Propulsion	Nuclear Engines	Moves ships at warp two (2 parsecs per turn), and allows a maximum maneuverability of class II in combat.
+Propulsion	Irridium Fuel Cells (Range 6)	Fuel reserves allow ships to move up to 6 parsecs away from colony planets.
+Propulsion	Inertial Stabilizer	Generates a field that reduces the inertia of ships, and adds 2 classes of maneuverability in combat (+2 defense and +1 combat speed).
+Propulsion	Sub-Light Drives	Moves ships at warp three (3 parsecs per turn), and allows a maximum maneuverability of class III in combat.
+Propulsion	Dotomite Crystals (Range 7)	Fuel reserves allow ships to move up to 7 parsecs away from colony planets.
+Propulsion	Energy Pulsar	A potent engine modification which generates a sudden spherical burst of energy striking all adjacent ships for up to 5 points of damage plus 1 per two ships.
+Propulsion	Fusion Drives	Moves ships at warp four (4 parsecs per turn), and allows a maximum maneuverability of class IV in combat.
+Propulsion	Uridium Fuel Cells (Range 8)	Fuel reserves allow ships to move up to 8 parsecs away from colony planets.
+Propulsion	Warp Dissipator	Specialized weapon that disrupts the warp fields surrounding enemy ships, reducing their speed by 0-1 each turn the weapon is fired.
+Propulsion	Reajax II Fuel Cells (Range 9)	Fuel reserves allow ships to move up to 9 parsecs away from colony planets.
+Propulsion	Impulse Drives	Moves ships at warp five (5 parsecs per turn), and allows a maximum maneuverability of class V in combat.
+Propulsion	Intergalactic Star Gates	Allows your ships to move between any two planets equipped with star gates in only one turn. Costs 3000 BC to build.
+Propulsion	Trilithium Crystals (Range 10)	Fuel reserves allow ships to move up to 10 parsecs away from colony planets.
+Propulsion	Ion Drives	Moves ships at warp six (6 parsecs per turn), and allows a maximum maneuverability of class VI in combat.
+Propulsion	High Energy Focus	Increases the firing range of all energy weapons by three.
+Propulsion	Anti-Matter Drives	Moves ships at warp seven (7 parsecs per turn), and allows a maximum maneuverability of class VII in combat.
+Propulsion	Sub Space Teleporter	Teleports ships to any space on the combat map and gives first initiative to the teleporting ship.
+Propulsion	Ionic Pulsar	A powerful engine modification capable of generating a spherical burst of phased energy striking all adjacent ships for up to 10 points of damage plus one per ship.
+Propulsion	Thorium Cells (Unlimited Range)	Self-replenishing fuel that allows ships to move any distance from colony planets.
+Propulsion	Inter-Phased Drives	Moves ships at warp eight (8 parsecs per turn), and allows a maximum maneuverability of class VIII in combat.
+Propulsion	Sub Space Interdictor	Surrounds colony planets with an intense gravity well, rendering sub space teleporters useless and halving combat transporter effectiveness. The device is a placed in all missile bases.
+Propulsion	Combat Transporters	Transports equipped with these devices have a 50% chance of beaming down onto enemy surfaces before the transports can be attacked by enemy ships and bases.
+Propulsion	Inertial Nullifier	Generates a field that negates the inertia of ships and adds 2 classes of maneuverability in combat (+4 defense and +2 combat speed).
+Propulsion	Hyper Drives	Moves ships at warp nine (9 parsecs per turn), and allows a maximum maneuverability of class IX in combat.
+Propulsion	Displacement Device	Randomly shifts the equipped ship in and out of normal space, allowing the ship to avoid one third of all non-area attacks.
+Weapons	Lasers	Direct-fire beam weapon that inflicts 1-4 points of damage. Heavy lasers have a two space range and do 1-7 points of damage.
+Weapons	Hand Lasers	Personal lasers that add 5 to your ground combat rolls.
+Weapons	Hyper-V Rockets	Swift missiles that explode for 6 points of damage and move at a speed of 2.5
+Weapons	Gatling Laser	An advanced laser that fires up to four times per turn for 1-4 points of damage with each hit.
+Weapons	Anti-Missile Rockets	Trans-light rockets capable of destroying incoming enemy missiles 40% of the time, -1% per technology level of the missile.
+Weapons	Neutron Pellet Gun	Heavy particle stream weapon that halves the effectiveness of enemy deflector shields and inflicts 2-5 points of damage.
+Weapons	Hyper-X Rockets	Missiles equipped with high energy warheads that explode for 8 points of damage, move at a speed of 2.5, and are controlled by a +1 level targeting computer.
+Weapons	Fusion Bomb	Bombs that explode for 5-20 points of damage on planetary targets only.
+Weapons	Ion Cannon	High intensity beam weapons capable of inflicting 3-8 points of damage. Heavy ion cannons strike for 3-15 and have a 2 space range.
+Weapons	Scatter Pack V Rockets	Mirv versions of Hyper-V Rockets, splitting into five separate warheads that each explode for 6 points of damage and move at a speed of 2.5
+Weapons	Ion Rifle	Personal beam weapons that add 10 to your ground attacks.
+Weapons	Mass Driver	A linear accelerator that halves the effectiveness of enemy deflector shields and inflicts 5-8 points of damage.
+Weapons	Merculite Missiles	Hard-hitting, swift missiles that explode for 10 points of damage, move at a speed of 3, and are controlled by a +2 level targeting computer.
+Weapons	Neutron Blaster	High powered beam weapons capable of inflicting 3-12 points of damage. Heavy neutron blasters strike for 3-24 points and have a 2 space range.
+Weapons	Anti-Matter Bomb	Bombs that explode for 10-40 points of damage on planetary targets only.
+Weapons	Graviton Beam	Tractor-repulsor beam capable of rending ships to pieces. The beam strikes for 1-15, and the continuous streaming effect of the ray allows damage to carry over from one ship to another.
+Weapons	Stinger Missiles	Slow, hyper-accurate missiles that do 15 points of damage, move at a speed of 3.5, and are controlled by a sophisticated +3 level targeting computer.
+Weapons	Hard Beam	An energy-to-matter beam weapon that halves the effectiveness of enemy deflector shields, and inflicts 8-12 points of damage.
+Weapons	Fusion Beam	High intensity beam weapon capable of doing 4-16 points of damage. Heavy fusion beams strike for 4-30 points and have a 2 space range.
+Weapons	Ion Stream Projector	Fires an intense ionic blast reducing an opponents armor by 20% plus 1% per two firing ships. The projector has a range of 2 spaces.
+Weapons	Omega-V Bomb	High yield bombs that explode for 20-50 points of damage on planetary targets only.
+Weapons	Anti-Matter Torpedoes	High energy tracking torpedoes that deliver 30 points of damage but may only be fired every other turn. Each torpedo is equipped with a +4 level targeting computer.
+Weapons	Fusion Rifle	Inaccurate but incredibly powerful beam weapons that add 20 to your ground combat rolls.
+Weapons	Megabolt Cannon	Releases multiple bolts of pure energy in a wide field. It has a +30% bonus chance to hit and strikes for 2-20 points of damage.
+Weapons	Phasor	Phased energy beams capable of inflicting 5-20 points of damage. Heavy phasors strike for 5-40 points of damage and have a 2 space range.
+Weapons	Scatter Pack VII Missiles	Mirv versions of Hyper-X Rockets, splitting into seven separate warheads that each explode for 10 points of damage, move at a speed of 3, and are guided by a +2 level targeting computer.
+Weapons	Auto Blaster	An advanced neutron blaster that fires up to three times per turn for 4-16 points of damage with each hit.
+Weapons	Pulson Missiles	Powerful missiles equipped with anti-matter warheads that explode for 20 points of damage, move at speed 4, and are controlled by a +4 level targeting computer.
+Weapons	Tachyon Beam	Fires an intense stream of tachyon particles that strike enemy ships for 1-25 hits. The continous streaming effect of the ray allows it to carry damage over from one ship to another.
+Weapons	Hand Phasor	Potent hand held energy weapons capable of reducing an opponent to his component atoms. Adds 25 to your ground combat rolls.
+Weapons	Gauss Autocannon	An advanced linear accelerator capable of firing four explosive rounds per turn that inflict 7-10 points of damage each. The projectile rounds half the effectiveness of enemy shields.
+Weapons	Particle Beam	High intensity particle accelerators capable of striking enemy ships for 10-20 points of damage and halving the effectiveness of deflector shields.
+Weapons	Hercular Missiles	Highly advanced missile that explodes for 25 points of damage. The hercular missile moves at speed 4.5 and is controlled by a +5 level targeting computer.
+Weapons	Plasma Cannon	Fires intense bolts of energy that inflict 6-30 points of damage.
+Weapons	Death Ray	An ancient weapon of unbelievably destructive power that inflicts 200-1000 points of damage with a 1 space range.
+Weapons	Disruptor	Unleashes tremendous bolts of pure energy that can strike enemy targets up to 2 spaces away for 10-40 points of damage.
+Weapons	Pulse Phasor	An advanced phasor capable of firing three bursts per turn for 5-20 points of damage with each hit.
+Weapons	Neutronium Bomb	Devastating bombs that explode for 40-70 points of damage on planets only.
+Weapons	Hellfire Torpedoes	Enveloping energy torpedoes that simultaneously strike all shields, delivering damage equivalent to four 25 point attacks. They may only be fired once every other turn.
+Weapons	Zeon Missiles	Most advanced missile available. Capable of striking enemy ships for 30 points of damage and moving at a speed of 5. The zeon missile is guided by a +6 level targeting computer.
+Weapons	Plasma Rifle	The most devastating hand held weapon available. Adds 30 to your ground attacks.
+Weapons	Proton Torpedoes	High yield energy torpedoes that deliver 75 points of damage but may only be fired every other turn. Each torpedo is equipped with a +6 level targeting computer.
+Weapons	Scatter Pack X Missiles	Mirv versions of Stinger Missiles, splitting into ten separate warheads that each explode for 15 points of damage, move at speed 3.5, and are guided by a +3 level targeting computer.
+Weapons	Tri-Focus Plasma Cannon	Fires a triad of high intensity plasma beams capable of inflicting 20-50 points of damage.
+Weapons	Stellar Converter	Surrounds the target with an extremely powerful matter-energy conversion field, inflicting four 10-35 point attacks.  It has a range of 3 spaces.
+Weapons	Neutron Stream Projector	Fires a blast of concentrated neutrino rays reducing an opponents armor by 40% plus 1% per firing ship. The projector has a range of 2 spaces.
+Weapons	Mauler Device	Unleashes enormous amounts of focused energy at enemy targets, inflicting 20-100 points of damage.
+Weapons	Plasma Torpedoes	Pure energy torpedoes that deliver 150 points of damage, but lose 15 strength per space traveled. The launcher fires every other turn and has a +7 level guidance computer.
