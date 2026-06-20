@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uitech.c b/src/ui/classic/uitech.c
-index baa7153..4288c40 100644
+index baa7153..3feb05b 100644
 --- a/src/ui/classic/uitech.c
 +++ b/src/ui/classic/uitech.c
 @@ -3,6 +3,7 @@
@@ -35,7 +35,7 @@ index baa7153..4288c40 100644
 +            uint8_t col = (d->field == i) ? 0x89 : 0xc0;
 +            vgabuf_draw_filled_rect(tab[i][0] + 2, tab[i][1] + 1, tab[i][2] - 2, tab[i][3] - 1, col);
 +            lbxfont_select(0, (d->field == i) ? 0xf : 1, 0, 0);
-+            lbxfont_print_str_center((tab[i][0] + tab[i][2]) / 2, (tab[i][1] + tab[i][3]) / 2 - 5, game_str_tbl_te_field[i]);
++            lbxfont_print_str_center((tab[i][0] + tab[i][2]) / 2, (tab[i][1] + tab[i][3]) / 2 - 2, game_str_tbl_te_field[i]); /* 置中於 tab */
 +        }
 +        /* 右側六大領域欄位標題(烘在 d->gfx):蓋鎖色後疊中文。 */
 +        for (tech_field_t i = TECH_FIELD_COMPUTER; i < TECH_FIELD_NUM; ++i) {
