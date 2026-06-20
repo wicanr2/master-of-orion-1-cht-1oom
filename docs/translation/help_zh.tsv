@@ -1,0 +1,142 @@
+Red ratio bars indicate that the production bar has been locked and will not change. Click on the ratio title to lock/unlock ratio bars. 	紅色比例桿表示該生產項已鎖定,不會變動。點擊比例標題可鎖定/解鎖比例桿。
+Ship Production Ratio	造艦生產比例
+Defense Production Ratio	防禦生產比例
+Industry Production Ratio	工業生產比例
+Ecology Production Ratio	生態生產比例
+Technology Production Ratio	科技生產比例
+Each star system divides its production into five areas	每個恆星系把生產分成五個領域
+Ratio bars show the breakdown of a planet's production.	比例桿顯示行星生產的分配狀況。
+Select the number of colony transports to send as a ratio of the current planet's population. The number of colonists to transport is limited to one half the population of the sending world.	選擇要派出的殖民運輸數量,以目前行星人口的比例計算。可運輸的殖民者上限為派出星球人口的一半。
+Combat troops are sent if the planet is owned by another player	若行星屬於其他玩家,派出的是戰鬥部隊
+Change ship design to build in the star dock.	更改星塢中要建造的艦艇設計。
+Relocate ship production to another colony	將造艦移轉至另一個殖民地
+Transport population to another  colony or invade enemy planet	將人口運往另一個殖民地,或入侵敵方行星
+Total planetary production	行星總生產量
+Actual production adjusted for maintenance, spying, and trade.	扣除維護、間諜與貿易後的實際生產量。
+Number of colonists in millions	殖民者人數(百萬)
+Number of missile bases	飛彈基地數量
+Save/load games. Music and sound effects settings	存檔/讀取遊戲。音樂與音效設定
+Fleet report and ship design specifications	艦隊報告與艦艇設計規格
+Diplomacy and intelligence information	外交與情報資訊
+Change research priorities. reports on current technology	更改研究優先順序。目前科技的報告
+Create new ship designs to take advantage of current technology	設計新艦艇以善用目前的科技
+View reduced galaxy map with ship and planetary data	檢視縮小的星系圖,含艦艇與行星資料
+Overview of your colonies	殖民地總覽
+Advance to next year	推進至下一年
+Change Battle computer	更改戰鬥電腦
+Change shield type	更改護盾類型
+Change ecm generator	更改 ECM 產生器
+Set ship hull size. Appears darkened if too small to fit.	設定艦體大小。若太小無法容納則顯示為暗色。
+Choose ship icon	選擇艦艇圖示
+Change ship class name	更改艦艇級別名稱
+Leave design screen. abort changes	離開設計畫面。放棄變更
+Accept new design	接受新設計
+Clear all devices	清除所有裝置
+Change armor type	更改裝甲類型
+Change engine type	更改引擎類型
+Change combat speed	更改戰鬥速度
+Add/change special device	新增/更改特殊裝置
+Add/change weapon type	新增/更改武器類型
+Increase number of weapons	增加武器數量
+Decrease number of weapons	減少武器數量
+Allow computer to control combat. Clicking anywhere turns auto off	讓電腦控制戰鬥。點擊任意處即關閉自動
+View enemy ships if equipped with battle scanner	若配備戰鬥掃描器,可檢視敵方艦艇
+Current ship retreats from combat	目前艦艇撤退離開戰鬥
+End turn for current ship and prepare to defensively fire	結束目前艦艇的回合,準備進行防禦性射擊
+ 	
+Scroll fleet list	捲動艦隊清單
+View ship specifications	檢視艦艇規格
+Scrap ship class	報廢艦艇級別
+Exit screen	離開畫面
+Clicking anywhere in a row exits to fleet deployment screen	點擊一列的任意處即離開至艦隊部署畫面
+Clicking on a planet returns the view back to the main screen viewing the selected planet.	點擊行星即返回主畫面並檢視所選行星。
+Show location of colonies	顯示殖民地位置
+Environments of explored planets	已探索行星的環境
+Shows mineral rich, artifacts, and fertile planets	顯示礦藏豐富、古文物與肥沃的行星
+Return to main movement screen	返回主移動畫面
+Resources allocated to creating new spy networks is taken from all of your planets. No more than 10% can allocated to each race.	用於建立新間諜網的資源取自你所有的行星。對每個種族最多只能分配 10%。
+Order spies to hide	命令間諜隱匿
+Order spies to sabotage factories and missile bases	命令間諜破壞工廠與飛彈基地
+Order spies to steal technology	命令間諜竊取科技
+Allocate production to internal security to a maximum of 20%	將生產分配至內部保安,上限為 20%
+Current diplomatic relations	目前的外交關係
+Report on overall status of all empires	所有帝國整體狀態的報告
+Intelligence report on a specific empire	特定帝國的情報報告
+Initiate diplomatic negotiations	展開外交談判
+View planet statistics	檢視行星統計資料
+Turn missles on/off 	開啟/關閉飛彈
+Turn stasis field or sphere generator on/off 	開啟/關閉停滯力場或球體產生器
+Delay turn of current ship until all other ships have gone	延後目前艦艇的回合,直到其他所有艦艇都行動完畢
+Choose technology area to review	選擇要檢視的科技領域
+List of technology aquired in area being reviewed	檢視中領域已取得的科技清單
+Scroll list of technology	捲動科技清單
+Detailed description of device highlighted in above list	上方清單中所選裝置的詳細說明
+When the light bulbs fills up, there is a percentage chance each turn of discovering the technology currently being researched.	當燈泡填滿時,每回合都有一定機率發現目前研究中的科技。
+Allocate research to computers	將研究分配至電腦
+Allocate research to construction	將研究分配至建設
+Allocate research to force fields	將研究分配至力場
+Allocate research to planetology	將研究分配至行星學
+Allocate research to propulsion	將研究分配至推進
+Allocate research to weapons	將研究分配至武器
+Click on technology name to lock or unlock ratio bar	點擊科技名稱可鎖定或解鎖比例桿
+Combat potential of fleet on a logarithmic scale	以對數刻度表示的艦隊戰鬥潛力
+Simple count of all population	所有人口的簡單總計
+Sum of technology levels in each area	各領域科技等級的總和
+Total number of planets with at least 100 BC production	生產量至少 100 BC 的行星總數
+Total production on a logarithmic scale	以對數刻度表示的總生產量
+Power rating relative to stongest race	相對於最強種族的實力評比
+The '<' and '>' keys move increments of 5% when the number of ships is larger than 20 ships	當艦艇數量超過 20 艘時,「<」與「>」鍵以 5% 為增量移動
+Increase number of ships to move	增加要移動的艦艇數量
+Decrease number of ships to move	減少要移動的艦艇數量
+Move no ships of this class	不移動此級別的任何艦艇
+Moves all ships of this class in the fleet	移動艦隊中此級別的所有艦艇
+Before sending out transports the destination world must already be colonized with a colony base or by another player. Furthermore, if the planet is hostile, you must have the appropriate landing technology.	派出運輸前,目的地星球必須已由殖民基地或其他玩家殖民。此外,若該行星具敵意環境,你必須具備相應的登陸科技。
+MASTER'S NOTES	指揮官筆記
+Now that your home planet has a substantial population and industry, you should begin allocating resources toward building missle bases by increasing the planet's defense ratio.	既然你的母星已有可觀的人口與工業,你應開始將資源投入建造飛彈基地,方法是提高該行星的防禦比例。
+Now that you have made contact with another race, you can negotiate with them for treaties and trade agreements to improve relations (see Audience underneath the Races screen).	既然你已與其他種族接觸,便可與其談判條約與貿易協定以改善關係(見種族畫面下方的會談)。
+As technology advances you should be sure to scrap obsolete designs.   Ships that are 10 or more levels behind existing enemy technology are  next to useless.	隨著科技進步,你應確實報廢過時的設計。落後現有敵方科技 10 級以上的艦艇幾乎毫無用處。
+Although you have discovered a star system that you can not yet form a colony on, you may still reach systems beyond it by stationing a ship with refueling tanks there	雖然你已發現一個尚無法殖民的恆星系,但只要在該處部署一艘配備補給油箱的艦艇,仍可抵達其後方的恆星系
+To remain competitive with your enemies, you must not fall behind in  the technology race, especially in weapons and computer technology.	要與敵人維持競爭力,你絕不能在科技競賽中落後,尤其是武器與電腦科技。
+Now that you have developed a weapon  better than lasers, you should design a new ship that uses the improved  weapon.	既然你已開發出優於雷射的武器,就應設計使用該改良武器的新艦艇。
+Now that you have developed a new engine type, you should design new ships to take advantage of the increased mobility.	既然你已開發出新的引擎類型,就應設計新艦艇以善用提升後的機動力。
+Now that you have found a star system suitable for colonization, send your colony ship there to form a new colony.	既然你已找到適合殖民的恆星系,就派遣殖民艦前往建立新殖民地。
+With the increased growth of your industry, waste reduction will begin costing an increasing percentage of your production. Reduce the amount of waste with construction and planetology research.	隨著工業成長,廢料削減將佔去越來越高比例的生產量。以建設與行星學研究來減少廢料量。
+Clicking anywhere on a colony exits to planet production for that colony	點擊殖民地任意處即離開至該殖民地的行星生產畫面
+Population growth rate	人口成長率
+Planetary shield class	行星護盾級別
+Number of factories	工廠數量
+Accumulated waste	累積廢料
+Total production	總生產量
+Scroll arrows	捲動箭頭
+With the invention of planetary shields, you should begin allocating resources to defense in order to build the shields.	隨著行星護盾的發明,你應開始將資源分配至防禦以建造護盾。
+Now that you have developed Soil Enrichment technology, you should increase the ecology ratio on planets with standard environments to change them into fertile environments. Any resources allocated to ecology beyond the requirements to eliminate waste are 	既然你已開發出土壤強化科技,就應提高標準環境行星的生態比例,將其轉變為肥沃環境。分配至生態、超出消除廢料所需的任何資源都會
+With the invention of Atmosheric Terraforming technology, you should increase the ecology ratio on planets with hostile environments to change them into standard environments. Any resources allocated beyond the requirements to eliminate waste are used to t	隨著大氣地形改造科技的發明,你應提高敵意環境行星的生態比例,將其轉變為標準環境。超出消除廢料所需的任何資源都會用來
+With the development of Advanced Soil Enrichment you can convert standard and fertile planets into gais which double poplulation growth rates. Any resources allocated beyond the requirements to eliminate industrial waste are used to transform the environme	隨著進階土壤強化的開發,你可將標準與肥沃行星轉為蓋亞行星,使人口成長率加倍。超出消除工業廢料所需的任何資源都會用來改造環境
+With the development of Star Gates it becomes essential that you begin building star gates on all of your planets by selecting star gates in the space dock to build instead of ships. Star gates are unsurpassed for accelerating fleet deployments.	隨著星門的開發,你必須開始在所有行星上建造星門,方法是在太空船塢中選擇建造星門而非艦艇。星門在加速艦隊部署上無與倫比。
+Any time you develop either Reduced Industrial Waste or Ecological Restoration technology you should review all of your planet's ecology ratios to decrease where needed.	每當你開發出工業廢料削減或生態復原科技,都應檢視所有行星的生態比例,在需要處予以降低。
+Click the mouse or press Return to continue.	點擊滑鼠或按 Return 鍵繼續。
+Beam Defense: manueverability + size modifier + specials	光束防禦:機動力 + 體型修正 + 特殊裝置
+Missile Defense: beam defense + ecm bonuses	飛彈防禦:光束防禦 + ECM 加成
+Attack Level: battle computer + specials	攻擊等級:戰鬥電腦 + 特殊裝置
+Ship Hits: hull hits modified by battle armor	艦艇耐受:艦體耐受值經戰鬥裝甲修正
+Shield Rating: absorbs the class in hits from all attacks	護盾評值:每次攻擊均吸收該級別的傷害
+Total Number of Ships in Commission	服役中艦艇總數
+Warp Speed: movement in parsecs on galaxy map	曲速:星系圖上以秒差距計的移動距離
+Maneuverability: ship's speed in combat and base defense	機動力:艦艇的戰鬥速度與基礎防禦
+Scrap Ship Design	報廢艦艇設計
+Click Mouse or Press Esc to Exit	點擊滑鼠或按 Esc 鍵離開
+Clicking anywhere on a colony returns you to the galaxy map viewing the selected planet. 	點擊殖民地任意處即返回星系圖並檢視所選行星。
+Current Population	目前人口
+Last Year's Growth	去年成長
+Planetary Shield	行星護盾
+Factories	工廠
+Missile Bases	飛彈基地
+Scroll List Up/Down	清單上/下捲動
+Maintenance and extra costs reduce each planet's production.	維護與額外成本會減少每個行星的生產量。
+Reserve Ratio Bar. Up to 20% of all of your planet's production can be directed into the reserve each turn.	備用金比例桿。每回合最多可將所有行星生產量的 20% 撥入備用金。
+Planet's Total Production	行星總生產量
+Current Industrial Waste	目前工業廢料
+Current Ship Being Produced	目前生產中的艦艇
+Amount being added to reserve next turn.	下回合將撥入備用金的數量。
+Transfer a portion of the total reserve to a specific planet.	將部分備用金撥給特定行星。
+Highlighted technology corresponds to technology that you do not possess.	標示的科技對應你尚未擁有的科技。

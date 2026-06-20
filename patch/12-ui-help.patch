@@ -1,0 +1,148 @@
+diff --git a/src/ui/classic/uihelp.c b/src/ui/classic/uihelp.c
+index 9ca7fd4..5e3fa18 100644
+--- a/src/ui/classic/uihelp.c
++++ b/src/ui/classic/uihelp.c
+@@ -6,6 +6,7 @@
+ #include "bits.h"
+ #include "lbx.h"
+ #include "lbxfont.h"
++#include "strtr.h"
+ #include "lbxpal.h"
+ #include "log.h"
+ #include "uidraw.h"
+@@ -119,80 +120,76 @@ static void ui_help_draw(const char *str0, const char *str1, int x, int y, int w
+ 
+ /* -------------------------------------------------------------------------- */
+ 
++/* 繁中:CJK 走 overlay draw-list,每次 flip 後清空;help 原本只畫一次,故 CJK
++   會在 input_wait 期間的重複 flip 後消失。改為每幀重畫的 callback(重加 CJK 到
++   draw-list),CJK 才能持續顯示。 */
++struct help_cb_data_s {
++    uint8_t *helplbx;
++    int help_index;
++    uint8_t ctbl[5], c0, c1, c3, c4, c5, c8;
++};
++
++static void help_draw_cb(void *vptr)
++{
++    struct help_cb_data_s *d = vptr;
++    const uint8_t *p = &(d->helplbx[4 + HELP_ITEM_SIZE * d->help_index]);
++    vgabuf_copy_back_from_page3();
++    lbxfont_select(0, 0, 0, 0);
++    lbxfont_set_gap_h(3);
++    lbxfont_set_14_24(d->c1, d->c0);
++    ui_help_draw(strtr((const char *)&p[HELP_OFFS_STR0]), strtr((const char *)&p[HELP_OFFS_STR1]),
++                GET_LE_16(&p[HELP_OFFS_XTBL]), GET_LE_16(&p[HELP_OFFS_YTBL]),
++                GET_LE_16(&p[HELP_OFFS_WTBL]), GET_LE_16(&p[HELP_OFFS_LTTBL]),
++                GET_LE_16(&p[HELP_OFFS_LXTBL]), GET_LE_16(&p[HELP_OFFS_LYTBL]),
++                d->ctbl, d->c3, d->c4, d->c5, d->c3, d->c4, d->c8, d->c0, 1);
++    if (GET_LE_16(&p[HELP_OFFS_10]) < 3) {
++        for (int i = 0; i < 9; ++i) {
++            ui_help_draw("", strtr((const char *)&p[HELP_OFFS_STBL + i * HELP_STBL_SIZE]),
++                GET_LE_16(&p[HELP_OFFS_XTBL + i * 2 + 4]), GET_LE_16(&p[HELP_OFFS_YTBL + i * 2 + 4]),
++                GET_LE_16(&p[HELP_OFFS_WTBL + i * 2 + 4]), GET_LE_16(&p[HELP_OFFS_LTTBL + i * 2 + 4]),
++                GET_LE_16(&p[HELP_OFFS_LXTBL + i * 2 + 4]), GET_LE_16(&p[HELP_OFFS_LYTBL + i * 2 + 4]),
++                d->ctbl, d->c3, d->c4, d->c5, d->c3, d->c4, d->c8, d->c0, i + 10040);
++        }
++    } else {
++        ui_help_draw(strtr((const char *)&p[HELP_OFFS_STR2]), strtr((const char *)&p[HELP_OFFS_STR3]),
++                GET_LE_16(&p[HELP_OFFS_XTBL + 2]), GET_LE_16(&p[HELP_OFFS_YTBL + 2]),
++                GET_LE_16(&p[HELP_OFFS_WTBL + 2]), GET_LE_16(&p[HELP_OFFS_LTTBL + 2]),
++                GET_LE_16(&p[HELP_OFFS_LXTBL + 2]), GET_LE_16(&p[HELP_OFFS_LYTBL + 2]),
++                d->ctbl, d->c3, d->c4, d->c5, d->c3, d->c4, d->c8, d->c0, 10040);
++    }
++}
++
+ void ui_help(int help_index)
+ {
+-    uint8_t ctbl[5], c0, c1, c3, c4, c5, c8;
+-    uint8_t *helplbx;
++    struct help_cb_data_s d;
+     LOG_DEBUG((DEBUGLEVEL_HELPUI, "%s: %i\n", __func__, help_index));
+     if (help_index < 0) {
+         return;
+     }
+     for (int i = 0; i < 5; ++i) {
+-        ctbl[i] = lbxpal_find_closest(i * 3 + 7, i * 3 + 7, i * 4 + 15);
++        d.ctbl[i] = lbxpal_find_closest(i * 3 + 7, i * 3 + 7, i * 4 + 15);
+     }
+-    c0 = lbxpal_find_closest(0x3f, 0x3f, 0x3f);
+-    c1 = lbxpal_find_closest(0x31, 0x31, 0x31);
+-    /*c2 = c0 = lbxpal_find_closest(0x3f, 0x3f, 0x3f);*/
+-    c3 = lbxpal_find_closest(0x1d, 0x1d, 0x27);
+-    c4 = lbxpal_find_closest(0x27, 0x27, 0x2f);
+-    c5 = lbxpal_find_closest(0x19, 0x19, 0x23);
+-    /*c6 = c3 = lbxpal_find_closest(0x1d, 0x1d, 0x27);*/
+-    /*c7 = c4 = lbxpal_find_closest(0x27, 0x27, 0x2f);*/
+-    c8 = lbxpal_find_closest(0x2d, 0x2d, 0x33);
++    d.c0 = lbxpal_find_closest(0x3f, 0x3f, 0x3f);
++    d.c1 = lbxpal_find_closest(0x31, 0x31, 0x31);
++    d.c3 = lbxpal_find_closest(0x1d, 0x1d, 0x27);
++    d.c4 = lbxpal_find_closest(0x27, 0x27, 0x2f);
++    d.c5 = lbxpal_find_closest(0x19, 0x19, 0x23);
++    d.c8 = lbxpal_find_closest(0x2d, 0x2d, 0x33);
+     uiobj_table_num_store();
+     vgabuf_copy_buf();
+     vgabuf_copy_back_to_page3();
+-    helplbx = lbxfile_item_get(LBXFILE_HELP, 0, 0);
++    d.helplbx = lbxfile_item_get(LBXFILE_HELP, 0, 0);
+     do {
+-        const uint8_t *p;
+-        uint8_t old_fontnum, old_fonta2;
+-        old_fontnum = lbxfont_get_current_fontnum();
+-        old_fonta2 = lbxfont_get_current_fonta2();
+-        /* old_vgabuf_seg = vgabuf_seg; */
+-        lbxfont_select(0, 0, 0, 0);
+-        lbxfont_set_gap_h(3);
+-        lbxfont_set_14_24(c1, c0);
+-        p = &(helplbx[4 + HELP_ITEM_SIZE * help_index]);
+-        ui_help_draw((const char *)&p[HELP_OFFS_STR0], (const char *)&p[HELP_OFFS_STR1],
+-                    GET_LE_16(&p[HELP_OFFS_XTBL]),
+-                    GET_LE_16(&p[HELP_OFFS_YTBL]),
+-                    GET_LE_16(&p[HELP_OFFS_WTBL]),
+-                    GET_LE_16(&p[HELP_OFFS_LTTBL]),
+-                    GET_LE_16(&p[HELP_OFFS_LXTBL]),
+-                    GET_LE_16(&p[HELP_OFFS_LYTBL]),
+-                    ctbl, c3, c4, c5, c3, c4, c8, c0, 1
+-                    );
+-        if (GET_LE_16(&p[HELP_OFFS_10]) < 3) {
+-            for (int i = 0; i < 9; ++i) {
+-                ui_help_draw("", (const char *)&p[HELP_OFFS_STBL + i * HELP_STBL_SIZE],
+-                    GET_LE_16(&p[HELP_OFFS_XTBL + i * 2 + 4]),
+-                    GET_LE_16(&p[HELP_OFFS_YTBL + i * 2 + 4]),
+-                    GET_LE_16(&p[HELP_OFFS_WTBL + i * 2 + 4]),
+-                    GET_LE_16(&p[HELP_OFFS_LTTBL + i * 2 + 4]),
+-                    GET_LE_16(&p[HELP_OFFS_LXTBL + i * 2 + 4]),
+-                    GET_LE_16(&p[HELP_OFFS_LYTBL + i * 2 + 4]),
+-                    ctbl, c3, c4, c5, c3, c4, c8, c0, i + 10040
+-                    );
+-            }
+-        } else {
+-            ui_help_draw((const char *)&p[HELP_OFFS_STR2], (const char *)&p[HELP_OFFS_STR3],
+-                    GET_LE_16(&p[HELP_OFFS_XTBL + 2]),
+-                    GET_LE_16(&p[HELP_OFFS_YTBL + 2]),
+-                    GET_LE_16(&p[HELP_OFFS_WTBL + 2]),
+-                    GET_LE_16(&p[HELP_OFFS_LTTBL + 2]),
+-                    GET_LE_16(&p[HELP_OFFS_LXTBL + 2]),
+-                    GET_LE_16(&p[HELP_OFFS_LYTBL + 2]),
+-                    ctbl, c3, c4, c5, c3, c4, c8, c0, 10040
+-                    );
+-        }
+-        lbxfont_select(old_fontnum, old_fonta2, 0, 0);
+-        /* vgabuf_seg = old_vgabuf_seg; */
++        const uint8_t *p = &(d.helplbx[4 + HELP_ITEM_SIZE * help_index]);
++        d.help_index = help_index;
++        uiobj_table_clear();
++        uiobj_set_callback_and_delay(help_draw_cb, &d, 2);
++        help_draw_cb(&d);
+         uiobj_finish_frame();
+-        ui_draw_copy_buf();
+         uiobj_input_wait();
+-        vgabuf_copy_back_from_page3();
++        uiobj_unset_callback();
+         help_index = GET_LE_16(&p[HELP_OFFS_NEXT]);
+     } while (help_index != 0);
+     uiobj_table_num_restore();
+-    lbxfile_item_release(LBXFILE_HELP, helplbx);
++    lbxfile_item_release(LBXFILE_HELP, d.helplbx);
+ }
