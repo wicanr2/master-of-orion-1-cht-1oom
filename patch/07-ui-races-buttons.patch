@@ -1,0 +1,57 @@
+diff --git a/src/ui/classic/uiraces.c b/src/ui/classic/uiraces.c
+index ff8ed70..e0175cb 100644
+--- a/src/ui/classic/uiraces.c
++++ b/src/ui/classic/uiraces.c
+@@ -49,6 +49,17 @@ static void races_data_free(struct races_data_s *d)
+     lbxfile_item_release(LBXFILE_BACKGRND, d->gfx);
+ }
+ 
++/* 繁中:在烘字按鈕上蓋鈕面色後置中印中文(小字型 -> 14px CJK)。 */
++static void races_btn_cjk(uint8_t *gfx, int x, int y, const char *s)
++{
++    int w = lbxgfx_get_w(gfx);
++    int h = lbxgfx_get_h(gfx);
++    uint8_t face = *vgabuf_get_xy(x + w / 2, y + h / 4);
++    vgabuf_draw_filled_rect(x + 3, y + 2, x + w - 3, y + h - 2, face);
++    lbxfont_select(0, 0xf, 0, 0);
++    lbxfont_print_str_center(x + w / 2, y + h / 2 - 5, s);
++}
++
+ static void races_draw_cb(void *vptr)
+ {
+     struct races_data_s *d = vptr;
+@@ -224,6 +235,11 @@ static void races_draw_cb(void *vptr)
+     lbxgfx_draw_frame(245, 180, ui_data.gfx.screens.races_bu.audience);
+     lbxgfx_set_new_frame(ui_data.gfx.screens.races_bu.ok, 1);
+     lbxgfx_draw_frame(290, 180, ui_data.gfx.screens.races_bu.ok);
++    /* 繁中:底部按鈕烘字疊中文。 */
++    races_btn_cjk(ui_data.gfx.screens.races_bu.status, 165, 180, "狀態");
++    races_btn_cjk(ui_data.gfx.screens.races_bu.report, 205, 180, "報告");
++    races_btn_cjk(ui_data.gfx.screens.races_bu.audience, 245, 180, "會談");
++    races_btn_cjk(ui_data.gfx.screens.races_bu.ok, 290, 180, "確定");
+     for (int i = 0; i < d->num; ++i) {
+         int x, y;
+         x = (i / 3) * 157;
+@@ -388,9 +404,9 @@ int ui_races(struct game_s *g, player_id_t api)
+             uiobj_table_clear();
+             if (d.num > 0) {
+                 if (d.cursor_mode == 0) {
+-                    oi_report = uiobj_add_t0(205, 180, "", ui_data.gfx.screens.races_bu.report, MOO_KEY_r, -1);
++                    oi_report = uiobj_add_mousearea(205, 180, 205 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.report) - 1, 180 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.report) - 1, MOO_KEY_r, -1);
+                     if (g->end == GAME_END_NONE) {
+-                        oi_audience = uiobj_add_t0(245, 180, "", ui_data.gfx.screens.races_bu.audience, MOO_KEY_a, -1);
++                        oi_audience = uiobj_add_mousearea(245, 180, 245 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.audience) - 1, 180 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.audience) - 1, MOO_KEY_a, -1);
+                     }
+                     for (int i = 0; i < d.num; ++i) {
+                         int x, y;
+@@ -412,8 +428,8 @@ int ui_races(struct game_s *g, player_id_t api)
+                 }
+             }
+             if (d.cursor_mode == 0) {
+-                oi_status = uiobj_add_t0(165, 180, "", ui_data.gfx.screens.races_bu.status, MOO_KEY_s, -1);
+-                oi_ok = uiobj_add_t0(290, 180, "", ui_data.gfx.screens.races_bu.ok, MOO_KEY_o, -1);
++                oi_status = uiobj_add_mousearea(165, 180, 165 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.status) - 1, 180 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.status) - 1, MOO_KEY_s, -1);
++                oi_ok = uiobj_add_mousearea(290, 180, 290 + lbxgfx_get_w(ui_data.gfx.screens.races_bu.ok) - 1, 180 + lbxgfx_get_h(ui_data.gfx.screens.races_bu.ok) - 1, MOO_KEY_o, -1);
+                 if (d.num > 0) {
+                     uiobj_add_slider(238, 141, 0, 200, 0, 200, 45, 9, &e->security, MOO_KEY_UNKNOWN, -1);
+                     oi_sec_minus = uiobj_add_mousearea(233, 139, 236, 147, MOO_KEY_UNKNOWN, -1);
