@@ -15,10 +15,10 @@ index d30d017..571bd56 100644
      lbxgfx.c \
 diff --git a/src/cjkfont.c b/src/cjkfont.c
 new file mode 100644
-index 0000000..e042608
+index 0000000..058278b
 --- /dev/null
 +++ b/src/cjkfont.c
-@@ -0,0 +1,178 @@
+@@ -0,0 +1,189 @@
 +#include "config.h"
 +
 +#include <stdio.h>
@@ -144,6 +144,17 @@ index 0000000..e042608
 +    return cjkfont_get(cp, NULL, NULL) != NULL;
 +}
 +
++int cjkfont_size_for(int fonth)
++{
++    /* 原版字高 ->; CJK 尺寸:>=10 大字(選單/標題)24;8-9 中 16;其餘密集小字 14。 */
++    if (fonth >= 10) {
++        return 24;
++    } else if (fonth >= 8) {
++        return 16;
++    }
++    return 14;
++}
++
 +int cjkfont_glyph_w(void)
 +{
 +    return cjk.w;
@@ -199,10 +210,10 @@ index 0000000..e042608
 +}
 diff --git a/src/cjkfont.h b/src/cjkfont.h
 new file mode 100644
-index 0000000..b599b98
+index 0000000..bc41829
 --- /dev/null
 +++ b/src/cjkfont.h
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,56 @@
 +#ifndef INC_1OOM_CJKFONT_H
 +#define INC_1OOM_CJKFONT_H
 +
@@ -231,6 +242,11 @@ index 0000000..b599b98
 +extern int cjkfont_glyph_w(void);
 +extern int cjkfont_glyph_h(void);
 +
++/* 依原版字型高度 fonth 選 CJK 渲染尺寸(24/16/14)。
++   密集面板用矮字型 -> 小 CJK,避免緊湊版面破版。lbxfont(前進寬)與
++   影像層(繪製尺寸)共用此函式,確保一致。 */
++extern int cjkfont_size_for(int fonth);
++
 +/* ---- CJK draw-list ----
 +   lbxfont 在 320×200 邏輯座標遇到 CJK 時不直接畫進 vgabuf,而是把
 +   (x, y, codepoint, 調色盤色號) 記進此 list;影像層在 present 時於
@@ -255,7 +271,7 @@ index 0000000..b599b98
 +
 +#endif
 diff --git a/src/hw/sdl/2/hwsdl2_video.c b/src/hw/sdl/2/hwsdl2_video.c
-index eb679c7..c7c60bd 100644
+index eb679c7..d486e58 100644
 --- a/src/hw/sdl/2/hwsdl2_video.c
 +++ b/src/hw/sdl/2/hwsdl2_video.c
 @@ -7,6 +7,7 @@
@@ -266,7 +282,7 @@ index eb679c7..c7c60bd 100644
  #include "comp.h"
  #include "hwsdl_video.h"
  #include "hwsdl_opt.h"
-@@ -251,6 +252,120 @@ static void video_adjust_window_size(int *wptr, int *hptr)
+@@ -251,6 +252,122 @@ static void video_adjust_window_size(int *wptr, int *hptr)
      *hptr = h;
  }
  
@@ -322,6 +338,7 @@ index eb679c7..c7c60bd 100644
 +        SDL_UpdateTexture(t, NULL, px, gw * 4);
 +        lib_free(px);
 +        SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
++        SDL_SetTextureScaleMode(t, SDL_ScaleModeLinear); /* 縮小到 16/14 時較平滑 */
 +        cjkv.cache[idx].cp = cp;
 +        cjkv.cache[idx].tex = t;
 +        return t;
@@ -354,18 +371,19 @@ index eb679c7..c7c60bd 100644
 +    static const int ox[8] = { -1, 1, 0, 0, -1, 1, -1, 1 };
 +    static const int oy[8] = { 0, 0, -1, 1, -1, -1, 1, 1 };
 +    int n = cjk_drawlist_count();
-+    int gw = cjkfont_glyph_w(), gh = cjkfont_glyph_h();
 +    for (int i = 0; i < n; ++i) {
 +        const cjk_draw_t *d = cjk_drawlist_get(i);
 +        SDL_Texture *t = cjk_glyph_tex(d->cp);
 +        if (!t) {
 +            continue;
 +        }
++        /* 依原版字型高度選 CJK 尺寸(24/16/14);24-atlas glyph 由 SDL 縮放至此尺寸。 */
++        int sz = cjkfont_size_for(d->fonth);
 +        SDL_Rect dst;
-+        dst.w = gw;
-+        dst.h = gh;
++        dst.w = sz;
++        dst.h = sz;
 +        dst.x = d->x * CJK_SCALE;
-+        dst.y = (d->y + d->fonth) * CJK_SCALE - gh; /* 貼齊文字行底 */
++        dst.y = (d->y + d->fonth) * CJK_SCALE - sz; /* 貼齊文字行底 */
 +        SDL_SetTextureColorMod(t, 0, 0, 0);
 +        for (int k = 0; k < 8; ++k) {
 +            SDL_Rect o = dst;
@@ -387,7 +405,7 @@ index eb679c7..c7c60bd 100644
  static void video_update(void)
  {
      if (!video.screen_visible) {
-@@ -295,7 +410,19 @@ static void video_update(void)
+@@ -295,7 +412,19 @@ static void video_update(void)
      /* Make sure the pillarboxes are kept clear each frame. */
      SDL_RenderClear(video.renderer);
  
@@ -408,7 +426,7 @@ index eb679c7..c7c60bd 100644
          /* Render this intermediate texture into the upscaled texture
             using "nearest" integer scaling.
          */
-@@ -325,6 +452,8 @@ static void video_update(void)
+@@ -325,6 +454,8 @@ static void video_update(void)
  
      /* Draw! */
      SDL_RenderPresent(video.renderer);
@@ -418,7 +436,7 @@ index eb679c7..c7c60bd 100644
  
  static void video_setpal(const uint8_t *pal, int first, int num)
 diff --git a/src/lbxfont.c b/src/lbxfont.c
-index 8ae1b61..bc69ca2 100644
+index 8ae1b61..ba9d3b4 100644
 --- a/src/lbxfont.c
 +++ b/src/lbxfont.c
 @@ -5,6 +5,8 @@
@@ -430,7 +448,7 @@ index 8ae1b61..bc69ca2 100644
  #include "lib.h"
  #include "lbx.h"
  #include "lbxpal.h"
-@@ -46,6 +48,56 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
+@@ -46,6 +48,58 @@ static uint16_t lbxfont_tbl_split_hmm4[4] = { 0, 0, 0, 0 };
  
  /* -------------------------------------------------------------------------- */
  
@@ -462,13 +480,15 @@ index 8ae1b61..bc69ca2 100644
 +}
 +
 +/* CJK 在 320×200 邏輯下的前進寬度。
-+   影像層在 2× 合成層(640×400)以 glyph 原尺寸(如 24)畫出,
-+   故邏輯前進 = glyph_w / 2,使相鄰字在合成層恰好相接、不重疊不留縫。 */
++   影像層在 2× 合成層(640×400)以 CJK 尺寸(24/16/14,依字型高度)畫出,
++   故邏輯前進 = cjk_size / 2,使相鄰字在合成層恰好相接、不重疊不留縫。 */
 +#define CJK_LOGICAL_SCALE 2
 +static int lbxfont_cjk_advance(void)
 +{
-+    int gw = cjkfont_glyph_w();
-+    return (gw > 0) ? (gw / CJK_LOGICAL_SCALE) : 0;
++    if (cjkfont_glyph_w() <= 0) {
++        return 0;
++    }
++    return cjkfont_size_for(lbxfontdata[0x10]) / CJK_LOGICAL_SCALE;
 +}
 +
 +/* 處理字串第 i 位的 CJK:推進 *xp,主畫面 pass(record=true)時記進 draw-list
@@ -487,7 +507,7 @@ index 8ae1b61..bc69ca2 100644
  static int lbxfont_print_char_ret_x(int x, int y, char c)
  {
      return x + lbxfont_plotchar(c, vgabuf_get_xy(x, y));
-@@ -203,7 +255,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -203,7 +257,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                  break;
              case 0x15:
                  return lbxfont_temp_x;
@@ -504,7 +524,7 @@ index 8ae1b61..bc69ca2 100644
                  lbxfont_temp_x = lbxfont_print_char_ret_x(lbxfont_temp_x, lbxfont_temp_y, c);
                  if ((w != 0) && (c == ' ')) {
                      lbxfont_temp_x += vc;
-@@ -213,6 +273,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -213,6 +275,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                      ++v8;
                  }
                  break;
@@ -512,7 +532,7 @@ index 8ae1b61..bc69ca2 100644
          }
          ++i;
      }
-@@ -416,11 +477,15 @@ int lbxfont_init(void)
+@@ -416,11 +479,15 @@ int lbxfont_init(void)
  {
      uint8_t *fontdata = lbxfile_item_get(LBXFILE_FONTS, 0, 0);
      lbxfontdata = fontdata;
@@ -528,7 +548,7 @@ index 8ae1b61..bc69ca2 100644
      if (lbxfontdata) {
          lbxfile_item_release(LBXFILE_FONTS, lbxfontdata);
          lbxfontdata = 0;
-@@ -609,6 +674,12 @@ int lbxfont_calc_str_width(const char *str)
+@@ -609,6 +676,12 @@ int lbxfont_calc_str_width(const char *str)
      uint16_t w = 0;
      int16_t c;
      while (1) {
