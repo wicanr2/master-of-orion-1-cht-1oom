@@ -21,12 +21,17 @@ docker run --rm -v "$ROOT:/work" -w /work debian:bookworm-slim bash -euc '
   export PKG_CONFIG_PATH="$SDL/lib/pkgconfig:$MIX/lib/pkgconfig"
   cd /work/1oom; [ -f configure ] || autoreconf -fi >/dev/null 2>&1
   rm -rf /work/build-win; mkdir -p /work/build-win; cd /work/build-win
+  # configure 的 SDL2_mixer 偵測用 #include "SDL2/SDL_mixer.h" -> 需 -I$MIX/include
+  #   (非 .../include/SDL2);且連結 Mix_LoadMUS 需 SDL2_mixer 在 SDL2 之前才解得了符號。
+  #   漏這兩點 -> HAVE_SDL2MIXER 沒定義 -> 沒音訊、-sdlmixersf 變 unknown option。
   ../1oom/configure --host=$H --without-samplerate --disable-hwsdl1 --disable-hwalleg4 --disable-tools \
-    CFLAGS="-g -O2 -I$SDL/include -I$SDL/include/SDL2 -I$MIX/include/SDL2" \
-    SDL2_CFLAGS="-I$SDL/include/SDL2" \
+    CFLAGS="-g -O2 -I$SDL/include -I$SDL/include/SDL2 -I$MIX/include -I$MIX/include/SDL2" \
+    SDL2_CFLAGS="-I$SDL/include -I$SDL/include/SDL2" \
     SDL2_LIBS="-L$SDL/lib -lmingw32 -lSDL2main -lSDL2" \
-    SDL2MIXER_LIBS="-L$MIX/lib -lSDL2_mixer" \
+    SDL2MIXER_LIBS="-L$MIX/lib -lSDL2_mixer -L$SDL/lib -lSDL2" \
     LDFLAGS="-L$SDL/lib -L$MIX/lib" >/tmp/conf.log 2>&1 || { tail -25 /tmp/conf.log; exit 1; }
+  echo "SDL2_mixer 偵測:$(grep -i "SDL2_mixer library" /tmp/conf.log | tail -1)"
+  grep -q "HAVE_SDL2MIXER" config.h 2>/dev/null && echo "  -> HAVE_SDL2MIXER 已定義 ✓(有音訊)" || echo "  -> ⚠️ HAVE_SDL2MIXER 未定義(無音訊)"
   make -j"$(nproc)" >/tmp/make.log 2>&1 || { grep -iE "error" /tmp/make.log | head; exit 1; }
   EXE=$(find . -name "1oom_classic_sdl2.exe" | head -1)
   [ -n "$EXE" ] || { echo "未產生 exe"; grep -iE "error|warning: .*main" /tmp/make.log | tail; exit 1; }
