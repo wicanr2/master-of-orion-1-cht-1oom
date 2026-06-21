@@ -9,7 +9,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 docker run --rm -v "$ROOT:/work" -w /work debian:bookworm-slim bash -euc '
   export DEBIAN_FRONTEND=noninteractive
   apt-get update -qq >/dev/null
-  apt-get install -y -qq mingw-w64 autoconf automake libtool pkg-config make wget ca-certificates xz-utils zip >/dev/null
+  apt-get install -y -qq mingw-w64 autoconf automake libtool pkg-config make wget ca-certificates xz-utils zip timgm6mb-soundfont >/dev/null
   H=x86_64-w64-mingw32
   DEPS=/tmp/deps; mkdir -p $DEPS; cd $DEPS
   SDLV=2.28.5; MIXV=2.6.3
@@ -42,9 +42,11 @@ docker run --rm -v "$ROOT:/work" -w /work debian:bookworm-slim bash -euc '
   cp /work/assets/game/* "$OUT/data/" 2>/dev/null
   cp /work/assets/fonts/cjk24.bin "$OUT/data/"
   cp /work/docs/translation/*_zh.tsv "$OUT/data/translation/"
+  # MIDI 音樂 SoundFont(原生 Windows MIDI 時為 no-op;timidity/fluidsynth 時補音色)
+  cp /usr/share/sounds/sf2/TimGM6mb.sf2 "$OUT/data/" 2>/dev/null || echo "warn: 無 TimGM6mb.sf2"
   cat > "$OUT/玩.bat" <<EOF
 @echo off
-"%~dp0MasterOfOrion-CHT.exe" -data "%~dp0data" -winw 960 -winh 600
+"%~dp0MasterOfOrion-CHT.exe" -data "%~dp0data" -sdlmixersf "%~dp0data\TimGM6mb.sf2" -winw 960 -winh 600
 EOF
   mkdir -p /work/release
   (cd /tmp && zip -qr /work/release/MasterOfOrion-CHT-win64.zip MasterOfOrion-CHT-win64)
