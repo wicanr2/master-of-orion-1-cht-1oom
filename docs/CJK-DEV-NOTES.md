@@ -92,8 +92,9 @@
 
 1. **音訊裝置開不了(影響 SFX + 音樂)**:AppImage 用 `ldd` 遞迴收依賴,把 `libpulse`/`libasound`/`libdbus`/`libsystemd` 一起打包了。bundled 的 pulse/alsa 版本與 plugin 路徑跟玩家主機的 PulseAudio/ALSA daemon 不合 → `Mix_OpenAudio` 開不了裝置 → 全部沒聲音。**修法:這些「host 整合庫」一律不打包,留給主機**(SDL2 執行時 dlopen 主機版本才連得上)。判斷準則:音訊 daemon(pulse/alsa/jack)、display server(X/wayland)、dbus/systemd、GL —— 都該由目標主機提供,bundled 只會版本衝突。
 2. **MIDI 音樂沒音色(只影響音樂)**:MOO1 音樂是 **XMIDI(MIDI)**,SDL2_mixer 用 fluidsynth 後端要 **SoundFont(.sf2)** 才有音色。SoundFont 不是 MOO 遊戲資料、也沒打包。而且 **fluidsynth 不讀 `SDL_SOUNDFONTS` 環境變數**(那是 timidity 後端用的),只認 `Mix_SetSoundFonts()` —— 1oom 內建 `-sdlmixersf FILE.SF2` 選項正是包這個。**修法:打包小型 GM SoundFont(TimGM6mb.sf2 ~6MB),啟動帶 `-sdlmixersf` 指向它**;AppRun/玩.bat/launch wrapper 都這樣帶。
+3. **Windows 整個 SDL_mixer 沒編進去(玩.bat 報 `unknown option '-sdlmixersf'` 後結束)**:`configure` 偵測 SDL2_mixer 用 `AC_TRY_LINK` 編 `#include "SDL2/SDL_mixer.h"` + link `Mix_LoadMUS`。`build-windows.sh` 的 CFLAGS 只給 `-I$MIX/include/SDL2`(缺 `-I$MIX/include`,header 找不到),且 `SDL2MIXER_LIBS` 沒讓 `-lSDL2_mixer` 排在 `-lSDL2` 前(mingw 靜態連結符號解不了)→ 偵測失敗 → **`HAVE_SDL2MIXER` 沒定義 → 整個 SDL_mixer 音訊路徑沒編(SFX+音樂全沒),`-sdlmixersf`(`#ifdef HAVE_SDLMIXER`)也沒編**。同 §4.3 macOS CI 的 `SDL2/SDL.h` include 路徑雷。**修法:CFLAGS 補 `-I$MIX/include`、`SDL2MIXER_LIBS` 改成 `-lSDL2_mixer -L$SDL/lib -lSDL2`(mixer 在前);configure 後 `grep HAVE_SDL2MIXER config.h` 把關**。Linux(pkg-config)/Mac(brew + 對的 include)本來就偵測得到,只有交叉編譯的 Windows 受害。
 
-**教訓**:① 「沒聲音」要先分清楚是**裝置**(SFX 也沒)還是**音色**(只音樂沒)。② AppImage 打包別貪心收所有 `ldd` 依賴,host 整合庫要排除。③ 設 SoundFont 用 `Mix_SetSoundFonts`/`-sdlmixersf`,不是 `SDL_SOUNDFONTS`(後端不同)。
+**教訓**:① 「沒聲音」要先分清楚是**裝置**(SFX 也沒)、**音色**(只音樂沒)、還是**整個 SDL_mixer 沒編**(連 `-sdlmixersf` 都 unknown)。② AppImage 打包別貪心收所有 `ldd` 依賴,host 整合庫要排除。③ 設 SoundFont 用 `Mix_SetSoundFonts`/`-sdlmixersf`,不是 `SDL_SOUNDFONTS`(後端不同)。④ 交叉編譯時 `configure` 的 `AC_TRY_LINK` 偵測要把 include 路徑(`SDL2/xxx.h` 形式需父層 `-I`)與庫順序給對,否則功能靜默被關掉、`grep HAVE_xxx config.h` 把關。
 
 ### 4.8 patch 漏掉 untracked 新檔 → 本地能編、CI 全新 clone 失敗
 
