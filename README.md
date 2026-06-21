@@ -98,11 +98,13 @@ MOO_STR_TR=docs/translation \
 |---|---|---|
 | **Linux** | `scripts/build-appimage.sh`(本地)或 GitHub Actions | `.AppImage` / 目錄 |
 | **Windows** | `scripts/build-windows.sh`(本地 mingw 交叉編譯,含 SDL2 DLL) | `.zip`(含 `玩.bat`) |
-| **macOS** | GitHub Actions(`macos-14`,universal arm64+x86_64) | `.dmg`(`.app` 內附 `安裝說明`) |
+| **macOS** | GitHub Actions(`macos-14` arm64)產 data-free `.dmg`,`scripts/repack-mac.sh` 本地注入遊戲 | `.zip`(`.app`,Apple Silicon) |
 | **Android** | — | 不提供:1oom 為桌面 SDL2 引擎,無 Android port(觸控 / GLES CJK 需從零開發) |
 
-本地 `build-appimage.sh` / `build-windows.sh` 會產生**完整含遊戲**的包(輸出 `release/`,不入庫,僅供自備正版者本地使用)。
+本地 `build-appimage.sh` / `build-windows.sh` / `repack-mac.sh` 會產生**完整含遊戲**的包(輸出 `release/`,不入庫,僅供自備正版者本地使用)。
 GitHub Actions(`.github/workflows/build.yml`)推送即觸發 macOS / Linux 建置,產出不含版權資料的 artifact。
+
+**音訊**:三平台完整包都附小型 GM SoundFont(`TimGM6mb.sf2`),啟動帶 `-sdlmixersf` —— MOO1 音樂是 XMIDI,SDL2_mixer 的 fluidsynth 後端需 SoundFont 才有音色(細節與踩雷見 [`docs/CJK-DEV-NOTES.md`](docs/CJK-DEV-NOTES.md) §4.7)。AppImage 另排除 bundled `libpulse`/`libasound`,改用主機音訊堆疊以免衝突。
 
 ## 目錄結構
 

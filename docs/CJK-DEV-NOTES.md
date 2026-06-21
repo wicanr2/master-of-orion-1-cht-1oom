@@ -86,6 +86,23 @@
 
 **教訓**:CJK 尺寸是由「選到的 lbxfont 的原字高」決定的,不是直接指定像素。要大字就選高字型。
 
+### 4.7 AppImage 打開後沒聲音(兩個獨立根因)
+
+打包後玩家回報「沒聲音」。拆出來是**兩個不相關的問題**疊在一起:
+
+1. **音訊裝置開不了(影響 SFX + 音樂)**:AppImage 用 `ldd` 遞迴收依賴,把 `libpulse`/`libasound`/`libdbus`/`libsystemd` 一起打包了。bundled 的 pulse/alsa 版本與 plugin 路徑跟玩家主機的 PulseAudio/ALSA daemon 不合 → `Mix_OpenAudio` 開不了裝置 → 全部沒聲音。**修法:這些「host 整合庫」一律不打包,留給主機**(SDL2 執行時 dlopen 主機版本才連得上)。判斷準則:音訊 daemon(pulse/alsa/jack)、display server(X/wayland)、dbus/systemd、GL —— 都該由目標主機提供,bundled 只會版本衝突。
+2. **MIDI 音樂沒音色(只影響音樂)**:MOO1 音樂是 **XMIDI(MIDI)**,SDL2_mixer 用 fluidsynth 後端要 **SoundFont(.sf2)** 才有音色。SoundFont 不是 MOO 遊戲資料、也沒打包。而且 **fluidsynth 不讀 `SDL_SOUNDFONTS` 環境變數**(那是 timidity 後端用的),只認 `Mix_SetSoundFonts()` —— 1oom 內建 `-sdlmixersf FILE.SF2` 選項正是包這個。**修法:打包小型 GM SoundFont(TimGM6mb.sf2 ~6MB),啟動帶 `-sdlmixersf` 指向它**;AppRun/玩.bat/launch wrapper 都這樣帶。
+
+**教訓**:① 「沒聲音」要先分清楚是**裝置**(SFX 也沒)還是**音色**(只音樂沒)。② AppImage 打包別貪心收所有 `ldd` 依賴,host 整合庫要排除。③ 設 SoundFont 用 `Mix_SetSoundFonts`/`-sdlmixersf`,不是 `SDL_SOUNDFONTS`(後端不同)。
+
+### 4.8 patch 漏掉 untracked 新檔 → 本地能編、CI 全新 clone 失敗
+
+重生 patch 用 `git diff -- <files>`,但 `cjkfont.c/.h` 是 **untracked 新檔**,`git diff` **不含 untracked** → patch 只有 `hwsdl2_video.c` 的 `#include "cjkfont.h"` 改動,卻漏了檔案本身。本機 1oom/ 有那些檔能編譯,**CI 全新 clone 就 `fatal error: cjkfont.h not found`**。
+
+更糟的是 `git apply --check` **過了**——它只驗 hunk 能否套用,不驗新檔是否齊、不編譯。
+
+**修法**:新檔要先 `git add -N <檔>` 讓 `git diff` 含它(出現 `new file mode`),出完 patch 再 `git reset`。**並把驗證從 `--check` 升級為「全新上游 + 套全部 patch + 實際 docker 編譯」**(見下)。
+
 ## 5. 驗證紀律
 
 每個改動都跑完整迴圈,不靠瞪程式碼:
@@ -94,7 +111,8 @@
 2. **重建 atlas**(`scripts/build-font.sh`)——**加了新中文(含註解、tsv)就要重建**,否則新字不在 atlas、CJK 靜默跳過不畫。
 3. **xvfb 截圖**:`import -window root` 抓畫面,用 Read 看圖逐屏校對位、檢查破版/溢出/缺字。**不開 GUI viewer**(headless 會卡死)。
 4. **playtest**(`scripts/playtest.sh`):載存檔巡覽各畫面,`grep` crash 標誌。
-5. **clean-room patch 驗證**:`git stash` 回乾淨上游 → 逐一 `git apply --check` 全部 patch → 確認 patch-only 不變量(任何人套到全新 1oom 都乾淨套用)。
+5. **patch 全新編譯驗證**(比 `--check` 強):`git stash push -u` 回乾淨上游 → `for p in patch/*.patch; do git apply "$p"; done` → `scripts/build.sh` **實際編譯成功**(等同 CI)。`git apply --check` 只驗 hunk 套用、**不驗新檔齊不齊、不編譯**,曾因此漏抓 untracked 新檔沒進 patch(見 4.8)。
+6. **音訊**:headless 容器無音效卡,實際發聲驗不了;能驗的是「啟動沒因排除庫而崩」「log 有 `setting soundfont` 到包內 .sf2」「無音樂載入錯誤」,最終發聲請在有音效卡的機器確認。
 
 ## 6. patch-only 維運
 
@@ -114,3 +132,6 @@
 | 清單/面板破格 | 列距、框高、螢幕高三尺度沒對齊 |
 | 字太小 | `ui_draw_btn_cjk` 沒依高度選字級,或選到矮字型 |
 | 蓋字露出底下英文邊 | 覆蓋 `filled_rect` 範圍不夠,或位置偏移(截圖校正) |
+| 打包後完全沒聲音(SFX+音樂) | AppImage bundled 了 pulse/alsa,與主機 daemon 衝突;排除留給主機 |
+| 只有音樂沒聲音(SFX 正常) | MIDI 缺 SoundFont;打包 .sf2 + 啟動帶 `-sdlmixersf`(非 `SDL_SOUNDFONTS`) |
+| 本地能編但 CI build 失敗(缺 .h) | patch 漏 untracked 新檔;`git add -N` 後重生,並改用全新編譯驗證 |
