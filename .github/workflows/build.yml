@@ -16,10 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 不用 brew 的 sdl2(2026-06 起是 sdl2-compat,執行時 dlopen SDL3 →
+      # 玩家「Failed loading SDL3 library」issue #1)。改自編真 SDL2。
+      # fluid-synth 供 SDL2_mixer 的 MIDI 後端(MOO 音樂是 XMIDI,-sdlmixersf 用)。
       - name: Install deps
         run: |
           brew update
-          brew install sdl2 sdl2_mixer libsamplerate automake autoconf libtool pkg-config dylibbundler
+          brew install automake autoconf libtool pkg-config dylibbundler fluid-synth wget
+
+      - name: Build real SDL2 + SDL2_mixer from source
+        run: |
+          bash scripts/build-sdl2-mac.sh "$HOME/sdlp"
+          # 確認是真 SDL2(~2MB)而非 sdl2-compat(~0.5MB)
+          ls -la "$HOME/sdlp"/lib/libSDL2-2.0*.dylib
+          otool -L "$HOME/sdlp"/lib/libSDL2_mixer-2.0.0.dylib | grep -i sdl || true
 
       - name: Fetch engine + apply patches
         run: |
@@ -30,19 +40,25 @@ jobs:
 
       - name: Build (arm64 native)
         run: |
+          SDLP="$HOME/sdlp"
+          export PATH="$SDLP/bin:$PATH"   # configure 用自編 sdl2-config
+          export PKG_CONFIG_PATH="$SDLP/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
           cd 1oom
           [ -f configure ] || autoreconf -fi
-          export PKG_CONFIG_PATH="$(brew --prefix sdl2)/lib/pkgconfig:$(brew --prefix sdl2_mixer)/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
           mkdir -p ../build-mac && cd ../build-mac
-          # configure 用 #include "SDL2/SDL.h",故需 -I<prefix>/include(非 .../include/SDL2)
-          SDLINC="-I$(brew --prefix sdl2)/include -I$(brew --prefix sdl2_mixer)/include"
-          ../1oom/configure --disable-hwsdl1 --disable-hwalleg4 --disable-tools \
+          # configure 偵測用 #include "SDL2/SDL.h" / "SDL2/SDL_mixer.h" → 需父層 -I$SDLP/include;
+          # SDL2_mixer 連結 Mix_LoadMUS 需 -lSDL2_mixer 在 -lSDL2 前(見 build-windows.sh 同雷)。
+          SDLINC="-I$SDLP/include -I$SDLP/include/SDL2"
+          ../1oom/configure --disable-hwsdl1 --disable-hwalleg4 --disable-tools --without-samplerate \
             SDL2_CFLAGS="$(sdl2-config --cflags) $SDLINC" \
             SDL2_LIBS="$(sdl2-config --libs)" \
-            SDL2MIXER_LIBS="-L$(brew --prefix sdl2_mixer)/lib -lSDL2_mixer" \
+            SDL2MIXER_LIBS="-L$SDLP/lib -lSDL2_mixer -L$SDLP/lib -lSDL2" \
             CFLAGS="-O2 $(sdl2-config --cflags) $SDLINC"
+          grep -q "HAVE_SDL2MIXER" src/config.h && echo "HAVE_SDL2MIXER ✓(有音訊)" || echo "⚠️ HAVE_SDL2MIXER 未定義"
           make -j3
           file src/1oom_classic_sdl2 || true
+          echo "=== 連結確認:不應有 SDL3,SDL2 應指向 @rpath/自編 ==="
+          otool -L src/1oom_classic_sdl2 | grep -iE "SDL2|SDL3" || true
 
       - name: Bundle .app + .dmg
         run: |
