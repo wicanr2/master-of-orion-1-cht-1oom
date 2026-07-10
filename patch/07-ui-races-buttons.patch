@@ -52,7 +52,7 @@ index aaec8f4..f80ce74 100644
  
  #endif
 diff --git a/src/ui/classic/uiraces.c b/src/ui/classic/uiraces.c
-index ff8ed70..5be29d3 100644
+index ff8ed70..3bce0c1 100644
 --- a/src/ui/classic/uiraces.c
 +++ b/src/ui/classic/uiraces.c
 @@ -94,6 +94,13 @@ static void races_draw_cb(void *vptr)
@@ -106,7 +106,19 @@ index ff8ed70..5be29d3 100644
              oi_tbl_spying[PLAYER_NUM - 1],
              oi_tbl_oppon[PLAYER_NUM - 1],
              oi_tbl_spy_minus[PLAYER_NUM - 1],
-@@ -369,6 +382,15 @@ int ui_races(struct game_s *g, player_id_t api)
+@@ -291,6 +304,11 @@ int ui_races(struct game_s *g, player_id_t api)
+         UIOBJI_SET_TBL_INVALID(oi_tbl_oppon); \
+         UIOBJI_SET_TBL_INVALID(oi_tbl_spy_minus); \
+         UIOBJI_SET_TBL_INVALID(oi_tbl_spy_plus); \
++        /* 繁中新增的間諜模式表也要每幀重設為 INVALID:未接觸的種族槽(i>=d.num)不會被 \
++           重新指派,若殘留 0(=UIOBJI_NONE)會與 idle 的 oi 每幀誤中 → 連續「咚」(issue #2) */ \
++        UIOBJI_SET_TBL_INVALID(oi_tbl_hiding); \
++        UIOBJI_SET_TBL_INVALID(oi_tbl_sabotage); \
++        UIOBJI_SET_TBL_INVALID(oi_tbl_espionage); \
+     } while (0)
+ 
+     UIOBJ_CLEAR_LOCAL();
+@@ -369,6 +387,15 @@ int ui_races(struct game_s *g, player_id_t api)
                  } else {
                      d.cursor_mode = 0;
                  }
@@ -122,7 +134,7 @@ index ff8ed70..5be29d3 100644
              }
          }
          UIOBJ_CLEAR_LOCAL();
-@@ -388,17 +410,18 @@ int ui_races(struct game_s *g, player_id_t api)
+@@ -388,17 +415,18 @@ int ui_races(struct game_s *g, player_id_t api)
              uiobj_table_clear();
              if (d.num > 0) {
                  if (d.cursor_mode == 0) {
@@ -146,7 +158,7 @@ index ff8ed70..5be29d3 100644
                      }
                  } else {
                      for (int i = 0; i < d.num; ++i) {
-@@ -412,8 +435,8 @@ int ui_races(struct game_s *g, player_id_t api)
+@@ -412,8 +440,8 @@ int ui_races(struct game_s *g, player_id_t api)
                  }
              }
              if (d.cursor_mode == 0) {
