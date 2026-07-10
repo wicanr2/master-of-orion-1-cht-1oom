@@ -34,6 +34,7 @@
 
 # 打包產物(含版權資料,不入庫)
 /release/
+/dist-all/
 /build/bundle_data/
 
 # Claude 專案記憶副本 + dev-setup 包(僅本機/可攜,不入庫)
