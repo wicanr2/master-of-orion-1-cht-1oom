@@ -36,7 +36,9 @@ jobs:
           git clone --branch master-vanilla-testing "https://git@git.sourcecraft.dev/fork1oom/1oom.git" 1oom \
             || git clone "https://github.com/1oom-fork/1oom.git" 1oom
           cd 1oom
-          for p in ../patch/*.patch; do echo "apply $p"; git apply --whitespace=nowarn "$p" || patch -p1 < "$p"; done
+          # 釘死 commit:上游 testing 分支會 force-push 重寫、打爛 patch(見 scripts/fetch-engine.sh)
+          git checkout 8a7b21ae40f57d82f30d33ee04e7836e037209c7
+          for p in ../patch/*.patch; do echo "apply $p"; git apply --whitespace=nowarn "$p"; done
 
       - name: Build (arm64 native)
         run: |
@@ -109,7 +111,9 @@ jobs:
         run: |
           git clone --branch master-vanilla-testing "https://git@git.sourcecraft.dev/fork1oom/1oom.git" 1oom \
             || git clone "https://github.com/1oom-fork/1oom.git" 1oom
-          cd 1oom && for p in ../patch/*.patch; do git apply --whitespace=nowarn "$p" || patch -p1 < "$p"; done
+          # 釘死 commit:上游 testing 分支會 force-push 重寫、打爛 patch(見 scripts/fetch-engine.sh)
+          cd 1oom && git checkout 8a7b21ae40f57d82f30d33ee04e7836e037209c7
+          for p in ../patch/*.patch; do git apply --whitespace=nowarn "$p"; done
       - name: Build
         run: |
           cd 1oom && [ -f configure ] || autoreconf -fi

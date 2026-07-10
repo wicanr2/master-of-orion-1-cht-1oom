@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uihelp.c b/src/ui/classic/uihelp.c
-index 9ca7fd4..5e3fa18 100644
+index 037338d5..3dc0d326 100644
 --- a/src/ui/classic/uihelp.c
 +++ b/src/ui/classic/uihelp.c
 @@ -6,6 +6,7 @@
@@ -82,7 +82,7 @@ index 9ca7fd4..5e3fa18 100644
 +    d.c5 = lbxpal_find_closest(0x19, 0x19, 0x23);
 +    d.c8 = lbxpal_find_closest(0x2d, 0x2d, 0x33);
      uiobj_table_num_store();
-     vgabuf_copy_buf();
+     vgabuf_copy_front_to_back();
      vgabuf_copy_back_to_page3();
 -    helplbx = lbxfile_item_get(LBXFILE_HELP, 0, 0);
 +    d.helplbx = lbxfile_item_get(LBXFILE_HELP, 0, 0);

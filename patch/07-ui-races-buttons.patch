@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uidraw.c b/src/ui/classic/uidraw.c
-index 8a7a2fd..4c3a724 100644
+index 702ddf70..94fca50f 100644
 --- a/src/ui/classic/uidraw.c
 +++ b/src/ui/classic/uidraw.c
 @@ -3,9 +3,12 @@
@@ -15,7 +15,7 @@ index 8a7a2fd..4c3a724 100644
  #include "mouse.h"
  #include "rnd.h"
  #include "uicursor.h"
-@@ -677,3 +680,24 @@ void ui_draw_textbox_2str(const char *str1, const char *str2, int y0)
+@@ -470,3 +473,24 @@ void ui_draw_textbox_2str(const char *str1, const char *str2, int y0)
      }
      lbxfont_print_str_split(x0 + 4, y0 + 4, w - 8, str2, 2);
  }
@@ -29,7 +29,7 @@ index 8a7a2fd..4c3a724 100644
 +    int h = lbxgfx_get_h(gfx);
 +    int cjkh, logh;
 +    uint8_t face = *vgabuf_get_xy(x + w / 2, y + h / 4);
-+    vgabuf_draw_filled_rect(x + 3, y + 2, x + w - 3, y + h - 2, face);
++    vgabuf_fill_rect(x + 3, y + 2, x + w - 3, y + h - 2, face);
 +    /* 依按鈕高度選字級:夠高的鈕用大字型(-> 24px CJK),矮鈕用小字型(14px) */
 +    if (h >= 15) {
 +        lbxfont_select_set_12_4(5, 0xf, 0, 0);
@@ -41,10 +41,10 @@ index 8a7a2fd..4c3a724 100644
 +    lbxfont_print_str_center(x + w / 2, y + (h - logh) / 2 + 1, s);
 +}
 diff --git a/src/ui/classic/uidraw.h b/src/ui/classic/uidraw.h
-index aaec8f4..f80ce74 100644
+index 9edb5c85..b74d21c0 100644
 --- a/src/ui/classic/uidraw.h
 +++ b/src/ui/classic/uidraw.h
-@@ -25,5 +25,6 @@ extern void ui_draw_finish(void);
+@@ -19,5 +19,6 @@ extern void ui_draw_finish(void);
  extern void ui_draw_stars(int x, int y, int xoff1, int xoff2);
  extern void ui_draw_set_stars_xoffs(bool flag_right);
  extern void ui_draw_textbox_2str(const char *str1, const char *str2, int y0);
@@ -52,17 +52,17 @@ index aaec8f4..f80ce74 100644
  
  #endif
 diff --git a/src/ui/classic/uiraces.c b/src/ui/classic/uiraces.c
-index ff8ed70..3bce0c1 100644
+index c8920548..3970e7d4 100644
 --- a/src/ui/classic/uiraces.c
 +++ b/src/ui/classic/uiraces.c
 @@ -94,6 +94,13 @@ static void races_draw_cb(void *vptr)
      } else {
-         vgabuf_draw_filled_rect(238, 141, 283, 144, 0x5a);
+         vgabuf_fill_rect(238, 141, 283, 144, 0x5a);
      }
 +    /* 繁中:OVERALL SECURITY 烘字標題疊中文(整體保安) */
 +    {
 +        uint8_t f = *vgabuf_get_xy(167, 148);
-+        vgabuf_draw_filled_rect(164, 142, 236, 149, f);
++        vgabuf_fill_rect(164, 142, 236, 149, f);
 +        lbxfont_select(2, 6, 0, 0);
 +        lbxfont_print_str_normal(167, 142, "整體保安");
 +    }

@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uidesign.c b/src/ui/classic/uidesign.c
-index 39afc5d..ab29f6e 100644
+index bdf5cc09..df544a2d 100644
 --- a/src/ui/classic/uidesign.c
 +++ b/src/ui/classic/uidesign.c
 @@ -4,6 +4,7 @@
@@ -12,7 +12,7 @@ index 39afc5d..ab29f6e 100644
  #include "game_aux.h"
 @@ -98,6 +99,29 @@ static void design_draw_cb(void *vptr)
  
-     vgabuf_draw_filled_rect(5, 5, 315, 195, 1);
+     vgabuf_fill_rect(5, 5, 315, 195, 1);
      lbxgfx_draw_frame(0, 0, ui_data.gfx.design.bg);
 +
 +    /* 繁中:design.bg 烘字標籤疊中文(SHIP SIZE/ICON 與 NAME/COST/SPACE 資訊框) */
@@ -28,7 +28,7 @@ index 39afc5d..ab29f6e 100644
 +        lbxfont_select(0, 0xd, 0, 0);
 +        for (int i = 0; i < (int)(sizeof(lab) / sizeof(lab[0])); ++i) {
 +            uint8_t f = *vgabuf_get_xy(lab[i].x0 + 1, lab[i].y1 - 1);
-+            vgabuf_draw_filled_rect(lab[i].x0, lab[i].y0, lab[i].x1, lab[i].y1, f);
++            vgabuf_fill_rect(lab[i].x0, lab[i].y0, lab[i].x1, lab[i].y1, f);
 +            if (lab[i].cen) {
 +                lbxfont_print_str_center((lab[i].x0 + lab[i].x1) / 2, lab[i].y0 + 1, lab[i].s);
 +            } else {

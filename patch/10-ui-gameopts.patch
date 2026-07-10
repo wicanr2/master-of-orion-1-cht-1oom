@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uigameopts.c b/src/ui/classic/uigameopts.c
-index db82255..530e58e 100644
+index 35e78b12..977216c8 100644
 --- a/src/ui/classic/uigameopts.c
 +++ b/src/ui/classic/uigameopts.c
 @@ -1,6 +1,7 @@
@@ -27,7 +27,7 @@ index db82255..530e58e 100644
 +{
 +    uint8_t face = *vgabuf_get_xy(x0 + 2, y0 + 1);
 +    int cjkh, logh;
-+    vgabuf_draw_filled_rect(x0, y0, x1, y1, face);
++    vgabuf_fill_rect(x0, y0, x1, y1, face);
 +    if ((y1 - y0) >= 15) {
 +        lbxfont_select_set_12_4(5, 0xf, 0, 0);
 +    } else {
@@ -41,7 +41,7 @@ index db82255..530e58e 100644
  static void gameopts_draw_cb(void *vptr)
  {
      struct gameopts_data_s *d = vptr;
-     vgabuf_clear();
+     vgabuf_erase();
      lbxgfx_draw_frame(0, 0, d->gfx_game);
 +
 +    /* 烘字按鈕:儲存 / 載入 / 離開 */

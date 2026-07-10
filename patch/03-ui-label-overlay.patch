@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uinewgame.c b/src/ui/classic/uinewgame.c
-index 3100c0f..ff545bc 100644
+index 7e14760a..87077d99 100644
 --- a/src/ui/classic/uinewgame.c
 +++ b/src/ui/classic/uinewgame.c
 @@ -22,6 +22,7 @@
@@ -22,7 +22,7 @@ index 3100c0f..ff545bc 100644
 +    lbxgfx_draw_frame(x, y, gfx);
 +    /* 取樣鈕面橘色:避開烘字(中央)與凸邊,取上方 1/4 高處。 */
 +    uint8_t face = *vgabuf_get_xy(x + w / 2, y + h / 4);
-+    vgabuf_draw_filled_rect(x + 4, y + 3, x + w - 4, y + h - 3, face);
++    vgabuf_fill_rect(x + 4, y + 3, x + w - 4, y + h - 3, face);
 +    lbxfont_select(0, 5, 0, 0);
 +    /* 垂直置中:print 的 y 為頂端,glyph 約 12 邏輯高,行中心對齊鈕中心。 */
 +    lbxfont_print_str_center(x + w / 2, y + h / 2 - 2, s);
@@ -31,7 +31,7 @@ index 3100c0f..ff545bc 100644
  static void new_game_draw_cb1(void *vptr)
  {
      struct new_game_data_s *d = vptr;
-     vgabuf_clear();
+     vgabuf_erase();
      lbxgfx_draw_frame(0, 0, d->gfx_newgame);
 +    /* 繁中化:面板標籤與按鈕文字烘在 LBX 圖裡。取樣 row 中央橘色蓋英文後疊 CJK,
 +       對齊原版(左對齊、垂直置中於橘色 bar)。 */
@@ -42,7 +42,7 @@ index 3100c0f..ff545bc 100644
 +        for (int i = 0; i < 3; ++i) {
 +            int cy = row_cy[i];
 +            uint8_t orange = *vgabuf_get_xy(0x50, cy); /* row 中央左側乾淨橘色 */
-+            vgabuf_draw_filled_rect(0x60, cy - 7, 0xa8, cy + 6, orange); /* 蓋英文(左緣足夠) */
++            vgabuf_fill_rect(0x60, cy - 7, 0xa8, cy + 6, orange); /* 蓋英文(左緣足夠) */
 +            lbxfont_select(0, 5, 0, 0);
 +            lbxfont_print_str_normal(0x68, cy - 2, lbl[i]); /* glyph 中心 ≈ print_y+2 = cy */
 +        }

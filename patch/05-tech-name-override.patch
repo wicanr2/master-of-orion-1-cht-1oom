@@ -1,5 +1,5 @@
 diff --git a/src/game/game_audience.c b/src/game/game_audience.c
-index 01c7e4b..0bd550f 100644
+index 01c7e4ba..0bd550f4 100644
 --- a/src/game/game_audience.c
 +++ b/src/game/game_audience.c
 @@ -9,6 +9,7 @@
@@ -35,7 +35,7 @@ index 01c7e4b..0bd550f 100644
                  const char *s;
                  int len = 0;
 diff --git a/src/game/game_news.c b/src/game/game_news.c
-index c41dd8b..1425320 100644
+index c41dd8bc..14253203 100644
 --- a/src/game/game_news.c
 +++ b/src/game/game_news.c
 @@ -5,6 +5,7 @@
@@ -70,7 +70,7 @@ index c41dd8b..1425320 100644
              int len;
              switch (c & 0x7f) {
 diff --git a/src/game/game_tech.c b/src/game/game_tech.c
-index 7d401fa..d94f2ea 100644
+index 7d401fa8..d94f2ea7 100644
 --- a/src/game/game_tech.c
 +++ b/src/game/game_tech.c
 @@ -3,6 +3,7 @@
@@ -121,7 +121,7 @@ index 7d401fa..d94f2ea 100644
  }
 diff --git a/src/strtr.c b/src/strtr.c
 new file mode 100644
-index 0000000..576a6cd
+index 00000000..576a6cdd
 --- /dev/null
 +++ b/src/strtr.c
 @@ -0,0 +1,161 @@
@@ -288,7 +288,7 @@ index 0000000..576a6cd
 +}
 diff --git a/src/strtr.h b/src/strtr.h
 new file mode 100644
-index 0000000..fdf9128
+index 00000000..fdf91282
 --- /dev/null
 +++ b/src/strtr.h
 @@ -0,0 +1,14 @@

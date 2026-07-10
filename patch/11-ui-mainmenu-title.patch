@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uimainmenu.c b/src/ui/classic/uimainmenu.c
-index 33893d8..47a26a1 100644
+index b5e85f7a..6d89d670 100644
 --- a/src/ui/classic/uimainmenu.c
 +++ b/src/ui/classic/uimainmenu.c
 @@ -53,6 +53,9 @@ static void main_menu_draw_cb(void *vptr)

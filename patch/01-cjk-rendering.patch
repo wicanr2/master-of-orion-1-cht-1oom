@@ -1,5 +1,5 @@
 diff --git a/src/Makefile.am b/src/Makefile.am
-index d30d017..571bd56 100644
+index d30d0178..571bd56b 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -63,6 +63,10 @@ gui_sources = \
@@ -15,7 +15,7 @@ index d30d017..571bd56 100644
      lbxgfx.c \
 diff --git a/src/cjkfont.c b/src/cjkfont.c
 new file mode 100644
-index 0000000..8f8696b
+index 00000000..8f8696b5
 --- /dev/null
 +++ b/src/cjkfont.c
 @@ -0,0 +1,199 @@
@@ -220,7 +220,7 @@ index 0000000..8f8696b
 +}
 diff --git a/src/cjkfont.h b/src/cjkfont.h
 new file mode 100644
-index 0000000..bc41829
+index 00000000..bc418294
 --- /dev/null
 +++ b/src/cjkfont.h
 @@ -0,0 +1,56 @@
@@ -281,7 +281,7 @@ index 0000000..bc41829
 +
 +#endif
 diff --git a/src/hw/sdl/2/hwsdl2_video.c b/src/hw/sdl/2/hwsdl2_video.c
-index eb679c7..d486e58 100644
+index 23d5c054..b8705d7c 100644
 --- a/src/hw/sdl/2/hwsdl2_video.c
 +++ b/src/hw/sdl/2/hwsdl2_video.c
 @@ -7,6 +7,7 @@
@@ -446,7 +446,7 @@ index eb679c7..d486e58 100644
  
  static void video_setpal(const uint8_t *pal, int first, int num)
 diff --git a/src/lbxfont.c b/src/lbxfont.c
-index 8ae1b61..76dbf98 100644
+index 1e7ab822..582bab86 100644
 --- a/src/lbxfont.c
 +++ b/src/lbxfont.c
 @@ -5,6 +5,8 @@
@@ -516,8 +516,8 @@ index 8ae1b61..76dbf98 100644
 +
  static int lbxfont_print_char_ret_x(int x, int y, char c)
  {
-     return x + lbxfont_plotchar(c, vgabuf_get_xy(x, y));
-@@ -203,7 +257,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+     uint8_t *p = vgabuf_get() + VGABUF_OFFSET(x, y);
+@@ -204,7 +258,15 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                  break;
              case 0x15:
                  return lbxfont_temp_x;
@@ -534,7 +534,7 @@ index 8ae1b61..76dbf98 100644
                  lbxfont_temp_x = lbxfont_print_char_ret_x(lbxfont_temp_x, lbxfont_temp_y, c);
                  if ((w != 0) && (c == ' ')) {
                      lbxfont_temp_x += vc;
-@@ -213,6 +275,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
+@@ -214,6 +276,7 @@ static int lbxfont_print_str_do(int x, int y, const char *str, bool change_color
                      ++v8;
                  }
                  break;
@@ -542,7 +542,7 @@ index 8ae1b61..76dbf98 100644
          }
          ++i;
      }
-@@ -230,7 +293,21 @@ static int lbxfont_print_str_limit_do(int x, int y, const char *str, bool change
+@@ -231,7 +294,21 @@ static int lbxfont_print_str_limit_do(int x, int y, const char *str, bool change
      if (vgabuf_lim_outside(x, y, x + w, y + h)) {
          return 0;
      }
@@ -565,7 +565,7 @@ index 8ae1b61..76dbf98 100644
          switch (c) {
              case 1:
                  if (change_color) {
-@@ -305,6 +382,7 @@ static int lbxfont_print_str_normal_do_w0(int x, int y, const char *str, int w)
+@@ -306,6 +383,7 @@ static int lbxfont_print_str_normal_do_w0(int x, int y, const char *str, int w)
  static void lbxfont_split_str(int x, int y, int maxw, const char *str, split_str_t *s)
  {
      int i = 0, j, x0, x1, w, pos_space, last_c, ty = y, v12, xnext = -1;
@@ -573,7 +573,7 @@ index 8ae1b61..76dbf98 100644
      uint16_t line_h = lbxfontdata[0x44];
      int16_t gap_w = lbxfontdata[0x48];
      uint8_t char_h = lbxfontdata[0x10];
-@@ -356,9 +434,20 @@ static void lbxfont_split_str(int x, int y, int maxw, const char *str, split_str
+@@ -357,9 +435,20 @@ static void lbxfont_split_str(int x, int y, int maxw, const char *str, split_str
              w = x1 - x0 + 1;
              pos_space = -1;
              last_c = -1;
@@ -594,7 +594,7 @@ index 8ae1b61..76dbf98 100644
                  c = (uint8_t)s->buf[j];
                  if (c >= 0x20) {
                      cw = lbxfontdata[0x4a + (c - 0x20)] + gap_w;
-@@ -399,6 +488,10 @@ static void lbxfont_split_str(int x, int y, int maxw, const char *str, split_str
+@@ -400,6 +489,10 @@ static void lbxfont_split_str(int x, int y, int maxw, const char *str, split_str
                  if (pos_space != -1) {
                      s->buf[pos_space] = 0x15;
                      i = pos_space + 1;
@@ -605,7 +605,7 @@ index 8ae1b61..76dbf98 100644
                  }
              }
          }
-@@ -416,11 +509,15 @@ int lbxfont_init(void)
+@@ -417,11 +510,15 @@ int lbxfont_init(void)
  {
      uint8_t *fontdata = lbxfile_item_get(LBXFILE_FONTS, 0, 0);
      lbxfontdata = fontdata;
@@ -621,7 +621,7 @@ index 8ae1b61..76dbf98 100644
      if (lbxfontdata) {
          lbxfile_item_release(LBXFILE_FONTS, lbxfontdata);
          lbxfontdata = 0;
-@@ -609,6 +706,12 @@ int lbxfont_calc_str_width(const char *str)
+@@ -610,6 +707,12 @@ int lbxfont_calc_str_width(const char *str)
      uint16_t w = 0;
      int16_t c;
      while (1) {
@@ -634,7 +634,7 @@ index 8ae1b61..76dbf98 100644
          c = *str++;
          c -= 0x20;
          if (c < 0) {
-@@ -704,6 +807,16 @@ void lbxfont_print_str_split(int x, int y, int maxw, const char *str, int type)
+@@ -705,6 +808,16 @@ void lbxfont_print_str_split(int x, int y, int maxw, const char *str, int type)
      split_str_t s;
      lbxfont_split_str(x, y, maxw, str, &s);
      for (int i = 0; i < s.num; ++i) {
@@ -651,7 +651,7 @@ index 8ae1b61..76dbf98 100644
          switch (type) {
              case 0:
                  lbxfont_print_str_normal(s.x0[i], s.y[i], &s.buf[s.i[i]]);
-@@ -724,6 +837,9 @@ void lbxfont_print_str_split(int x, int y, int maxw, const char *str, int type)
+@@ -725,6 +838,9 @@ void lbxfont_print_str_split(int x, int y, int maxw, const char *str, int type)
              default:
                  break;
          }
@@ -662,18 +662,17 @@ index 8ae1b61..76dbf98 100644
      lbxfont_hmm4 = 0;
  }
 diff --git a/src/vgabuf.c b/src/vgabuf.c
-index 72e7130..e0c91bd 100644
+index f638a91d..819c73f5 100644
 --- a/src/vgabuf.c
 +++ b/src/vgabuf.c
-@@ -2,6 +2,7 @@
- 
+@@ -1,5 +1,6 @@
  #include <string.h>
  
 +#include "cjkfont.h"
  #include "hw.h"
  #include "vgabuf.h"
  #include "types.h"
-@@ -78,6 +79,7 @@ void vgabuf_seg_restore(void)
+@@ -70,6 +71,7 @@ uint8_t *vgabuf_get_hw_cursor(void)
  void vgabuf_flip(void)
  {
      vga_page = 1 - vga_page;
@@ -681,3 +680,21 @@ index 72e7130..e0c91bd 100644
      hw_video_redraw_front();
      vgabuf_select_back();
  }
+diff --git a/src/vgabuf.h b/src/vgabuf.h
+index 56cd3636..811996b0 100644
+--- a/src/vgabuf.h
++++ b/src/vgabuf.h
+@@ -54,6 +54,13 @@ extern uint8_t *vgabuf_get_back(void);
+ /* Return front buffer. */
+ extern uint8_t *vgabuf_get_front(void);
+ 
++/* 繁中相容 shim:上游 8a7b21ae 移除了 vgabuf_get_xy inline,但 vgabuf_get()+VGABUF_OFFSET
++   仍在,語義等價。ui_draw_btn_cjk 等取樣按鈕底色的程式碼沿用此介面。 */
++static inline uint8_t *vgabuf_get_xy(int16_t x, int16_t y)
++{
++    return vgabuf_get() + VGABUF_OFFSET(x, y);
++}
++
+ extern void vgabuf_copy_front_to_back(void);
+ extern void vgabuf_copy_back_out(uint8_t *buf);
+ extern void vgabuf_copy_back_to_page2(void);

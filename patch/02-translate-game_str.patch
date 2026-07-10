@@ -1,5 +1,5 @@
 diff --git a/src/game/game_str.c b/src/game/game_str.c
-index 013856e..00c82aa 100644
+index 013856e1..00c82aa5 100644
 --- a/src/game/game_str.c
 +++ b/src/game/game_str.c
 @@ -9,43 +9,43 @@

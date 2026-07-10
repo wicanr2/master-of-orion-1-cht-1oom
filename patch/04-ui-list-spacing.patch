@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uiobj.c b/src/ui/classic/uiobj.c
-index 1792d2c..2756943 100644
+index 410770eb..6ef63a48 100644
 --- a/src/ui/classic/uiobj.c
 +++ b/src/ui/classic/uiobj.c
 @@ -3,6 +3,7 @@

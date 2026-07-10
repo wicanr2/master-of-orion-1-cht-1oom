@@ -1,5 +1,5 @@
 diff --git a/src/ui/classic/uibasescrap.c b/src/ui/classic/uibasescrap.c
-index 6b06d48..890b6b2 100644
+index fa31b4e9..779c3e2a 100644
 --- a/src/ui/classic/uibasescrap.c
 +++ b/src/ui/classic/uibasescrap.c
 @@ -59,6 +59,12 @@ static void basescrap_draw_cb1(void *vptr)
@@ -27,7 +27,7 @@ index 6b06d48..890b6b2 100644
      oi_minus = uiobj_add_mousearea(x + 10, y + 33, x + 12, y + 41, MOO_KEY_UNKNOWN, -1);
      oi_plus = uiobj_add_mousearea(x + 66, y + 33, x + 70, y + 41, MOO_KEY_UNKNOWN, -1);
 diff --git a/src/ui/classic/uifleet.c b/src/ui/classic/uifleet.c
-index 33c0fb3..a03e630 100644
+index c823f6c2..84d860cd 100644
 --- a/src/ui/classic/uifleet.c
 +++ b/src/ui/classic/uifleet.c
 @@ -66,6 +66,13 @@ static void fleet_draw_cb(void *vptr)
@@ -70,10 +70,10 @@ index 33c0fb3..a03e630 100644
                  for (shipdesign_id_t i = SHIPDESIGN_0; i < g->eto[active_player].shipdesigns_num; ++i) {
                      int x0;
 diff --git a/src/ui/classic/uigmap.c b/src/ui/classic/uigmap.c
-index 27d35d7..6604bb1 100644
+index 8d634313..c5dc0117 100644
 --- a/src/ui/classic/uigmap.c
 +++ b/src/ui/classic/uigmap.c
-@@ -295,6 +295,21 @@ static void gmap_draw_cb(void *vptr)
+@@ -320,6 +320,21 @@ static void gmap_draw_cb(void *vptr)
      lbxfont_print_str_normal(250, 88, game_str_gm_mapkey);
      lbxfont_set_temp_color(0x00);
  
@@ -95,7 +95,7 @@ index 27d35d7..6604bb1 100644
      if (d->countdown < 0) {
          d->planet_i = rnd_0_nm1(g->galaxy_stars, &g->seed);
          d->countdown = 3;
-@@ -345,7 +360,7 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
+@@ -371,7 +386,7 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
  {
      struct gmap_data_s d;
      bool flag_done = false, flag_do_focus = false;
@@ -104,7 +104,7 @@ index 27d35d7..6604bb1 100644
      int16_t scrollx = 0, scrolly = 0;
  
      gmap_load_data(&d);
-@@ -357,10 +372,10 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
+@@ -383,10 +398,10 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
  
      uiobj_table_clear();
  
@@ -119,7 +119,7 @@ index 27d35d7..6604bb1 100644
      for (planet_id_t i = PLANET_0; i < g->galaxy_stars; ++i) {
          const planet_t *p = &(g->planet[i]);
          int x, y;
-@@ -386,6 +401,13 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
+@@ -412,6 +427,13 @@ bool ui_gmap(struct game_s *g, player_id_t active_player)
          if ((oi == oi_ok) || (oi == UIOBJI_ESC)) {
              flag_done = true;
          }
@@ -134,21 +134,10 @@ index 27d35d7..6604bb1 100644
              ui_sound_play_sfx_24();
          }
 diff --git a/src/ui/classic/uiplanets.c b/src/ui/classic/uiplanets.c
-index 92ee17f..b1f2701 100644
+index 7fe736a8..cd2250a0 100644
 --- a/src/ui/classic/uiplanets.c
 +++ b/src/ui/classic/uiplanets.c
-@@ -81,6 +81,10 @@ static void planets_draw_cb(void *vptr)
-     lbxgfx_draw_frame(0, 0, d->gfx_report);
-     lbxgfx_set_new_frame(d->gfx_but_trans, 1);
-     lbxgfx_draw_frame(209, 181, d->gfx_but_trans);
-+    ui_draw_btn_cjk(d->gfx_but_trans, 209, 181, "撥款");
-+    lbxgfx_set_new_frame(d->gfx_but_ok, 1);
-+    lbxgfx_draw_frame(256, 181, d->gfx_but_ok);
-+    ui_draw_btn_cjk(d->gfx_but_ok, 256, 181, "確定");
-     vgabuf_draw_filled_rect(213, 159, 245, 162, 0x2f);
- 
-     v = g->eto[d->api].tax;
-@@ -230,6 +234,9 @@ static void planets_transfer_draw_cb(void *vptr)
+@@ -230,6 +230,9 @@ static void planets_transfer_draw_cb(void *vptr)
      char buf[64];
  
      vgabuf_copy_back_from_page2();
@@ -156,9 +145,9 @@ index 92ee17f..b1f2701 100644
 +    ui_draw_btn_cjk(d->gfx_but_ok, 256, 181, "確定");
 +    ui_draw_btn_cjk(d->gfx_but_trans, 209, 181, "撥款");
      lbxgfx_draw_frame(x, y, d->gfx_transfer);
-     vgabuf_draw_filled_rect(x + 14, y + 35, x + 64, y + 38, 0x2f);
+     vgabuf_fill_rect(x + 14, y + 35, x + 64, y + 38, 0x2f);
      if (d->amount_trans > 0) {
-@@ -246,6 +253,12 @@ static void planets_transfer_draw_cb(void *vptr)
+@@ -246,6 +249,12 @@ static void planets_transfer_draw_cb(void *vptr)
          v = (d->amount_trans * e->reserve_bc) / 100;
          lbxfont_print_num_right(x + 95, y + 35, v);
      }
@@ -171,7 +160,7 @@ index 92ee17f..b1f2701 100644
  }
  
  static void ui_planets_transfer(struct planets_data_s *d)
-@@ -279,8 +292,8 @@ static void ui_planets_transfer(struct planets_data_s *d)
+@@ -279,8 +288,8 @@ static void ui_planets_transfer(struct planets_data_s *d)
      }
  
      uiobj_table_clear();
@@ -182,7 +171,7 @@ index 92ee17f..b1f2701 100644
      /*oi_slider =*/ uiobj_add_slider(x + 14, y + 35, 0, 100, 0, 100, 50, 9, &d->amount_trans, MOO_KEY_UNKNOWN, -1);
      oi_minus = uiobj_add_mousearea(x + 10, y + 33, x + 12, y + 41, MOO_KEY_UNKNOWN, -1);
      oi_plus = uiobj_add_mousearea(x + 66, y + 33, x + 70, y + 41, MOO_KEY_UNKNOWN, -1);
-@@ -425,7 +438,7 @@ again:
+@@ -425,7 +434,7 @@ again:
              uiobj_table_set_last(oi_alt_moola);
              oi_up = uiobj_add_t0(292, 159, "", ui_data.gfx.starmap.reprtbut_up, MOO_KEY_COMMA, -1);
              oi_down = uiobj_add_t0(292, 176, "", ui_data.gfx.starmap.reprtbut_down, MOO_KEY_PERIOD, -1);
@@ -191,7 +180,7 @@ index 92ee17f..b1f2701 100644
              for (int i = 0; i < PLANETS_ON_SCREEN; ++i) {
                  int pi, y0, y1;
                  pi = i + d.pos;
-@@ -439,7 +452,7 @@ again:
+@@ -439,7 +448,7 @@ again:
              oi_trans = UIOBJI_INVALID;
              if (!flag_trans) {
                  if (g->eto[active_player].reserve_bc != 0) {
@@ -201,7 +190,7 @@ index 92ee17f..b1f2701 100644
                  /*oi_slider =*/ uiobj_add_slider(213, 160, 0, 200, 0, 200, 32, 9, &g->eto[active_player].tax, MOO_KEY_UNKNOWN, -1);
                  oi_minus = uiobj_add_mousearea(208, 157, 211, 165, MOO_KEY_UNKNOWN, -1);
 diff --git a/src/ui/classic/uistarmap.c b/src/ui/classic/uistarmap.c
-index 7fd61c5..0ddee81 100644
+index 7fd61c52..0ddee81c 100644
 --- a/src/ui/classic/uistarmap.c
 +++ b/src/ui/classic/uistarmap.c
 @@ -86,15 +86,13 @@ static void ui_starmap_fill_oi_slider(struct starmap_data_s *d)
@@ -226,7 +215,7 @@ index 7fd61c5..0ddee81 100644
      }
  }
 diff --git a/src/ui/classic/uistarmap_common.c b/src/ui/classic/uistarmap_common.c
-index ab778cf..5f24ece 100644
+index f5be1d34..62828820 100644
 --- a/src/ui/classic/uistarmap_common.c
 +++ b/src/ui/classic/uistarmap_common.c
 @@ -3,6 +3,7 @@
@@ -252,7 +241,7 @@ index ab778cf..5f24ece 100644
 +            lbxfont_print_str_center(269, 10, p->name);
 +        }
          if (ui_qol_starmap_planet_neb && (p->battlebg == 0)) {
-             ui_draw_box1(228, 25, 309, 52, 0xd3, 0xd3);
+             vgabuf_draw_box1(228, 25, 309, 52, 0xd3, 0xd3);
          }
 @@ -149,6 +157,28 @@ static void ui_starmap_draw_sliders_and_prod(struct starmap_data_s *d)
          }
@@ -267,23 +256,23 @@ index ab778cf..5f24ece 100644
 +        for (planet_slider_i_t i = PLANET_SLIDER_SHIP; i < PLANET_SLIDER_NUM; ++i) {
 +            int y0 = 81 + 11 * i;
 +            fb = *vgabuf_get_xy(242, y0 + 7);
-+            vgabuf_draw_filled_rect(228, y0 + 1, 244, y0 + 8, fb);
++            vgabuf_fill_rect(228, y0 + 1, 244, y0 + 8, fb);
 +            lbxfont_print_str_normal(228, y0 + 1, sl[i]);
 +        }
 +        fb = *vgabuf_get_xy(255, 60);
-+        vgabuf_draw_filled_rect(226, 57, 258, 64, fb);
++        vgabuf_fill_rect(226, 57, 258, 64, fb);
 +        lbxfont_print_str_normal(228, 57, "人口");
-+        vgabuf_draw_filled_rect(276, 57, 309, 64, fb);
++        vgabuf_fill_rect(276, 57, 309, 64, fb);
 +        lbxfont_print_str_normal(285, 57, "基地");
 +        fb = *vgabuf_get_xy(255, 71);
-+        vgabuf_draw_filled_rect(226, 68, 283, 75, fb);
++        vgabuf_fill_rect(226, 68, 283, 75, fb);
 +        lbxfont_print_str_normal(228, 68, "生產");
 +    }
 +
      lbxfont_select(2, 0xa, 0, 0);
      if (p->buildship == BUILDSHIP_STARGATE) {
-         vgabuf_draw_filled_rect(229, 141, 274, 166, 0);
-@@ -512,8 +542,11 @@ void ui_starmap_draw_basic(struct starmap_data_s *d)
+         vgabuf_fill_rect(229, 141, 274, 166, 0);
+@@ -517,8 +547,11 @@ void ui_starmap_draw_basic(struct starmap_data_s *d)
                  lbxgfx_set_frame(ui_data.gfx.starmap.col_butt_trans, 1);
              }
              lbxgfx_draw_frame(282, 140, ui_data.gfx.starmap.col_butt_ship);
@@ -295,26 +284,8 @@ index ab778cf..5f24ece 100644
          }
      }
      ui_starmap_draw_planetinfo(g, d->api, g->planet_focus_i[d->api]);
-@@ -635,7 +668,7 @@ void ui_starmap_draw_starmap(struct starmap_data_s *d)
-                 lbxfont_select(2, tbl_banner_fontparam[g->eto[p->owner].banner], 0, 0);
-                 tx = ui_starmap_x_to_screen(p->x) + 8;
-                 ty = ui_starmap_y_to_screen(p->y) + 16;
--                ui_starmap_print_str_center_limit(tx, ty, p->name);
-+                ui_starmap_print_str_center_limit(tx, ty, strtr(p->name));
-             } else if (IN_CONTACT(g, d->api, p->owner) || (p->within_frange[d->api] == 1)) {
-                 /* MOO1 does not check (d->api != p->owner) due to within_frange check */
-                 do_print = true;
-@@ -645,7 +678,7 @@ void ui_starmap_draw_starmap(struct starmap_data_s *d)
-             if (do_print) {
-                 tx = ui_starmap_x_to_screen(p->x) + 8;
-                 ty = ui_starmap_y_to_screen(p->y) + 16;
--                ui_starmap_print_str_center_limit(tx, ty, p->name);
-+                ui_starmap_print_str_center_limit(tx, ty, strtr(p->name));
-             }
-         }
-     }
 diff --git a/src/ui/classic/uistarmap_enroute.c b/src/ui/classic/uistarmap_enroute.c
-index ab04ce5..58da9b5 100644
+index 9a75cb0a..56041345 100644
 --- a/src/ui/classic/uistarmap_enroute.c
 +++ b/src/ui/classic/uistarmap_enroute.c
 @@ -120,9 +120,13 @@ static void ui_starmap_enroute_draw_cb(void *vptr)
@@ -345,7 +316,7 @@ index ab04ce5..58da9b5 100644
              }
              oi_scroll = uiobj_add_scrollarea(6, 6, 2, 2, 108, 86, &scrollx, &scrolly, -1);
 diff --git a/src/ui/classic/uistarmap_orbit_own.c b/src/ui/classic/uistarmap_orbit_own.c
-index 55fd1bb..a1f6ac6 100644
+index e7915b3a..832b10ac 100644
 --- a/src/ui/classic/uistarmap_orbit_own.c
 +++ b/src/ui/classic/uistarmap_orbit_own.c
 @@ -140,6 +140,10 @@ static void ui_starmap_orbit_own_draw_cb(void *vptr)
@@ -372,11 +343,11 @@ index 55fd1bb..a1f6ac6 100644
              oi_scroll = uiobj_add_scrollarea(6, 6, 2, 2, 108, 86, &scrollx, &scrolly, -1);
              ui_starmap_fill_oi_ctrl(&d);
 diff --git a/src/ui/classic/uistarmap_trans.c b/src/ui/classic/uistarmap_trans.c
-index 82ebe3d..c11380c 100644
+index 43e5fbd0..6db33894 100644
 --- a/src/ui/classic/uistarmap_trans.c
 +++ b/src/ui/classic/uistarmap_trans.c
 @@ -66,6 +66,10 @@ static void ui_starmap_trans_draw_cb(void *vptr)
-     ui_starmap_draw_frame_offs(x0, y0, ui_data.gfx.starmap.planbord);
+     ui_starmap_draw_frame(x0, y0, ui_data.gfx.starmap.planbord);
      lbxgfx_set_new_frame(ui_data.gfx.starmap.reloc_bu_accept, 1);
      lbxgfx_draw_frame(271, 163, ui_data.gfx.starmap.reloc_bu_accept);
 +    ui_draw_btn_cjk(ui_data.gfx.starmap.reloc_bu_accept, 271, 163, "確定");
